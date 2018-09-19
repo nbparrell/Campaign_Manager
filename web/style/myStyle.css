@@ -9,6 +9,7 @@
                 background-repeat: no-repeat;
                 background-size: auto;
                 background-color: black;
+                background-attachment: fixed;
                 color: #C9C9C9;
                 font-size:16px;
             }
@@ -20,7 +21,7 @@
                 height: 79px;
                 min-width:520px;
                 width: 100%;
-                box-shadow: 5px 8px #111409;
+                box-shadow: 5px 8px 5px #111409;
                 z-index: 1;
                 position: fixed;
                 top:0;
