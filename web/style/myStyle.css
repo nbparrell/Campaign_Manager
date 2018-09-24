@@ -105,6 +105,10 @@ is smaller than the specified value */
     border-radius: 25px;
 }
 
+.buffer{
+    padding-bottom: 75px;   
+}
+
 /* I made the footer be always fixed to the bottom of the browser window. */
 #footer {
     position: fixed;
