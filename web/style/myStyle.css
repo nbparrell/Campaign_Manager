@@ -1,3 +1,118 @@
+.stopFloat { /* We float divs left in desktop layout to create multiple columns. Put
+                a "clear:both" rule where you want to stop the floating (like page eject). */
+    clear:both;
+}
+#content {
+    padding-top: 80px;
+    padding-left:4px;	
+    padding-right:4px;	
+    padding-bottom: 30px; /* Footer is fixed. Add bottom margin to content 
+                             so that the foooter does not cover up the bottom 
+                             of your content. */
+
+}
+
+.WhiteLink {
+    color:white;
+}
+
+.infoSection {
+    /*border: 1px solid;*/
+    z-index: -1;
+    background-color: #3C4621;
+    padding: 1%;
+    width:66.6%;
+    float:left;
+    box-sizing: border-box;
+    border-radius: 25px;
+}
+
+.buffer{
+    padding-bottom: 75px;   
+}
+
+.dataList{
+    position: relative;
+    display: inline-block;
+    padding-top: 34px;
+    margin-top:3px;
+    padding-left:3px;
+    padding-right:3px;
+}
+
+.dataList hover{
+    background-color: gray;
+}
+
+.dataListButton{
+    cursor: pointer;
+}
+
+.show{
+    display:block;
+}
+
+.dataListContent {
+    margin-top: 30px;
+    background-color:#3C4621;
+    display:none;
+    min-width: 100px;
+    min-height: 130px;
+    overflow: auto;
+    z-index: 1;
+    position: absolute;
+    box-shadow: 5px 8px 5px #111409;
+}
+
+.dataListContent a{
+    display: inline-block;
+    background-color:#3C4621;
+    min-width: 100px;
+    min-height: 5%;
+    color:gray;
+    padding: 12px 16px;
+}
+
+a:hover{
+    background-color:gray;
+}
+
+/* I made the footer be always fixed to the bottom of the browser window. */
+#footer {
+    position: fixed;
+    bottom:0px;
+    left:0xp;
+    width:100%;
+    background-color: #432E36;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px;	 	 
+}
+
+.width33Pct { /* right column in my layout */
+    /* border: thin solid red; Use a rule like this to see where a div is to debug. */
+    padding-top: 22px;
+    padding: 1%;
+    width:33.3%;
+    float:left;
+    box-sizing: border-box;
+    mid-width: 400px;
+}
+
+.width66Pct { /* left column in my layout */
+    padding: 1%;
+    width:66.6%;
+    float:left;
+    box-sizing: border-box;
+}
+
+img {
+    width:100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
 html, body {
     margin:0; /* don't want tiny white border inside browser window */
     padding:0; /* don't want tiny white border inside browser window */
@@ -53,94 +168,30 @@ is smaller than the specified value */
 
 /* Styles any div inside of an element with id="nav". */
 #nav div {
-    margin-top:3px;
     float:left;
     font-size:18px;
-    padding: 6px;
-    padding-top:34px;
     height: 33px;
     text-align:center;
     letter-spacing: 1px;
     font-weight:bold;
+    color: #C8C8C8;
 }
 
+.navPadding{
+    margin-top:3px;
+    padding-top: 34px;
+    padding-left:3px;
+    padding-right:3px;
+}
 /* When the user hover's over a div that's inside of and element with 
    id="nav", this styling will kick in. */
 #nav div:hover {
-    background-color: white; /* this is the turqoise color */
+    background-color: gray; /* this is the turqoise color */
+    color: black;
 }
 
 /* When the user hovers over a div that's inside of an element with 
    id="nav", the text of links inside the div will change color. */
 #nav div:hover a {
     color: black;
-}
-
-.stopFloat { /* We float divs left in desktop layout to create multiple columns. Put
-                a "clear:both" rule where you want to stop the floating (like page eject). */
-    clear:both;
-}
-#content {
-    padding-top: 80px;
-    padding-left:4px;	
-    padding-right:4px;	
-    padding-bottom: 30px; /* Footer is fixed. Add bottom margin to content 
-                             so that the foooter does not cover up the bottom 
-                             of your content. */
-
-}
-
-.WhiteLink {
-    color:white;
-}
-
-.infoSection {
-    /*border: 1px solid;*/
-    z-index: -1;
-    background-color: #3C4621;
-    padding: 1%;
-    width:66.6%;
-    float:left;
-    box-sizing: border-box;
-    border-radius: 25px;
-}
-
-.buffer{
-    padding-bottom: 75px;   
-}
-
-/* I made the footer be always fixed to the bottom of the browser window. */
-#footer {
-    position: fixed;
-    bottom:0px;
-    left:0xp;
-    width:100%;
-    background-color: #432E36;
-    color:white;
-    clear:both;
-    text-align:center;
-    padding:5px;	 	 
-}
-
-.width33Pct { /* right column in my layout */
-    /* border: thin solid red; Use a rule like this to see where a div is to debug. */
-    padding-top: 22px;
-    padding: 1%;
-    width:33.3%;
-    float:left;
-    box-sizing: border-box;
-    mid-width: 400px;
-}
-
-.width66Pct { /* left column in my layout */
-    padding: 1%;
-    width:66.6%;
-    float:left;
-    box-sizing: border-box;
-}
-
-img {
-    width:100%;
-    border-radius: 10px;
-    margin-top: 10px;
 }
