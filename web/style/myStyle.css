@@ -1,81 +1,3 @@
-html, body {
-    margin:0; /* don't want tiny white border inside browser window */
-    padding:0; /* don't want tiny white border inside browser window */
-}
-body {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    /*background-color: rgb(160, 200, 180); /* this is the turqoise color */
-    background-image: url("../pics/SotA_forest.jpg");
-    background-repeat: no-repeat;
-    background-size: auto;
-    background-color: black;
-    background-attachment: fixed;
-    color: #C9C9C9;
-    font-size:16px;
-}
-
-#titleNav {
-    font-family: serif;
-    color:white;
-    background-color: #3C4621;
-    height: 79px;
-    min-width:520px;
-    width: 100%;
-    box-shadow: 5px 8px 5px #111409;
-    z-index: 1;
-    position: fixed;
-    top:0;
-    left:0;
-    /* forces horizontal scroll bar when browser width < the size specified 
-This prevents unwanted wrapping of nav bar elements when the browser 
-is smaller than the specified value */
-}
-#title { /* position web site title inside the titleNav */
-    padding-top:10px;
-    padding-left:10px;
-    font-size:45px;
-    font-weight:bold;
-    letter-spacing: 1.5px;
-    text-align:center;
-    float:left; /* allows nav to exist on same line */
-}
-#nav {
-    margin-right:2%;
-    float:right; /* shares same line with PageTitle */
-    letter-spacing: 1px;
-}
-
-/* "#nav a" styles links inside of element with id="nav" */
-#nav a {
-    text-decoration:none;  /* Do not links in "nav" to be underlined */
-    color: #C8C8C8; /* light gray */
-}
-
-/* Styles any div inside of an element with id="nav". */
-#nav div {
-    margin-top:3px;
-    float:left;
-    font-size:18px;
-    padding: 6px;
-    padding-top:34px;
-    height: 33px;
-    text-align:center;
-    letter-spacing: 1px;
-    font-weight:bold;
-}
-
-/* When the user hover's over a div that's inside of and element with 
-   id="nav", this styling will kick in. */
-#nav div:hover {
-    background-color: white; /* this is the turqoise color */
-}
-
-/* When the user hovers over a div that's inside of an element with 
-   id="nav", the text of links inside the div will change color. */
-#nav div:hover a {
-    color: black;
-}
-
 .stopFloat { /* We float divs left in desktop layout to create multiple columns. Put
                 a "clear:both" rule where you want to stop the floating (like page eject). */
     clear:both;
@@ -107,6 +29,52 @@ is smaller than the specified value */
 
 .buffer{
     padding-bottom: 75px;   
+}
+
+.dataList{
+    position: relative;
+    display: inline-block;
+    padding-top: 34px;
+    margin-top:3px;
+    padding-left:3px;
+    padding-right:3px;
+}
+
+
+
+.dataListButton{
+    cursor: pointer;
+}
+
+.show{
+    display:block;
+}
+
+.dataListContent {
+    margin-top: 30px;
+    background-color:#3C4621;
+    display:none;
+    min-width: 100px;
+    min-height: 150px;
+    overflow: auto;
+    z-index: -1;
+    margin-right: 15px;
+    position: absolute;
+    box-shadow: 5px 8px 5px #111409;
+}
+
+.dataListContent a{
+    display: inline-block;
+    background-color:#3C4621;
+    min-width: 100px;
+    min-height: 5%;
+    color:gray;
+    font-size: 10pt;
+    padding: 12px 16px;
+}
+
+a:hover{
+    background-color:gray;
 }
 
 /* I made the footer be always fixed to the bottom of the browser window. */
@@ -143,4 +111,92 @@ img {
     width:100%;
     border-radius: 10px;
     margin-top: 10px;
+}
+
+html, body {
+    margin:0; /* don't want tiny white border inside browser window */
+    padding:0; /* don't want tiny white border inside browser window */
+}
+body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    /*background-color: rgb(160, 200, 180); /* this is the turqoise color */
+    background-image: url("../pics/SotA_forest.jpg");
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: black;
+    background-attachment: fixed;
+    color: #C9C9C9;
+    font-size:16px;
+}
+
+#titleNav {
+    font-family: serif;
+    color:white;
+    background-color: #3C4621;
+    height: 79px;
+    min-width:600px;
+    width: 100%;
+    box-shadow: 5px 8px 5px #111409;
+    z-index: 1;
+    position: fixed;
+    top:0;
+    left:0;
+    /* forces horizontal scroll bar when browser width < the size specified 
+This prevents unwanted wrapping of nav bar elements when the browser 
+is smaller than the specified value */
+}
+#title { /* position web site title inside the titleNav */
+    padding-top:10px;
+    padding-left:10px;
+    font-size:45px;
+    font-weight:bold;
+    letter-spacing: 1.5px;
+    text-align:center;
+    float:left; /* allows nav to exist on same line */
+}
+#nav {
+    margin-right:2%;
+    float:right; /* shares same line with PageTitle */
+    letter-spacing: 1px;
+}
+
+/* "#nav a" styles links inside of element with id="nav" */
+#nav a {
+    text-decoration:none;  /* Do not links in "nav" to be underlined */
+    color: #C8C8C8; /* light gray */
+}
+
+/* Styles any div inside of an element with id="nav". */
+#nav div {
+    float:left;
+    font-size:18px;
+    height: 33px;
+    text-align:center;
+    letter-spacing: 1px;
+    font-weight:bold;
+    color: #C8C8C8;
+}
+
+.navPadding{
+    margin-top:3px;
+    padding-top: 34px;
+    padding-left:3px;
+    padding-right:3px;
+}
+/* When the user hover's over a div that's inside of and element with 
+   id="nav", this styling will kick in. */
+#nav div:hover {
+    background-color: gray; /* this is the turqoise color */
+    color: black;
+}
+
+/* When the user hovers over a div that's inside of an element with 
+   id="nav", the text of links inside the div will change color. */
+#nav div:hover a {
+    color: black;
+}
+
+.chart{
+    background-color: white;
+    border: solid black;
 }

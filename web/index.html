@@ -4,9 +4,13 @@
         <title>Campaign Manager</title>
 
         <!-- Use this type of comment within HTML -->
-
+        <link rel="stylesheet" type="text/css" href="style/listStyle.css">
         <link rel="stylesheet" type="text/css" href="style/myStyle.css">
+        <script src="js/ajaxUtilities.js"></script>
+        <script src="js/buildTable.js"></script>
+        <script src="js/dropDownMenu.js"></script>
     </head>
+
     <body>
 
         <div id="titleNav">
@@ -18,48 +22,104 @@
 
             <!-- The style sheet has nav floated right -->
             <div id="nav">
-                <div><a onclick = " ajaxCall('htmlPartial/homeContent.html', setContent, setError) ">Home</a></div>
-                <div><a onclick = " ajaxCall('htmlPartial/blogContent.html', setContent, setError) ">Blog</a></div>
+                <div class="navPadding"><a onclick = " ajaxCall('htmlPartial/homeContent.html', setContent, setError)">Home</a></div>
+                <div class="dataList">
+                    <div class="dataListButton" onclick="toggleChild()">Data</div>
+                    <div id="dataListShow" class="dataListContent">
+                        <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListUsers, setError)">Users</a>
+                        <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaigns, setError)">Campaign Listing</a>
+                        <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaignPosting, setError)">Campaign Signup</a>
+                    </div>
+                </div>
+                <div class="navPadding"><a onclick = " ajaxCall('htmlPartial/blogContent.html', setContent, setError)">Blog</a></div>
             </div>
 
             <!-- Must stop the floating so that elements below (e.g., content) 
             don't float up into here. -->
             <div class="stopFloat"></div>
         </div>
-        
-        <p></p>
 
+        <p></p>
         <div id="content">
-           
-        
+
+
         </div> <!-- content. [[Keep track of nesting]] -->
-         <div class="stopFloat"></div>
+        <div class="stopFloat"></div>
         <div>
             <p class="buffer">  </p>
         </div>
         <div id="footer">
             Nicholas Parrell
         </div>
-        
-        <script src="js/ajaxUtilities.js"></script>
 
         <script>
+            // Place the contents of the file url into the 
+            // innerHTML property of the HTML element with id "content".
+            function setListUsers(httpRequest) {
+                console.log("Ajax setListUsers call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+                ajaxCall("webAPIs/listUsersAPI.jsp", setUserContent, setUserError);
+            }
+            
+            function setListCampaigns(httpRequest) {
+                console.log("Ajax setListCampaigns call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+                ajaxCall("webAPIs/listOtherAPI.jsp", setUserContent, setUserError);
+            }
+            
+            function setListCampaignPosting(httpRequest) {
+                console.log("Ajax setListCampaigns call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+                ajaxCall("webAPIs/listAssocAPI.jsp", setUserContent, setUserError);
+            }
+            function setUserContent(httpRequest) {
 
-                    // Place the contents of the file url into the 
-                    // innerHTML property of the HTML element with id "content". 
-                    function setContent(httpRequest) {
-                        console.log("Ajax call was successful.");
-                        document.getElementById("content").innerHTML = httpRequest.responseText;
-                    }
+                var target = document.getElementById("list");
 
-                    function setError(httpRequest) {
-                        console.log("Ajax call was NOT successful.");
-                        console.log(httpRequest);
-                        document.getElementById("content").innerHTML = httpRequest.errorMsg;
-                    }
+                console.log("listUsersResponse - here is the value of httpRequest object (next line)");
+                console.log(httpRequest);
 
-                    // Make sure initial page load has home content displayed. 
-                    ajaxCall('htmlPartial/homeContent.html', setContent, setError);
+                var obj = JSON.parse(httpRequest.responseText);
+
+                if (obj === null) {
+                    target.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
+                    return;
+                }
+
+                if (obj.dbError === null) {
+                    target.innerHTML = "listUsersResponse Error: parsed object has no 'dbError' property.";
+                    return;
+                }
+
+                // First parameter: 
+                //     An array of objects that are to be built into an HTML table.
+                // Second parameter: 
+                //     string that holds database error (if any) or empty string if all OK.
+                // Third parameter: 
+                //     reference to DOM object where built table is to be stored. 
+                buildTable(obj.webUserList, obj.dbError, target);
+
+            } // end of processResponse
+
+            function setUserError(httpRequest) {
+                console.log("setUserError has been called");
+                console.log(httpRequest);
+                $("list").innerHTML = httpRequest.errorMsg;
+            }
+
+            function setContent(httpRequest) {
+                console.log("Ajax setContent call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+            }
+
+            function setError(httpRequest) {
+                console.log("Ajax call was NOT successful.");
+                console.log(httpRequest);
+                document.getElementById("content").innerHTML = httpRequest.errorMsg;
+            }
+
+            // Make sure initial page load has home content displayed. 
+            ajaxCall('htmlPartial/homeContent.html', setContent, setError);
 
         </script>
     </body>
