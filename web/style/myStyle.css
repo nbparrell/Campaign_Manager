@@ -31,53 +31,6 @@
     padding-bottom: 75px;   
 }
 
-.dataList{
-    position: relative;
-    display: inline-block;
-    padding-top: 34px;
-    margin-top:3px;
-    padding-left:3px;
-    padding-right:3px;
-}
-
-
-
-.dataListButton{
-    cursor: pointer;
-}
-
-.show{
-    display:block;
-}
-
-.dataListContent {
-    margin-top: 30px;
-    background-color:#3C4621;
-    display:none;
-    width:100px;
-    min-width: 75px;
-    min-height: 150px;
-    overflow: auto;
-    z-index: -1;
-    margin-right: 100px;
-    position: absolute;
-    box-shadow: 5px 8px 5px #111409;
-}
-
-.dataListContent a{
-    display: inline-block;
-    background-color:#3C4621;
-    width:100%;
-    min-width: 75px;
-    min-height: 5%;
-    color:gray;
-    font-size: 10pt;
-    padding: 11.75px 0px;
-}
-
-a:hover{
-    background-color:gray;
-}
 
 /* I made the footer be always fixed to the bottom of the browser window. */
 #footer {

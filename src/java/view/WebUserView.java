@@ -111,4 +111,39 @@ public class WebUserView {
         return sdl;
     }
 
+    public static StringDataList loginAPI(DbConn dbc, String username, String password) {
+        int type = 0;
+        StringDataList sdl = new StringDataList();
+        try {
+            String sql = "SELECT "
+                    + "web_user_id, "
+                    + "user_email, "
+                    + "user_password, "
+                    + "membership_fee, "
+                    + "birthday, "
+                    + "web_user.user_role_id, "
+                    + "user_role_type "
+                    + "FROM web_user, user_role "
+                    + "WHERE web_user.user_role_id = user_role.user_role_id "
+                    + "AND user_email = ? AND user_password = ?";
+
+            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+            
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet results = stmt.executeQuery();
+            while (results.next()) {
+                sdl.add(results, type);
+            }
+            results.close();
+            stmt.close();
+        } catch (Exception e) {
+            StringDataUser sd = new StringDataUser();
+            sd.errorMsg = "Exception thrown in WebUserView.loginAPI(): " + e.getMessage();
+            sdl.add(sd);
+        }
+        
+        return sdl;
+    }
+
 }

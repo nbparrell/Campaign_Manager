@@ -6,9 +6,12 @@
         <!-- Use this type of comment within HTML -->
         <link rel="stylesheet" type="text/css" href="style/listStyle.css">
         <link rel="stylesheet" type="text/css" href="style/myStyle.css">
+        <link rel="stylesheet" type="text/css" href="style/dropDownStyle.css">
         <script src="js/ajaxUtilities.js"></script>
         <script src="js/buildTable.js"></script>
         <script src="js/dropDownMenu.js"></script>
+        <script src="js/logon.js"></script>
+        <script src="js/profileView.js"></script> 
     </head>
 
     <body>
@@ -24,11 +27,19 @@
             <div id="nav">
                 <div class="navPadding"><a onclick = " ajaxCall('htmlPartial/homeContent.html', setContent, setError)">Home</a></div>
                 <div class="dataList">
-                    <div class="dataListButton" onclick="toggleChild()">Data</div>
+                    <div id="dataBtn" class="dataListButton" onclick="toggleChild('dataListShow')">Data</div>
                     <div id="dataListShow" class="dataListContent">
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListUsers, setError)">Users</a>
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaigns, setError)">Campaign Listing</a>
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaignPosting, setError)">Campaign Signup</a>
+                    </div>
+                </div>
+                <div class="dataList">
+                    <div  id="accountBtn" class="dataListButton" onclick="toggleChild('accountListShow')">Account</div>
+                    <div id="accountListShow" class="dataListContent">
+                      <a onclick = " ajaxCall('htmlPartial/logonContent.html', setLogonContent, setError)">Log On</a>
+                        <a onclick = " ajaxCall('htmlPartial/logOffContent.html', setLogOffContent, setError)">Log Off</a>
+                        <a onclick = " ajaxCall('htmlPartial/profileContent.html', setProfileContent, setError)">Profile</a>  
                     </div>
                 </div>
                 <div class="navPadding"><a onclick = " ajaxCall('htmlPartial/blogContent.html', setContent, setError)">Blog</a></div>
@@ -55,6 +66,20 @@
         <script>
             // Place the contents of the file url into the 
             // innerHTML property of the HTML element with id "content".
+            
+            function setLogOffContent(httpRequest) {
+                console.log("Ajax setLogOff call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+                ajaxCall("webAPIs/logoffAPI.jsp", setUserContent, setUserError);
+            }
+            
+            function setProfileContent(httpRequest) {
+                console.log("Ajax setProfileContent call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+                //ajaxCall("webAPIs/getProfileAPI.jsp", setUserContent, setUserError);
+                profileFn();
+            }
+            
             function setListUsers(httpRequest) {
                 console.log("Ajax setListUsers call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
@@ -71,6 +96,12 @@
                 console.log("Ajax setListCampaigns call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 ajaxCall("webAPIs/listAssocAPI.jsp", setUserContent, setUserError);
+            }
+            
+            function setLogonContent(httpRequest){
+                console.log("Ajax setLogonContent call was successful.");
+                document.getElementById("content").innerHTML = httpRequest.responseText;
+                ajaxCall("webAPIs/logonAPI.jsp", setUserContent, setUserError);
             }
             function setUserContent(httpRequest) {
 
