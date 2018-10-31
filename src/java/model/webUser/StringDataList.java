@@ -24,8 +24,22 @@ public class StringDataList {
 
     // Adds creates a StringData element from a ResultSet (from SQL select statement), 
     // then adds that new element to the array list of StringData elements.
-    public void add(ResultSet results, int type) {
-        StringDataUser sd = new StringDataUser(results, type);
+    public void addUserInfo(ResultSet results, int type) {
+        //StringDataUser sd = new StringDataUser(results, type); Depricated
+        StringDataUser sd = new StringDataUser();
+        sd.setUserInfo(results);
+        this.webUserList.add(sd);
+    }
+    
+    public void addCampaignListing(ResultSet results, int type) {
+        StringDataUser sd = new StringDataUser();
+        sd.setCampaignListing(results);
+        this.webUserList.add(sd);
+    }
+    
+    public void addCampaignSignUp(ResultSet results, int type) {
+        StringDataUser sd = new StringDataUser();
+        sd.setCampaignSignUp(results);
         this.webUserList.add(sd);
     }
 }

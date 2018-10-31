@@ -28,7 +28,7 @@ public class WebUserView {
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {
-                sdl.add(results, type);
+                sdl.addUserInfo(results, type);
             }
             results.close();
             stmt.close();
@@ -69,7 +69,7 @@ public class WebUserView {
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {
-                sdl.add(results, type);
+                sdl.addCampaignSignUp(results, type);
             }
             results.close();
             stmt.close();
@@ -99,7 +99,7 @@ public class WebUserView {
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {
-                sdl.add(results, type);
+                sdl.addCampaignListing(results, type);
             }
             results.close();
             stmt.close();
@@ -133,7 +133,7 @@ public class WebUserView {
             stmt.setString(2, password);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {
-                sdl.add(results, type);
+                sdl.addUserInfo(results, type);
             }
             results.close();
             stmt.close();

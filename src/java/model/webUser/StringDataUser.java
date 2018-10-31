@@ -39,6 +39,8 @@ public class StringDataUser {
     public StringDataUser() {
     }
 
+    /*
+    DEPRICATED
     // overloaded constructor sets all data members by extracting from resultSet.
     public StringDataUser(ResultSet results, int type) {
         if (type == 0) {
@@ -65,16 +67,12 @@ public class StringDataUser {
                 this.Campaign = FormatUtils.formatString(results.getObject("campaign_session_campaign"));
                 this.Description = FormatUtils.formatString(results.getObject("campaign_session_desc"));
                 this.Name = FormatUtils.formatString(results.getObject("campaign_session_name"));
-
-                {
-
-                }
             } catch (Exception e) {
                 this.errorMsg = "Exception thrown in model.webUser.StringData (the constructor that takes a ResultSet): " + e.getMessage();
             }
         } else if (type == 2) {
             try {
-                
+
                 this.Session_Location = FormatUtils.formatString(results.getObject("campaign_session_location"));
                 this.Session_Date = FormatUtils.formatDate(results.getObject("campaign_session_date"));
                 this.Campaign = FormatUtils.formatString(results.getObject("campaign_session_campaign"));
@@ -89,6 +87,7 @@ public class StringDataUser {
             }
         }
     }
+*/
 
     public int getCharacterCount() {
         String s = this.webUserId + this.userEmail + this.userPassword + this.birthday
@@ -104,5 +103,48 @@ public class StringDataUser {
                 + ", Membership Fee: " + this.membershipFee
                 + ", User Role Id: " + this.userRoleId
                 + ", User Role Type: " + this.userRoleType;
+    }
+
+    public void setUserInfo(ResultSet results) {        this.errorMsg = "setUserInfo was called";
+        try {
+            this.userEmail = FormatUtils.formatString(results.getObject("user_email"));
+            this.userPassword = FormatUtils.formatString(results.getObject("user_password"));
+            this.birthday = FormatUtils.formatDate(results.getObject("birthday"));
+            this.membershipFee = FormatUtils.formatDollar(results.getObject("membership_fee"));
+            this.userRoleType = FormatUtils.formatString(results.getObject("user_role_type"));
+        } catch (Exception e) {
+            this.errorMsg = "Exception thrown in model.webUser.StringData (the constructor that takes a ResultSet): " + e.getMessage();
+        }
+    }
+    
+    public void setCampaignSignUp(ResultSet results) {        this.errorMsg = "setCampaignSignUp was called";
+        try {
+                this.userEmail = FormatUtils.formatString(results.getObject("user_email"));
+                this.userPassword = FormatUtils.formatString(results.getObject("user_password"));
+                this.birthday = FormatUtils.formatDate(results.getObject("birthday"));
+                this.membershipFee = FormatUtils.formatDollar(results.getObject("membership_fee"));
+                this.campaign_session_posting_name = FormatUtils.formatString(results.getObject("campaign_session_posting_name"));
+                this.Signed_Up = FormatUtils.formatDate(results.getObject("campaign_session_posting_created_date"));
+                this.Notes = FormatUtils.formatString(results.getObject("campaign_session_posting_desc"));
+                this.Session_Location = FormatUtils.formatString(results.getObject("campaign_session_location"));
+                this.Session_Date = FormatUtils.formatDate(results.getObject("campaign_session_date"));
+                this.Campaign = FormatUtils.formatString(results.getObject("campaign_session_campaign"));
+                this.Description = FormatUtils.formatString(results.getObject("campaign_session_desc"));
+                this.Name = FormatUtils.formatString(results.getObject("campaign_session_name"));
+            } catch (Exception e) {
+                this.errorMsg = "Exception thrown in model.webUser.StringData (the constructor that takes a ResultSet): " + e.getMessage();
+            }
+    }
+    
+    public void setCampaignListing(ResultSet results) {
+        try {
+                this.Session_Location = FormatUtils.formatString(results.getObject("campaign_session_location"));
+                this.Session_Date = FormatUtils.formatDate(results.getObject("campaign_session_date"));
+                this.Campaign = FormatUtils.formatString(results.getObject("campaign_session_campaign"));
+                this.Description = FormatUtils.formatString(results.getObject("campaign_session_desc"));
+                this.Name = FormatUtils.formatString(results.getObject("campaign_session_name"));
+            } catch (Exception e) {
+                this.errorMsg = "Exception thrown in model.webUser.StringData (the constructor that takes a ResultSet): " + e.getMessage();
+            }   
     }
 }
