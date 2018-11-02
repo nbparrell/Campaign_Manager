@@ -42,4 +42,16 @@ public class StringDataList {
         sd.setCampaignSignUp(results);
         this.webUserList.add(sd);
     }
+    
+    public void addUserListInfo(ResultSet results, int type){
+        StringDataUser sd = new StringDataUser();
+        sd.setUserListInfo(results);
+        this.webUserList.add(sd);
+    }
+    
+    public void addCampaignListingList(ResultSet results, int type) {
+        StringDataUser sd = new StringDataUser();
+        sd.setCampaignSessionList(results);
+        this.webUserList.add(sd);
+    }
 }

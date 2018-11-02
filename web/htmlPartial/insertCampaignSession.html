@@ -1,0 +1,61 @@
+<!-- 
+
+It is very useful to copy/paste the data obtained by running the insert API
+directly (like what i did below). This will let you know the exact field names
+that you used in your StringData (java object - because gson uses these when it 
+converts java object to JSON). 
+
+You can name the ids (in the HTML below) anything you like, but it may be simplest to 
+just name them exactly the same as you did when you created your StringData 
+field names (less field name mappings for you to have to remember).
+
+{
+"webUserId": "",
+"userEmail": "Input is required",
+"userPassword": "Input is required",
+"userPassword2": "",
+"birthday": "",
+"membershipFee": "",
+"userRoleId": "Please enter an dollar amount",
+"userRoleType": "",
+"errorMsg": "Please try again"
+}
+
+-->
+
+<div class="insertArea">
+
+    <table class="insertAreaInput">
+        <tr>
+            <td>Session Name</td>
+            <td><input type="text"  id="sessionName" /></td>
+            <td id="sessionNameError" class="error"></td> 
+        </tr>
+        <tr>
+            <td>Location</td>
+            <td><input type="text"  id="sessionLocation" /></td>
+            <td id="sessionLocationError" class="error"></td>
+        </tr>
+        <tr>
+            <td>Campaign</td>
+            <td><input type="text" id="sessionCampaign" /></td>
+            <td id="sessionCampaignError" class="error"></td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td><input type="text" id="sessionDate" /></td>
+            <td id="sessionDateError" class="error"></td> 
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea rows="30" cols="50" id="sessionDesc"></textarea></td>
+            <td id="sessionDescError" class="error"></td>
+        </tr>
+        <tr>
+            <!-- see js/insertUser.js to see the insertUser function (make sure index.html referencesinvokes the js file) -->
+            <td><button onclick="campaignSessionCRUD.insertSave()">Save</button></td>
+            <td id="responseText" class="error"></td>
+            <td></td>
+        </tr>
+    </table>
+</div>

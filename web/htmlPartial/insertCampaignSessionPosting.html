@@ -1,0 +1,67 @@
+<!-- 
+
+It is very useful to copy/paste the data obtained by running the insert API
+directly (like what i did below). This will let you know the exact field names
+that you used in your StringData (java object - because gson uses these when it 
+converts java object to JSON). 
+
+You can name the ids (in the HTML below) anything you like, but it may be simplest to 
+just name them exactly the same as you did when you created your StringData 
+field names (less field name mappings for you to have to remember).
+
+{
+"webUserId": "",
+"userEmail": "Input is required",
+"userPassword": "Input is required",
+"userPassword2": "",
+"birthday": "",
+"membershipFee": "",
+"userRoleId": "Please enter an dollar amount",
+"userRoleType": "",
+"errorMsg": "Please try again"
+}
+
+-->
+
+<div class="insertArea">
+
+    <table class="insertAreaInput">
+        <tr>
+            <td>User</td>  
+            <td>
+                <select id="cspUserPickList">
+                    <!-- JS code will make ajax call to get all the roles 
+                    then populate this select tag's options with those roles -->
+                </select>
+            </td>
+
+            <td id="cspUserError" class="error"></td>
+        </tr>
+        <tr>
+            <td>Session</td>  
+            <td>
+                <select id="cspSessionPickList">
+                    <!-- JS code will make ajax call to get all the roles 
+                    then populate this select tag's options with those roles -->
+                </select>
+            </td>
+
+            <td id="cspSessionError" class="error"></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" id="cspName" /></td>
+            <td id="cspNameError" class="error"></td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td><textarea rows="30" cols="50" id="cspDesc"></textarea></td>
+            <td id="cspDescError" class="error"></td> 
+        </tr>
+            <!-- see js/insertUser.js to see the insertUser function (make sure index.html referencesinvokes the js file) -->
+            <td><button onclick="campaignSessionPostingCRUD.insertSave()">Save</button></td>
+            <td id="responseText" class="error"></td>
+            <td></td>
+        </tr>
+    </table>
+</div>

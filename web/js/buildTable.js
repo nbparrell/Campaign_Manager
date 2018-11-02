@@ -64,6 +64,7 @@ function buildTable(list, dbErrorMsg, target) {
     // that into the page. 
     var newTable = document.createElement("table");
     target.appendChild(newTable);
+    newTable.className += "listUsers";
     var newRow;
     var newCell;
     // Add one row (to HTML table) per element) in the webUserList array

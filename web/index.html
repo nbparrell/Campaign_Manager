@@ -11,7 +11,12 @@
         <script src="js/buildTable.js"></script>
         <script src="js/dropDownMenu.js"></script>
         <script src="js/logon.js"></script>
-        <script src="js/profileView.js"></script> 
+        <script src="js/profileView.js"></script>
+        <script src="js/makePickList.js"></script>
+        <script src="js/userCRUD.js"></script>
+        <script src="js/campaignSessionCRUD.js"></script>
+        <script src="js/campaignSessionPostingCRUD.js"></script>
+        <script src="js/ajax.js"></script>
     </head>
 
     <body>
@@ -25,9 +30,9 @@
 
             <!-- The style sheet has nav floated right -->
             <div id="nav">
-                <div class="navPadding"><a onclick = " ajaxCall('htmlPartial/homeContent.html', setContent, setError)">Home</a></div>
+                <div class="navPadding tab"><a class="btn" onclick = " ajaxCall('htmlPartial/homeContent.html', setContent, setError)">Home</a></div>
                 <div class="dataList">
-                    <div id="dataBtn" class="dataListButton" onclick="toggleChild('dataListShow')">Data</div>
+                    <div id="dataBtn" class="dataListButton btn" onclick="toggleChild('dataListShow')">Data</div>
                     <div id="dataListShow" class="dataListContent">
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListUsers, setError)">Users</a>
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaigns, setError)">Campaign Listing</a>
@@ -35,14 +40,17 @@
                     </div>
                 </div>
                 <div class="dataList">
-                    <div  id="accountBtn" class="dataListButton" onclick="toggleChild('accountListShow')">Account</div>
+                    <div  id="accountBtn" class="dataListButton btn" onclick="toggleChild('accountListShow')">Account</div>
                     <div id="accountListShow" class="dataListContent">
                       <a onclick = " ajaxCall('htmlPartial/logonContent.html', setLogonContent, setError)">Log On</a>
                         <a onclick = " ajaxCall('htmlPartial/logOffContent.html', setLogOffContent, setError)">Log Off</a>
-                        <a onclick = " ajaxCall('htmlPartial/profileContent.html', setProfileContent, setError)">Profile</a>  
+                        <a onclick = " ajaxCall('htmlPartial/profileContent.html', setProfileContent, setError)">Profile</a>
+                        <a onclick = "userCRUD.list()">Users</a>
+                        <a onclick = "campaignSessionCRUD.list()">Campaign Sessions</a>
+                        <a onclick = "campaignSessionPostingCRUD.list()">Attendance</a>
                     </div>
                 </div>
-                <div class="navPadding"><a onclick = " ajaxCall('htmlPartial/blogContent.html', setContent, setError)">Blog</a></div>
+                <div class="navPadding tab"><a class="btn" onclick = " ajaxCall('htmlPartial/blogContent.html', setContent, setError)">Blog</a></div>
             </div>
 
             <!-- Must stop the floating so that elements below (e.g., content) 

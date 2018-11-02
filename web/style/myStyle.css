@@ -124,8 +124,7 @@ is smaller than the specified value */
 /* Styles any div inside of an element with id="nav". */
 #nav div {
     float:left;
-    font-size:18px;
-    height: 33px;
+    font-size:18px; 
     text-align:center;
     letter-spacing: 1px;
     font-weight:bold;
@@ -134,7 +133,7 @@ is smaller than the specified value */
 
 .navPadding{
     margin-top:3px;
-    padding-top: 34px;
+    
     padding-left:3px;
     padding-right:3px;
 }
@@ -154,4 +153,32 @@ is smaller than the specified value */
 .chart{
     background-color: white;
     border: solid black;
+}
+
+.iconBtn{
+    height:25px;
+    width: 25px;
+    background-color: grey;
+}
+
+.insertAreaInput{
+    background-color: #3C4621;
+    padding: 1%;
+    box-sizing: border-box;
+    border-radius: 25px;
+}
+
+.insertArea{
+    padding: 5%;
+}
+
+.tab{
+    height: 75px;
+    cursor: pointer;
+}
+
+.btn{
+   height: 75px;
+   vertical-align: middle;
+   display: table-cell;
 }
