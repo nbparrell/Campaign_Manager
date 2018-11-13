@@ -58,6 +58,8 @@ var userCRUD = {}; // globally available object
             "webUserId": "",
             "Username": document.getElementById("userUsername").value,
             "userEmail": document.getElementById("userEmail").value,
+            "firstName": document.getElementById("userFName").value,
+            "lastName": document.getElementById("userLName").value,
             "userPassword": document.getElementById("userPassword").value,
             "userPassword2": document.getElementById("userPassword2").value,
             "birthday": document.getElementById("birthday").value,
@@ -87,12 +89,18 @@ var userCRUD = {}; // globally available object
             // the same as the input data was named. 
             var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
             console.log("here is JSON object (holds error messages.");
-            if (jsonObj.errorMsg.length !== 0) {
+            if (undefinedCheck(jsonObj.errorMsg)) {
                 if (undefinedCheck(jsonObj.username)) {
                     document.getElementById("userUsernameError").innerHTML = jsonObj.username;
                 }
                 if (undefinedCheck(jsonObj.userEmail)) {
                     document.getElementById("userEmailError").innerHTML = jsonObj.userEmail;
+                }
+                if (undefinedCheck(jsonObj.firstName)) {
+                    document.getElementById("userFNameError").innerHTML = jsonObj.username;
+                }
+                if (undefinedCheck(jsonObj.lastName)) {
+                    document.getElementById("userLNameError").innerHTML = jsonObj.userEmail;
                 }
                 if (undefinedCheck(jsonObj.userPassword)) {
                     document.getElementById("userPasswordError").innerHTML = jsonObj.userPassword;
@@ -111,13 +119,6 @@ var userCRUD = {}; // globally available object
                 }
             } else
             {
-                document.getElementById("userUsernameError").innerHTML = "";
-                document.getElementById("userEmailError").innerHTML = "";
-                document.getElementById("userPasswordError").innerHTML = "";
-                document.getElementById("userPassword2Error").innerHTML = "";
-                document.getElementById("birthdayError").innerHTML = "";
-                document.getElementById("membershipFeeError").innerHTML = "";
-                document.getElementById("userRoleIdError").innerHTML = "";
                 userCRUD.list();
             }
 

@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <div class="infoSection" style='width: 100%'>
+        <h1>Supporting User Characters in Campaign Manager</h1>
+        <h2>Quality of Life enhancement</h2>
+        <h3>DropDown Menu</h3>
+        <p>
+            The Drop Down menu had always been causing me problems, so one of the things that I wanted to improve
+            when developing this tutorial is how the Drop Down menu functioned.
+
+            I was able to create it with straight html and css objects, manipulating it with Javascript.
+        </p>
+
+        <h4>HTML:</h4>
+        <pre>
+        &lt;div id=&quot;title&quot;&gt;
+                Campaign Manager
+            &lt;/div&gt;
+
+            &lt;!-- The style sheet has nav floated right --&gt;
+            &lt;div id=&quot;nav&quot;&gt;
+                &lt;div class=&quot;navPadding tab&quot;&gt;&lt;a class=&quot;btn&quot; onclick = &quot; ajaxCall('htmlPartial/homeContent.html', setContent, setError)&quot;&gt;Home&lt;/a&gt;&lt;/div&gt;
+                &lt;div class=&quot;dataList&quot;&gt;
+                    &lt;div id=&quot;dataBtn&quot; class=&quot;dataListButton btn&quot; onclick=&quot;toggleChild('dataListShow')&quot;&gt;Data&lt;/div&gt;
+                    &lt;div id=&quot;dataListShow&quot; class=&quot;dataListContent data&quot;&gt;
+                        &lt;a onclick = &quot; ajaxCall('htmlPartial/listUsers.html', setListUsers, setError)&quot;&gt;Users&lt;/a&gt;
+                        &lt;a onclick = &quot; ajaxCall('htmlPartial/listUsers.html', setListCampaigns, setError)&quot;&gt;Campaign Listing&lt;/a&gt;
+                        &lt;a onclick = &quot; ajaxCall('htmlPartial/listUsers.html', setListCampaignPosting, setError)&quot;&gt;Campaign Signup&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;dataList&quot;&gt;
+                    &lt;div  id=&quot;accountBtn&quot; class=&quot;dataListButton btn&quot; onclick=&quot;toggleChild('accountListShow')&quot;&gt;Account&lt;/div&gt;
+                    &lt;div id=&quot;accountListShow&quot; class=&quot;dataListContent account&quot;&gt;
+                        &lt;a onclick = &quot; ajaxCall('htmlPartial/logonContent.html', setLogonContent, setError)&quot;&gt;Log On&lt;/a&gt;
+                        &lt;a onclick = &quot; ajaxCall('htmlPartial/logOffContent.html', setLogOffContent, setError)&quot;&gt;Log Off&lt;/a&gt;
+                        &lt;a onclick = &quot; ajaxCall('htmlPartial/profileContent.html', setProfileContent, setError)&quot;&gt;Profile&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;dataList&quot;&gt;
+                    &lt;div  id=&quot;insertBtn&quot; class=&quot;dataListButton btn&quot; onclick=&quot;toggleChild('insertListShow')&quot;&gt;Insert&lt;/div&gt;
+                    &lt;div id=&quot;insertListShow&quot; class=&quot;dataListContent insert&quot;&gt;
+                        &lt;a onclick = &quot;userCRUD.list()&quot;&gt;Users&lt;/a&gt;
+                        &lt;a onclick = &quot;campaignSessionCRUD.list()&quot;&gt;Campaign Sessions&lt;/a&gt;
+                        &lt;a onclick = &quot;campaignSessionPostingCRUD.list()&quot;&gt;Attendance&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;dataList&quot;&gt;
+                    &lt;div  id=&quot;tutorialBtn&quot; class=&quot;dataListButton btn&quot; onclick=&quot;toggleChild('tutorialListShow')&quot;&gt;Tutorial&lt;/div&gt;
+                    &lt;div id=&quot;tutorialListShow&quot; class=&quot;dataListContent tutorial&quot;&gt;
+                        &lt;a onclick = &quot;characterCRUD.list()&quot;&gt;Characters&lt;/a&gt;
+                        &lt;a onclick =&quot;ajaxCall('htmlPartial/tutorialContent.html', setContent, setError)&quot;&gt;Tutorial&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;navPadding tab&quot;&gt;&lt;a class=&quot;btn&quot; onclick = &quot; ajaxCall('htmlPartial/blogContent.html', setContent, setError)&quot;&gt;Blog&lt;/a&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        </pre>
+
+        <h4>CSS:</h4>
+        <p>
+        <pre>
+            .stopFloat { /* We float divs left in desktop layout to create multiple columns. Put
+                a "clear:both" rule where you want to stop the floating (like page eject). */
+                clear:both;
+                }
+            #content {
+                padding-top: 80px;
+                padding-left:4px;	
+                padding-right:4px;	
+                padding-bottom: 30px; /* Footer is fixed. Add bottom margin to content 
+                                         so that the foooter does not cover up the bottom 
+                                         of your content. */
+
+            }
+
+            .WhiteLink {
+                color:white;
+            }
+
+            .infoSection {
+                /*border: 1px solid;*/
+                z-index: -1;
+                background-color: #3C4621;
+                padding: 1%;
+                width:66.6%;
+                float:left;
+                box-sizing: border-box;
+                border-radius: 25px;
+            }
+
+            .buffer{
+                padding-bottom: 75px;   
+            }
+
+
+            /* I made the footer be always fixed to the bottom of the browser window. */
+            #footer {
+                position: fixed;
+                bottom:0px;
+                left:0xp;
+                width:100%;
+                background-color: #432E36;
+                color:white;
+                clear:both;
+                text-align:center;
+                padding:5px;	 	 
+            }
+
+            .width33Pct { /* right column in my layout */
+                /* border: thin solid red; Use a rule like this to see where a div is to debug. */
+                padding-top: 22px;
+                padding: 1%;
+                width:33.3%;
+                float:left;
+                box-sizing: border-box;
+                mid-width: 400px;
+            }
+
+            .width66Pct { /* left column in my layout */
+                padding: 1%;
+                width:66.6%;
+                float:left;
+                box-sizing: border-box;
+            }
+
+            img {
+                width:100%;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+
+            html, body {
+                margin:0; /* don't want tiny white border inside browser window */
+                padding:0; /* don't want tiny white border inside browser window */
+            }
+            body {
+                font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+                /*background-color: rgb(160, 200, 180); /* this is the turqoise color */
+                background-image: url("../pics/SotA_forest.jpg");
+                background-repeat: no-repeat;
+                background-size: auto;
+                background-color: black;
+                background-attachment: fixed;
+                color: #C9C9C9;
+                font-size:16px;
+            }
+
+            #titleNav {
+                font-family: serif;
+                background-color: #3C4621;
+                height: 79px;
+                min-width:600px;
+                width: 100%;
+                box-shadow: 5px 8px 5px #111409;
+                z-index: 1;
+                position: fixed;
+                top:0;
+                left:0;
+                /* forces horizontal scroll bar when browser width < the size specified 
+            This prevents unwanted wrapping of nav bar elements when the browser 
+            is smaller than the specified value */
+            }
+            #title { /* position web site title inside the titleNav */
+                padding-top:10px;
+                padding-left:10px;
+                font-size:45px;
+                font-weight:bold;
+                letter-spacing: 1.5px;
+                text-align:center;
+                float:left; /* allows nav to exist on same line */
+            }
+            #nav {
+                margin-right:2%;
+                float:right; /* shares same line with PageTitle */
+                letter-spacing: 1px;
+            }
+
+            /* "#nav a" styles links inside of element with id="nav" */
+            #nav a {
+                text-decoration:none;  /* Do not links in "nav" to be underlined */
+                color: #C8C8C8; /* light gray */
+            }
+
+            /* Styles any div inside of an element with id="nav". */
+            #nav div {
+                float:left;
+                font-size:18px; 
+                text-align:center;
+                letter-spacing: 1px;
+                font-weight:bold;
+                color: #C8C8C8;
+            }
+
+            .navPadding{
+                margin-top:3px;
+
+                padding-left:3px;
+                padding-right:3px;
+            }
+            /* When the user hover's over a div that's inside of and element with 
+               id="nav", this styling will kick in. */
+            #nav div:hover {
+                background-color: gray; /* this is the turqoise color */
+                color: black;
+            }
+
+            /* When the user hovers over a div that's inside of an element with 
+               id="nav", the text of links inside the div will change color. */
+            #nav div:hover a {
+                color: black;
+            }
+
+            .chart{
+                background-color: white;
+                border: solid black;
+            }
+
+            .iconBtn{
+                height:25px;
+                width: 25px;
+                background-color: grey;
+            }
+
+            .insertAreaInput{
+                background-color: #3C4621;
+                padding: 1%;
+                box-sizing: border-box;
+                border-radius: 25px;
+            }
+
+            .insertArea{
+                padding: 5%;
+            }
+
+            .tab{
+                height: 75px;
+                cursor: pointer;
+            }
+
+            .btn{
+               height: 75px;
+               vertical-align: middle;
+               display: table-cell;
+            }
+
+            .dataList{
+                position: relative;
+                display: inline-block;
+                padding-top: 27px;
+                margin-top:3px;
+                padding-left:3px;
+                padding-right:3px;
+            }
+
+            .dataListButton{
+                height:49px;
+            }
+
+            .show{
+                display:block;
+            }
+
+            .dataListContent {
+                margin-top: 45px;
+                background-color:#3C4621;
+                display:none;
+                width:100px;
+                min-width: 75px;
+                height:auto;
+                overflow: auto;
+                z-index: -1;
+                margin-right: 100px;
+                position: absolute;
+                box-shadow: 5px 8px 5px #111409;
+            }
+
+            .dataListContent a{
+                display: inline-block;
+                background-color:#3C4621;
+                width:100%;
+                min-width: 75px;
+                height: 26px;
+                color:gray;
+                font-size: 10pt;
+                padding: 12% .2%;
+            }
+
+            a:hover{
+                background-color:gray;
+            }
+        </pre>
+    </p>
+
+    <h4>JavaScript:</h4>
+    <p>
+    <pre>
+            function toggleChild(listElement) {
+                if (document.getElementById(listElement).classList.contains("show")) {
+                    document.getElementById(listElement).classList.remove('show');
+                    document.getElementById(listElement).style.display = "none";
+                } else {
+                    document.getElementById(listElement).classList.toggle("show");
+                    document.getElementById(listElement).style.display = "block";
+                }
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (event) {
+
+                var tab;
+                if (event.target.matches('#accountBtn')) {
+                    tab = 'account';
+                } else if (event.target.matches('#dataBtn')) {
+                    tab = 'data';
+                } else if (event.target.matches('#insertBtn')) {
+                    tab = 'insert';
+                } else if (event.target.matches('#tutorialBtn')) {
+                    tab = 'tutorial';
+                } else if ((!event.target.matches('#dataBtn') && !event.target.matches('#accountBtn') 
+                    && !event.target.matches('#insertBtn') && !event.target.matches('#tutorialBtn'))) {
+                    tab = 'none';
+                }
+                try {
+                    var dropdowns = document.getElementsByClassName("dataListContent");
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        console.log(dropdowns[i]);
+                        if (!dropdowns[i].classList.contains(tab)) {
+                            dropdowns[i].classList.remove('show');
+                            dropdowns[i].style.display = "none";
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+    </pre>
+</p>
+
+<h4>Why this works</h4>
+<p>
+<pre>
+        How this code works is that it takes advantage of the fact that you are able to manipulate the class attribute on html tags
+        For the drop down menus I create 3 div tags one as the container that hold the button and drop down menu, one that holds the button, 
+        and the other which is the drop down menu but it has a display property of none as shown in our styling:
+ 
+        .dataListContent {
+                margin-top: 45px;
+                background-color:#3C4621;
+                display:none;
+                width:100px;
+                min-width: 75px;
+                height:auto;
+                overflow: auto;
+                z-index: -1;
+                margin-right: 100px;
+                position: absolute;
+                box-shadow: 5px 8px 5px #111409;
+            }
+
+        In order to show our dropdown menu we create a function that will update the the class attribute in our div that is holding the
+        drop down information by passing its ID to the function all and then adding show to it's class attribute and then changing
+        the style so that display: none is now display: block.
+        We do the same thing in reverse to have it disappear when we click on the button again. So find the div with the dropdown menu information
+        by passing its ID when the button is clicked and then removing show from the class attribute and changing the styling back to display: none
+        from display: block.
+
+        function toggleChild(listElement) {
+                if (document.getElementById(listElement).classList.contains("show")) {
+                    document.getElementById(listElement).classList.remove('show');
+                    document.getElementById(listElement).style.display = "none";
+                } else {
+                    document.getElementById(listElement).classList.toggle("show");
+                    document.getElementById(listElement).style.display = "block";
+                }
+            }
+
+        I continued on with this implementation and wanted to make it so that I could click anywhere in the web page in order to close the
+        dropdown menu, excluding of course the menu it self.
+        
+        So I developed this code based of the W3schools example
+
+        window.onclick = function (event) {
+
+                var tab;
+                if (event.target.matches('#accountBtn')) {
+                    tab = 'account';
+                } else if (event.target.matches('#dataBtn')) {
+                    tab = 'data';
+                } else if (event.target.matches('#insertBtn')) {
+                    tab = 'insert';
+                } else if (event.target.matches('#tutorialBtn')) {
+                    tab = 'tutorial';
+                } else if ((!event.target.matches('#dataBtn') && !event.target.matches('#accountBtn') 
+                    && !event.target.matches('#insertBtn') && !event.target.matches('#tutorialBtn'))) {
+                    tab = 'none';
+                }
+                try {
+                    var dropdowns = document.getElementsByClassName("dataListContent");
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        console.log(dropdowns[i]);
+                        if (!dropdowns[i].classList.contains(tab)) {
+                            dropdowns[i].classList.remove('show');
+                            dropdowns[i].style.display = "none";
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+
+            What this code does is check every onclick event that happens in the window then checks what object was clicked.
+            If it was one of the pre defined buttons in the else if (#accountBtn,  #dataBtn or one of the other buttons)
+            it will then check all other datalists but the div that has a class attribute that holds the corresponding
+            class to the button. So for #accountBtn, the dataListContent or div that holds the drop down menu has a class attribute of
+            account on it so the for loop will disregard that div and look at all other divs that have a class attribute of 
+            dataListContent. It will then proceed to remove the show class attribute from them if they exist and also change their
+            style display to none.
+
+            Now lastly if no button is clicked the tag the is passed will be none which is not a class attribute on any of the
+            dataListContent objects so each will be closed in turn.
+</pre>
+
+</p>
+
+<h4>Try It Yourself</h4>
+<p>
+    Here is a link the the W3schools editor and it has this code pre populated:
+    <br><a class="WhiteLink" href="https://www.w3schools.com/code/tryit.asp?filename=FX384UEH4VJ3" target="_blank" style="font-size:20px" >Try It</a></br>
+</p>
+
+<h2>Database Changes</h2>
+<pre>
+    In order to support the new characters I had to create the appropriate tables in the database to support what I have implemented.
+    I first created the user_characters, character_races, and character_classes tables with foreign keys in the user_characters
+    table that connected it to the web_user, character_races and character_classes tables respectively.
+    This was done so that we could include pre determined values in our character creation with out having to have the user account for them
+    One such example is that races often times give stat bonuses for taking that race. With this implementation the user would only have to pick
+    the race and the backend would automatically add in the bonus to the stat when it goes to insert the new character into the table.
+
+</pre>
+
+<h2>Creating a New Character</h2>
+<pre>
+    This html page is used to collect all necessary information fro creating a character:
+
+    &lt;div class=&quot;insertArea&quot;&gt;
+        &lt;div class=&quot;insertAreaInput&quot; style=&quot;height: 700px&quot;&gt;
+            &lt;table style=&quot;float: left; padding-top: 10px; margin-left: 15%&quot;&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Race &lt;select id=&quot;ucRacePickList&quot;&gt;&lt;/select&gt;&lt;/td&gt;  
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td id=&quot;ucRaceError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Class &lt;select id=&quot;ucClassPickList&quot;&gt;&lt;/select&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td id=&quot;ucClassError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Name &lt;input type=&quot;text&quot; id=&quot;ucName&quot; /&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td id=&quot;ucNameError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Age &lt;input type=&quot;text&quot; id=&quot;ucAge&quot; /&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td id=&quot;ucAgeError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Character Description&lt;/td&gt;
+                    &lt;td id=&quot;ucDescError&quot; class=&quot;error&quot;&gt;&lt;/td&gt; 
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;textarea rows=&quot;30&quot; cols=&quot;50&quot; id=&quot;ucDesc&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!-- see js/insertUser.js to see the insertUser function (make sure index.html referencesinvokes the js file) --&gt;
+                &lt;td&gt;&lt;button onclick=&quot;characterCRUD.insertSave()&quot;&gt;Save&lt;/button&gt;&lt;/td&gt;
+                &lt;td id=&quot;responseText&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            &lt;table style=&quot;float: right; padding-top: 10px; margin-right: 15%&quot;&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Alignment&lt;/td&gt;  
+                    &lt;td&gt;
+                        &lt;select id=&quot;ucAlignmentPickList&quot;&gt;
+                            &lt;option value=&quot;Lawful Good&quot;&gt;Lawful Good&lt;/option&gt;
+                            &lt;option value=&quot;Neutral Good&quot;&gt;Neutral Good&lt;/option&gt;
+                            &lt;option value=&quot;Chaotic Good&quot;&gt;Chaotic Good&lt;/option&gt;
+                            &lt;option value=&quot;Lawful Neutral&quot;&gt;Lawful Neutral&lt;/option&gt;
+                            &lt;option value=&quot;Neutral&quot;&gt;Neutral&lt;/option&gt;
+                            &lt;option value=&quot;Chaotic Neutral&quot;&gt;Chaotic Neutral&lt;/option&gt;
+                            &lt;option value=&quot;Lawful Evil&quot;&gt;Lawful Evil&lt;/option&gt;
+                            &lt;option value=&quot;Neutral Evil&quot;&gt;Neutral Evil&lt;/option&gt;
+                            &lt;option value=&quot;Chaotic Evil&quot;&gt;Chaotic Evil&lt;/option&gt;
+
+                        &lt;/select&gt;
+                    &lt;/td&gt;
+
+                    &lt;td id=&quot;ucAlignmentError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Strength&lt;/td&gt;
+                    &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ucStrength&quot; /&gt;&lt;/td&gt;
+                    &lt;td id=&quot;ucStrengthError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Dexterity&lt;/td&gt;
+                    &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ucDexterity&quot; /&gt;&lt;/td&gt;
+                    &lt;td id=&quot;ucDexterityError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Constitution&lt;/td&gt;
+                    &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ucConstitution&quot; /&gt;&lt;/td&gt;
+                    &lt;td id=&quot;ucConstitutionError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Wisdom&lt;/td&gt;
+                    &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ucWisdom&quot; /&gt;&lt;/td&gt;
+                    &lt;td id=&quot;ucWisdomError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Intelligence&lt;/td&gt;
+                    &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ucIntelligence&quot; /&gt;&lt;/td&gt;
+                    &lt;td id=&quot;ucIntelligenceError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Charisma&lt;/td&gt;
+                    &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ucCharisma&quot; /&gt;&lt;/td&gt;
+                    &lt;td id=&quot;ucCharismaError&quot; class=&quot;error&quot;&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+
+    <b>characterCRUD.insertSave()</b> Is the function call that is used to actually insert the information
+    provided by this html page.
+    
+    The characterCRUD.js file is the file used by every function that involves reaching out to the server
+    and making a request of the database whether that is an insert, query, update, or delete.
+
+    characterCRUD.js:
+        var characterCRUD = {}; // globally available object
+        (function () {  // This is an IIFE, an Immediately Invoked Function Expression
+            //alert("I am an IIFE!");
+
+            characterCRUD.startInsert = function () {
+
+                ajax('htmlPartial/insertCreateCharacter.html', setInsertUI, 'content');
+
+                function setInsertUI(httpRequest) {
+
+                    // Place the inserttUser html snippet into the content area.
+                    // Place the inserttUser html snippet into the content area.
+                    console.log("Ajax call was successful.");
+                    document.getElementById("content").innerHTML = httpRequest.responseText;
+
+                    ajax("webAPIs/getRacesAPI.jsp", setRacePickList, "ucRaceError");
+                    ajax("webAPIs/getClassesAPI.jsp", setClassPickList, "ucClassError");
+
+                    function setRacePickList(httpRequest) {
+
+                        console.log("setPickList was called, see next line for object holding list of roles");
+                        var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
+                        console.log(jsonObj);
+
+                        for (var i = 0; i < jsonObj.webUserList.length; i++) {
+                            console.log(jsonObj.webUserList[i].errorMsg);
+                            if (undefinedCheck(jsonObj.webUserList[i].errorMsg)) {
+                                console.log("Checked for errorMsg");
+                                document.getElementById("ucRaceError").innerHTML = jsonObj.webUserList[i].errorMsg + " " + i;
+                                return;
+                            }
+                        }
+
+                        makePickList(jsonObj.webUserList, "race_id", "race_type", "ucRacePickList");
+                    }
+
+                    function setClassPickList(httpRequest) {
+
+                        console.log("setPickList was called, see next line for object holding list of roles");
+                        var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
+                        console.log(jsonObj);
+                        for (var i = 0; i < jsonObj.webUserList.length; i++) {
+                            console.log(jsonObj.webUserList[i].errorMsg);
+                            if (undefinedCheck(jsonObj.webUserList[i].errorMsg)) {
+                                console.log("Checked for errorMsg");
+                                document.getElementById("ucClassError").innerHTML = jsonObj.webUserList[i].errorMsg + " " + i;
+                                return;
+                            }
+                        }
+
+                        makePickList(jsonObj.webUserList, "class_id", "class_name", "ucClassPickList");
+                    }
+
+                    function undefinedCheck(param) {
+                        if (typeof param === typeof Undefined) {
+                            console.log("runs");
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+
+            };
+
+
+            characterCRUD.insertSave = function () {
+                ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
+                function getInsertInfo(httpRequest) {
+                    var obj = JSON.parse(httpRequest.responseText);
+                    console.log("characterCRUD.insertSave was called");
+                    console.log(obj);
+
+                    var ddClassesList = document.getElementById("ucClassPickList");
+                    var ddRacesList = document.getElementById("ucRacePickList");
+                    var ddAlignmentList = document.getElementById("ucAlignmentPickList");
+
+                    // create a user object from the values that the user has typed into the page.
+                    var userInputObj = {
+                        "Character_Name": document.getElementById("ucName").value,
+                        "Age": document.getElementById("ucAge").value,
+                        "character_description": document.getElementById("ucDesc").value,
+                        "Strength": document.getElementById("ucStrength").value,
+                        "Dexterity": document.getElementById("ucDexterity").value,
+                        "Constitution": document.getElementById("ucConstitution").value,
+                        "Intelligence": document.getElementById("ucWisdom").value,
+                        "Wisdom": document.getElementById("ucIntelligence").value,
+                        "Charisma": document.getElementById("ucCharisma").value,
+                        "Alignment": ddAlignmentList.options[ddAlignmentList.selectedIndex].value,
+
+                        // Modification here for role pick list
+                        "race_id": ddRacesList.options[ddRacesList.selectedIndex].value,
+                        "class_id": ddClassesList.options[ddClassesList.selectedIndex].value,
+                        "webUserId": obj.webUserList[0].webUserId,
+                        "errorMsg": ""
+                    };
+                    console.log(userInputObj);
+
+                    // build the url for the ajax call. Remember to escape the user input object or else 
+                    // you'll get a security error from the server. JSON.stringify converts the javaScript
+                    // object into JSON format (the reverse operation of what gson does on the server side).
+                    var myData = escape(JSON.stringify(userInputObj));
+                    var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
+                    ajax(url, processInsert, "recordError");
+
+                    function processInsert(httpRequest) {
+                        console.log("processInsert was called here is httpRequest.");
+                        console.log(httpRequest);
+
+                        // the server prints out a JSON string of an object that holds field level error 
+                        // messages. The error message object (conveniently) has its fiels named exactly 
+                        // the same as the input data was named. 
+                        var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
+                        console.log("here is JSON object (holds error messages.");
+                        if (undefinedCheck(jsonObj.errorMsg)) {
+                            if (undefinedCheck(jsonObj.Character_Name)) {
+                                document.getElementById("ucNameError").innerHTML = jsonObj.Character_Name;
+                            }
+                            if (undefinedCheck(jsonObj.Age)) {
+                                document.getElementById("ucAgeError").innerHTML = jsonObj.Age;
+                            }
+                            if (undefinedCheck(jsonObj.race_id)) {
+                                document.getElementById("ucRaceError").innerHTML = jsonObj.race_id;
+                            }
+                            if (undefinedCheck(jsonObj.class_id)) {
+                                document.getElementById("ucClassError").innerHTML = jsonObj.class_id;
+                            }
+                            if (undefinedCheck(jsonObj.Strength)) {
+                                document.getElementById("ucStrengthError").innerHTML = jsonObj.Strength;
+                            }
+                            if (undefinedCheck(jsonObj.Dexterity)) {
+                                document.getElementById("ucDexterityError").innerHTML = jsonObj.Dexterity;
+                            }
+                            if (undefinedCheck(jsonObj.Constitution)) {
+                                document.getElementById("ucConstitutionError").innerHTML = jsonObj.Constitution;
+                            }
+                            if (undefinedCheck(jsonObj.Intelligence)) {
+                                document.getElementById("ucWisdomError").innerHTML = jsonObj.Intelligence;
+                            }
+                            if (undefinedCheck(jsonObj.Wisdom)) {
+                                document.getElementById("ucIntelligenceError").innerHTML = jsonObj.Wisdom;
+                            }
+                            if (undefinedCheck(jsonObj.Charisma)) {
+                                document.getElementById("ucCharismaError").innerHTML = jsonObj.Charisma;
+                            }
+                            if (undefinedCheck(jsonObj.Alignment)) {
+                                document.getElementById("ucAlignmentError").innerHTML = jsonObj.Alignment;
+                            }
+                        } else
+                        {
+                            characterCRUD.list();
+                        }
+
+        //            if (jsonObj.errorMsg.length === 0) { // success
+        //                jsonObj.errorMsg = "Record successfully inserted !!!";
+        //            }
+        //            document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
+                    }
+
+                    function undefinedCheck(param) {
+                        if (typeof param === typeof Undefined) {
+                            console.log("runs");
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+
+                function displaygetInsertInfoError(httpRequest) {
+
+                }
+            };
+
+
+            characterCRUD.list = function () {
+                ajaxCall("webAPIs/getProfileAPI.jsp", checkLoginStatus, displayCheckLoginStatusError);
+                var target = document.getElementById("content");
+                function checkLoginStatus(httpRequest) {
+                    try {
+                        var obj = JSON.parse(httpRequest.responseText);
+                        if (obj.webUserList.length === 0) {
+                            target.innerHTML = "There is no user with id '" + id + "' in the database";
+                        } else if (!obj.webUserList[0].errorMsg === null) {
+                            target.innerHTML = "Error extracting the Web User from the database: " + obj.webUserList[0].errorMsg;
+                        }
+                        document.getElementById("content").innerHTML = "";
+                        var navibar = document.createElement("div");
+                        var dataList = document.createElement("div");
+                        navibar.id = "navibar";
+                        dataList.id = "dataList"; // set the id so it matches CSS styling rule.
+                        navibar.innerHTML = "<h2>Characters <img class='iconBtn' src='icons/insert.png' onclick='characterCRUD.startInsert();'/> <img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/></h2>";
+                        document.getElementById("content").appendChild(navibar)
+                        document.getElementById("navibar").appendChild(dataList);
+                        ajax('webAPIs/listCharactersAPI.jsp', setListUI, 'dataList');
+                    } catch (err) {
+                        target.innerHTML = "<h4>You are not logged in</h4>";
+                        console.log(httpRequest);
+                    }
+
+
+                    function setListUI(httpRequest) {
+
+                        console.log("starting characterCRUD.list (setListUI) with this httpRequest object (next line)");
+                        console.log(httpRequest);
+
+                        var obj = JSON.parse(httpRequest.responseText);
+
+                        if (obj === null) {
+                            dataList.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
+                            return;
+                        }
+                        var editButton = "<img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/>";
+
+                        for (var i = 0; i < obj.webUserList.length; i++) {
+
+                            // add a property to each object in webUserList - a span tag that when clicked 
+                            // invokes a JS function call that passes in the web user id that should be deleted
+                            // from the database and a reference to itself (the span tag that was clicked)
+                            var id = obj.webUserList[i].Character_id;
+                            obj.webUserList[i].View = "<img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view(" + id + ", this)';/>";
+
+                            // remove a property from each object in webUserList 
+                            delete obj.webUserList[i].userPassword2;
+                        }
+                        // buildTable Parameters: 
+                        // First:  array of objects that are to be built into an HTML table.
+                        // Second: string that is database error (if any) or empty string if all OK.
+                        // Third:  reference to DOM object where built table is to be stored. 
+                        buildTable(obj.webUserList, obj.dbError, dataList);
+                    }
+                }
+
+                function displayCheckLoginStatusError(httpRequest) {
+                    console.log(httpRequest);
+                }
+            };
+
+            characterCRUD.view = function (characterID, icon) {
+
+                ajax('htmlPartial/viewCharacter.html', setViewUI, 'content');
+                function setViewUI(httpRequest) {
+                    console.log("Ajax call was successful.");
+                    document.getElementById("content").innerHTML = httpRequest.responseText;
+                    ajax('webAPIs/getCharacterAPI.jsp?characterID=' + characterID, populateCharacterSheet, 'content');
+
+                    function populateCharacterSheet(httpRequest) {
+                        var obj = JSON.parse(httpRequest.responseText);
+                        console.log(obj);
+                        if (obj === null) {
+                            dataList.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
+                            return;
+                        }
+                        var cName = document.getElementById("Character_Name");
+                        var cAge = document.getElementById("Character_Age");
+                        var cRace = document.getElementById("Character_Race");
+                        var cClass = document.getElementById("Character_Class");
+                        var cLevel = document.getElementById("Character_Level");
+                        var cAlign = document.getElementById("Character_Alignment");
+                        var cPlayer = document.getElementById("Character_Player");
+                        var cStr = document.getElementById("Character_Strength");
+                        var cDex = document.getElementById("Character_Dexterity");
+                        var cCon = document.getElementById("Character_Constitution");
+                        var cInt = document.getElementById("Character_Intelligence");
+                        var cWis = document.getElementById("Character_Wisdom");
+                        var cChr = document.getElementById("Character_Charisma");
+                        var cDesc = document.getElementById("Character_Desc");
+                        var cEquip = document.getElementById("Character_Equip");
+                        var cProf = document.getElementById("Character_Proficiency");
+                        if (!undefinedCheck(obj.errorMsg)) {
+                            console.log("Attempting to populate Character Sheet");
+
+                            document.getElementById("Character_Name").value = obj.Character_Name;
+
+                            document.getElementById("Character_Age").value = obj.Age;
+
+                            document.getElementById("Character_Race").value = obj.race_type;
+
+                            document.getElementById("Character_Class").value = obj.class_name;
+
+                            document.getElementById("Character_Level").value = obj.character_level;
+
+                            document.getElementById("Character_Alignment").value = obj.Alignment;
+
+                            document.getElementById("Character_Player").value = obj.Username;
+
+                            document.getElementById("Character_Strength").value = obj.Strength;
+
+                            document.getElementById("Character_Dexterity").value = obj.Dexterity;
+
+                            document.getElementById("Character_Constitution").value = obj.Constitution;
+
+                            document.getElementById("Character_Intelligence").value = obj.Intelligence;
+
+                            document.getElementById("Character_Wisdom").value = obj.Wisdom;
+
+                            document.getElementById("Character_Charisma").value = obj.Intelligence;
+
+                            document.getElementById("Character_Desc").value = obj.character_description;
+
+                            document.getElementById("Character_Equip").value = obj.character_equipment;
+
+                            document.getElementById("Character_Proficiency").value = obj.character_prof;
+                        } else {
+                            console.log("Failed to populate due to error: " + obj.errorMsg);
+                            document.getElementById("errorMsg").innerHTML = obj.errorMsg;
+                        }
+                    }
+
+                    function undefinedCheck(param) {
+                        console.log("Checking to see if it is undefined.");
+                        if (typeof param === typeof Undefined) {
+                            console.log("runs");
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            };
+
+
+        }());  // the end of the IIFE
+    
+        For this feature we will be looking at the insert function
+
+        characterCRUD.insertSave = function () {
+                ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
+                function getInsertInfo(httpRequest) {
+                    var obj = JSON.parse(httpRequest.responseText);
+                    console.log("characterCRUD.insertSave was called");
+                    console.log(obj);
+
+                    var ddClassesList = document.getElementById("ucClassPickList");
+                    var ddRacesList = document.getElementById("ucRacePickList");
+                    var ddAlignmentList = document.getElementById("ucAlignmentPickList");
+
+                    // create a user object from the values that the user has typed into the page.
+                    var userInputObj = {
+                        "Character_Name": document.getElementById("ucName").value,
+                        "Age": document.getElementById("ucAge").value,
+                        "character_description": document.getElementById("ucDesc").value,
+                        "Strength": document.getElementById("ucStrength").value,
+                        "Dexterity": document.getElementById("ucDexterity").value,
+                        "Constitution": document.getElementById("ucConstitution").value,
+                        "Intelligence": document.getElementById("ucWisdom").value,
+                        "Wisdom": document.getElementById("ucIntelligence").value,
+                        "Charisma": document.getElementById("ucCharisma").value,
+                        "Alignment": ddAlignmentList.options[ddAlignmentList.selectedIndex].value,
+
+                        // Modification here for role pick list
+                        "race_id": ddRacesList.options[ddRacesList.selectedIndex].value,
+                        "class_id": ddClassesList.options[ddClassesList.selectedIndex].value,
+                        "webUserId": obj.webUserList[0].webUserId,
+                        "errorMsg": ""
+                    };
+                    console.log(userInputObj);
+
+                    // build the url for the ajax call. Remember to escape the user input object or else 
+                    // you'll get a security error from the server. JSON.stringify converts the javaScript
+                    // object into JSON format (the reverse operation of what gson does on the server side).
+                    var myData = escape(JSON.stringify(userInputObj));
+                    var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
+                    ajax(url, processInsert, "recordError");
+
+                    function processInsert(httpRequest) {
+                        console.log("processInsert was called here is httpRequest.");
+                        console.log(httpRequest);
+
+                        // the server prints out a JSON string of an object that holds field level error 
+                        // messages. The error message object (conveniently) has its fiels named exactly 
+                        // the same as the input data was named. 
+                        var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
+                        console.log("here is JSON object (holds error messages.");
+                        if (undefinedCheck(jsonObj.errorMsg)) {
+                            if (undefinedCheck(jsonObj.Character_Name)) {
+                                document.getElementById("ucNameError").innerHTML = jsonObj.Character_Name;
+                            }
+                            if (undefinedCheck(jsonObj.Age)) {
+                                document.getElementById("ucAgeError").innerHTML = jsonObj.Age;
+                            }
+                            if (undefinedCheck(jsonObj.race_id)) {
+                                document.getElementById("ucRaceError").innerHTML = jsonObj.race_id;
+                            }
+                            if (undefinedCheck(jsonObj.class_id)) {
+                                document.getElementById("ucClassError").innerHTML = jsonObj.class_id;
+                            }
+                            if (undefinedCheck(jsonObj.Strength)) {
+                                document.getElementById("ucStrengthError").innerHTML = jsonObj.Strength;
+                            }
+                            if (undefinedCheck(jsonObj.Dexterity)) {
+                                document.getElementById("ucDexterityError").innerHTML = jsonObj.Dexterity;
+                            }
+                            if (undefinedCheck(jsonObj.Constitution)) {
+                                document.getElementById("ucConstitutionError").innerHTML = jsonObj.Constitution;
+                            }
+                            if (undefinedCheck(jsonObj.Intelligence)) {
+                                document.getElementById("ucWisdomError").innerHTML = jsonObj.Intelligence;
+                            }
+                            if (undefinedCheck(jsonObj.Wisdom)) {
+                                document.getElementById("ucIntelligenceError").innerHTML = jsonObj.Wisdom;
+                            }
+                            if (undefinedCheck(jsonObj.Charisma)) {
+                                document.getElementById("ucCharismaError").innerHTML = jsonObj.Charisma;
+                            }
+                            if (undefinedCheck(jsonObj.Alignment)) {
+                                document.getElementById("ucAlignmentError").innerHTML = jsonObj.Alignment;
+                            }
+                        } else
+                        {
+                            characterCRUD.list();
+                        }
+
+        //            if (jsonObj.errorMsg.length === 0) { // success
+        //                jsonObj.errorMsg = "Record successfully inserted !!!";
+        //            }
+        //            document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
+                    }
+
+                    function undefinedCheck(param) {
+                        if (typeof param === typeof Undefined) {
+                            console.log("runs");
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+
+                function displaygetInsertInfoError(httpRequest) {
+
+                }
+            };
+
+        In this function we collect all the information from the user and send it over
+        to the server to create the character. If it is successful it will call the
+        characterCRUD.list() function listing out all characters in the database
+        including the one just added.
+
+        After the function collects the information from the html page is packages it
+        into a json object and sends it via an ajax call to 
+        var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
+
+        The insertCharacterAPI.jsp will then take that information and perform an insert 
+        using the given information.
+
+        
+        <b>insertCharacterAPI.jsp:</b>
+        
+        <%@page contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%> 
+
+        <%@page language="java" import="view.WebUserView" %>
+        <%@page language="java" import="model.webUser.*" %>
+        <%@page language="java" import="dbUtils.DbConn" %>
+
+        <%@page language="java" import="com.google.gson.*" %>
+
+
+
+        <%
+
+            // This is the object we get from the GSON library.
+            // This object knows how to convert betweeb these two formats: 
+            //    POJO (plain old java object) 
+            //    JSON (JavaScript Object notation)
+            Gson gson = new Gson();
+
+            DbConn dbc = new DbConn();
+            StringDataUser errorMsgs = new StringDataUser();
+
+            String jsonInsertData = request.getParameter("jsonData");
+            if (jsonInsertData == null) {
+                errorMsgs.errorMsg = "Cannot insert -- no data was received";
+                System.out.println(errorMsgs.errorMsg);
+            } else {
+                System.out.println("jsonInsertData is " + jsonInsertData);
+                errorMsgs.errorMsg = dbc.getErr();
+                if (errorMsgs.errorMsg.length() == 0) { // means db connection is ok
+                    System.out.println("insertCharacterAPI.jsp ready to insert");
+
+                    // Must use gson to convert JSON (that the user provided as part of the url, the jsonInsertData. 
+                    // Convert from JSON (JS object notation) to POJO (plain old java object).
+                    StringDataUser insertData = gson.fromJson(jsonInsertData, StringDataUser.class);
+
+                    // this method takes the user's input data as input and outputs an error message object (with same field names).
+                    errorMsgs = WebUserView.insertCharactersAPI(dbc, insertData); // this is the form level message
+                }
+            }
+
+            out.print(gson.toJson(errorMsgs).trim());
+            dbc.close();
+        %>
+
+        This jsp page is only responsible for creating a new StringDataUser Object called errorMsg
+        that will be sent back to the website as a json Object. How this works is that in the
+        out.print(gson.toJson(errorMsgs).trim()); line the out stream is pointing to the website
+        and passing the new json object back.
+
+        errorMsgs is populated by calling the <b>WebUserView.insertCharactersAPI(dbc, insertData);</b>
+
+        public static StringDataUser insertCharactersAPI(DbConn dbc, StringDataUser insertData) {
+            int type = 0;
+            //StringDataList sdl = new StringDataList();
+            StringDataUser raceClassInfo = new StringDataUser();
+            populateRaceClassInfo(insertData, raceClassInfo);
+            StringDataUser sd = new StringDataUser();
+            System.out.print(raceClassInfo.strBonus);
+            int stat;
+            int statBonus;
+            int totalStat;
+            try {
+                String sql = "INSERT INTO user_characters "
+                        + "(user_characters_name, "
+                        + "character_races_id, "
+                        + "character_classes_id, "
+                        + "user_characters_lvl, "
+                        + "user_characters_alignment, "
+                        + "user_characters_description, "
+                        + "user_characters_equipment, "
+                        + "user_characters_age, "
+                        + "user_characters_str, "
+                        + "user_characters_dex, "
+                        + "user_characters_con, "
+                        + "user_characters_int, "
+                        + "user_characters_wis, "
+                        + "user_characters_cha, "
+                        + "user_characters_prof, "
+                        + "web_user_id) "
+                        + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+                stmt.setString(1, insertData.Character_Name);
+                stmt.setInt(2, ValidationUtils.integerConversion(insertData.race_id)); // string type is simple
+                stmt.setInt(3, ValidationUtils.integerConversion(insertData.class_id));
+                stmt.setInt(4, 1);
+                stmt.setString(5, insertData.Alignment);
+                stmt.setString(6, insertData.character_description);
+                stmt.setString(7, raceClassInfo.character_equipment);
+                stmt.setInt(8, ValidationUtils.integerConversion(insertData.Age));
+                //Calc Str
+                stat = ValidationUtils.integerConversion(insertData.Strength);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.strBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(9, totalStat);
+                //Calc Dex
+                stat = ValidationUtils.integerConversion(insertData.Dexterity);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.dexBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(10, totalStat);
+                //Calc Con
+                stat = ValidationUtils.integerConversion(insertData.Constitution);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.conBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(11, totalStat);
+                //Calc Int
+                stat = ValidationUtils.integerConversion(insertData.Intelligence);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.intBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(12, totalStat);
+                //Calc Wis
+                stat = ValidationUtils.integerConversion(insertData.Wisdom);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.wisBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(13, totalStat);
+                //Calc Chr
+                stat = ValidationUtils.integerConversion(insertData.Charisma);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.chrBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(14, totalStat);
+
+                stmt.setString(15, raceClassInfo.character_prof);
+                stmt.setInt(16, ValidationUtils.integerConversion(insertData.webUserId));
+
+                int results = stmt.executeUpdate();
+                if (results > 1) {
+                    System.out.print("Added more then one campaign: " + results);
+                    sd.errorMsg = ("added more then one campaign: " + results);
+                    //sdl.add(sd);
+                } else {
+                    System.out.print("Added one campaign");
+                    sd.successMsg = ("Successfully added one campaign");
+                    //sdl.add(sd);
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                //System.out.print(e.toString());
+                System.out.print("Error message: " + e.getMessage());
+                if (e.getMessage().contains("username")) {
+                    sd.Username = "This username already exists please choose another one";
+                    sd.errorMsg = "Try again";
+                } else if (e.getMessage().contains("email")) {
+                    sd.userEmail = "This email already exists please choose another one";
+                    sd.errorMsg = "Try again";
+                } else {
+                    sd.errorMsg = "Exception thrown in WebUserView.insertCharactersAPI(): " + e.getMessage();
+                }
+                //sdl.add(sd);
+            }
+
+            return sd;
+        }
+
+        What this does is it takes the values given to us by the insertData object passed from
+        the insertCharacterAPI.jsp and modifies the data while also performing another function 
+        call to <b>populateRaceClassInfo(insertData, raceClassInfo);</b> which creates another 
+        StringDataUser raceClassInfo
+
+        public static void populateRaceClassInfo(StringDataUser insertData, StringDataUser raceClassInfo) {
+            System.out.print("Attempting to query database for character race info");
+            DbConn dbc = new DbConn();
+            try {
+                String sql = "SELECT character_races_type, "
+                    + "character_races_str_bonus, "
+                    + "character_races_dex_bonus, "
+                    + "character_races_con_bonus, "
+                    + "character_races_int_bonus, "
+                    + "character_races_wis_bonus, "
+                    + "character_races_chr_bonus, "
+                    + "character_races_prof, "
+                    + "character_classes_name, "
+                    + "character_classes_prof, "
+                    + "character_classes_starting_equipment "
+                    + "FROM character_races, character_classes "
+                    + "WHERE character_races_id = ? "
+                    + "AND character_classes_id = ? ";
+                PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+                stmt.setString(1, insertData.race_id);
+                stmt.setString(2, insertData.class_id);
+                ResultSet results = stmt.executeQuery();
+                raceClassInfo.setRaceClassInfo(results);
+                results.close();
+                stmt.close();
+            } catch (SQLException e) {
+                System.out.print("Failed to Query database " + e.getMessage());
+                insertData.errorMsg = "Exception thrown in WebUserView.populateRaceClassInfo: " + e.getMessage();
+            }
+        }
+        
+        This function will then query the database to get back all the other information that we plan
+        on inserting along with the passed information from the website. This is possible because part
+        of the information that is being sent over is the race_id and class_id from the website which
+        can be used to select the relevant information for the class and race that the new character 
+        will be.
+            <b>*NOTE*:</b> In oder to do this second query and populate a second object with out running
+                into any errors you need will need to create a second DBconn object. If you do not
+                you will run into a cursor error where it is saying that the cursor is before the
+                result set.
+
+        This new information is then packaged into the new StringDataUser object raceClassInfo
+        that was created in the insertCharactersAPI() function. It does that by
+        using the raceClassInfo.setRaceClassInfo(results);
+
+        <b>StringDataUser.setRaceClassInfo(results):</b>
+            public void setRaceClassInfo(ResultSet results) {
+                try {
+                    System.out.print(results.getMetaData());
+                    System.out.print(results.first());
+                } catch (SQLException e) {
+                    System.out.print(e.getMessage());
+                }
+                System.out.print("setRaceClassInfo runs");
+                try {
+                    this.race_type = (FormatUtils.formatString(results.getObject("character_races_type")));
+                    this.strBonus = FormatUtils.formatInteger(results.getObject("character_races_str_bonus"));
+                    this.dexBonus = FormatUtils.formatInteger(results.getObject("character_races_dex_bonus"));
+                    this.conBonus = FormatUtils.formatInteger(results.getObject("character_races_con_bonus"));
+                    this.intBonus = FormatUtils.formatInteger(results.getObject("character_races_int_bonus"));
+                    this.wisBonus = FormatUtils.formatInteger(results.getObject("character_races_wis_bonus"));
+                    this.chrBonus = FormatUtils.formatInteger(results.getObject("character_races_chr_bonus"));
+                    this.character_prof = FormatUtils.formatString(results.getObject("character_races_prof"));
+                    this.class_name = FormatUtils.formatString(results.getObject("character_classes_name"));
+                    this.character_prof = this.character_prof + " " + FormatUtils.formatString(results.getObject("character_classes_prof"));
+                    this.character_equipment = FormatUtils.formatString(results.getObject("character_classes_starting_equipment"));
+                } catch (SQLException e) {
+                    System.out.print("Doesn't assign information to correct locations: " + e.getMessage());
+                    this.errorMsg = "Exception thrown in model.webUser.StringDataUser.setRaceClassInfo (the constructor that takes a ResultSet): " 
+                        + e.getMessage();
+                }
+            }
+
+            The StringDataUser class is a general class that holds all the values need to create a JSON object.
+                //Indentifying information
+                public String campaign_session_posting_name;
+                public String Name;
+                public String Username;
+                public String firstName;
+                public String lastName;
+                public String userEmail;
+                public String Character_Name;
+
+                //Session/Campaign Information
+                public String Signed_Up;
+                public String Session_Date;
+                public String Notes;
+                public String Description;
+                public String Session_Location;
+                public String Campaign;
+
+                //User Information
+                public String userPassword;
+                public String userPassword2;
+                public String birthday;
+                public String membershipFee;
+                public String userRoleType; // getting it from joined user_role table.
+
+                //Stat Block for Character Screen
+                public String Strength;
+                public String Dexterity;
+                public String Constitution;
+                public String Intelligence;
+                public String Wisdom;
+                public String Charisma;
+
+                //Character Details
+                public String Age;
+                public String Alignment;
+                public String character_description;
+                public String character_equipment;
+                public String character_prof;
+                public String character_level;
+                public String race_type;
+                public String class_name;
+                public String starting_equipment;
+
+                //Character Creation information
+                public String strBonus;
+                public String dexBonus;
+                public String conBonus;
+                public String intBonus;
+                public String wisBonus;
+                public String chrBonus;
+                public String race_prof;
+                public String class_prof;
+
+                //Primary/Foriegn Keys
+                public String campaign_session_posting_id;
+                public String race_id;
+                public String class_id;
+                public String userRoleId;
+                public String campaign_session_id;
+                public String webUserId;
+                public String Character_id;
+
+                //Message Passing Objects
+                public String successMsg;
+                public String errorMsg;
+                
+        Since these values are null they are not included in any JSON object created out of the object.
+        This allows for the use of setter methods to populate the object with the information that we
+        want when called allowing for dynamic creation of JSON objects.
+
+        This being said it is being leveraged in the setRaceClassInfo function to assign all the
+        values that are in the character_races and character_classes tables that are needed to be
+        inserted into the user_characters table. Is is also cancatinating the character_races_prof
+        and the character_classes_prof to the character_prof using this code.
+        this.character_prof = FormatUtils.formatString(results.getObject("character_races_prof"));
+        this.character_prof = this.character_prof + " " + FormatUtils.formatString(results.getObject("character_classes_prof"));
+        The reason for doing that is in genaral a characters proficiencies in the game DND are
+        obtained from their race and their class so we want that to be represented with out
+        needing the user to enter them.
+
+        After this has finished it will pass the newly setup StringDataUser object raceClassInfo
+        back to the insertCharactersAPI.
+
+        It is here that the program will calculate the starting stats of the character
+        by adding together the statBonus retrieved from the raceClassInfo object and
+        the initial stat value given by user on the website by the insertData object.
+
+        After all the information has been calculated and added to the prepared statement,
+        the cursor will perform a executeUpdate() function and pass back a resultset.
+        This resultset will be checked to see if there are any errors. If not it sends back a success message.
+        If there is an error is populates the errorMsgs value and sends that back to the client.
+
+        The characterCRUD.insertSave() function will then check to see if there were any errors coming
+        from the server. If there are it will display them and wait for the user to fix them.
+        If there are no errors it will launch the characterCRUD.list() function to populate the page
+        with all the characters.
+
+        Something you may notice is that when the characters are listed out there is a field
+        that holds the username of the person who owns that character. This was not one of the 
+        user entered fields. This is achieved by the fact that you have to be logged in to access
+        the character page. If you ware logged in that means that there is a session variable on the
+        server that is holding the user information namely the webUserId. This is retrieved with this code
+        in the characterCRUD.insertsver() function:
+            characterCRUD.insertSave = function () {
+            ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
+
+        The ajaxCall will get back the session variable that was stored at login which has the webUserId.
+        You then just add it to your json object like so "webUserId": obj.webUserList[0].webUserId,
+                        
+</pre>
+
+<h2>Viewing a specific Character based on Character_ID</h2>
+<pre>
+        To view a specific character based on Character_ID I leveraged this code from charactersCRUD.js:
+        
+            characterCRUD.list = function () {
+                ajaxCall("webAPIs/getProfileAPI.jsp", checkLoginStatus, displayCheckLoginStatusError);
+                var target = document.getElementById("content");
+                function checkLoginStatus(httpRequest) {
+                    try {
+                        var obj = JSON.parse(httpRequest.responseText);
+                        if (obj.webUserList.length === 0) {
+                            target.innerHTML = "There is no user with id '" + id + "' in the database";
+                        } else if (!obj.webUserList[0].errorMsg === null) {
+                            target.innerHTML = "Error extracting the Web User from the database: " + obj.webUserList[0].errorMsg;
+                        }
+                        document.getElementById("content").innerHTML = "";
+                        var navibar = document.createElement("div");
+                        var dataList = document.createElement("div");
+                        navibar.id = "navibar";
+                        dataList.id = "dataList"; // set the id so it matches CSS styling rule.
+                        navibar.innerHTML = "&lt;h2&gt;Characters &lt;img class='iconBtn' src='icons/insert.png' onclick='characterCRUD.startInsert();'/&gt;&lt;/h2&gt;";
+                        document.getElementById("content").appendChild(navibar)
+                        document.getElementById("navibar").appendChild(dataList);
+                        ajax('webAPIs/listCharactersAPI.jsp', setListUI, 'dataList');
+                    } catch (err) {
+                        target.innerHTML = "&lt;h4&gt;You are not logged in&lt;/h4&gt;";
+                        console.log(httpRequest);
+                    }
+
+
+                    function setListUI(httpRequest) {
+
+                        console.log("starting characterCRUD.list (setListUI) with this httpRequest object (next line)");
+                        console.log(httpRequest);
+
+                        var obj = JSON.parse(httpRequest.responseText);
+
+                        if (obj === null) {
+                            dataList.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
+                            return;
+                        }
+                        var editButton = "&lt;img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/&gt;";
+
+                        for (var i = 0; i < obj.webUserList.length; i++) {
+
+                            // add a property to each object in webUserList - a span tag that when clicked 
+                            // invokes a JS function call that passes in the web user id that should be deleted
+                            // from the database and a reference to itself (the span tag that was clicked)
+                            var id = obj.webUserList[i].Character_id;
+                            obj.webUserList[i].View = "&lt;img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view(&quot; + id + &quot;, this)';/&gt;";
+
+                            // remove a property from each object in webUserList 
+                            delete obj.webUserList[i].userPassword2;
+                        }
+                        // buildTable Parameters: 
+                        // First:  array of objects that are to be built into an HTML table.
+                        // Second: string that is database error (if any) or empty string if all OK.
+                        // Third:  reference to DOM object where built table is to be stored. 
+                        buildTable(obj.webUserList, obj.dbError, dataList);
+                    }
+                }
+
+                function displayCheckLoginStatusError(httpRequest) {
+                    console.log(httpRequest);
+                }
+            };
+
+            characterCRUD.view = function (characterID, icon) {
+
+                ajax('htmlPartial/viewCharacter.html', setViewUI, 'content');
+                function setViewUI(httpRequest) {
+                    console.log("Ajax call was successful.");
+                    document.getElementById("content").innerHTML = httpRequest.responseText;
+                    ajax('webAPIs/getCharacterAPI.jsp?characterID=' + characterID, populateCharacterSheet, 'content');
+
+                    function populateCharacterSheet(httpRequest) {
+                        var obj = JSON.parse(httpRequest.responseText);
+                        console.log(obj);
+                        if (obj === null) {
+                            dataList.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
+                            return;
+                        }
+                        var cName = document.getElementById("Character_Name");
+                        var cAge = document.getElementById("Character_Age");
+                        var cRace = document.getElementById("Character_Race");
+                        var cClass = document.getElementById("Character_Class");
+                        var cLevel = document.getElementById("Character_Level");
+                        var cAlign = document.getElementById("Character_Alignment");
+                        var cPlayer = document.getElementById("Character_Player");
+                        var cStr = document.getElementById("Character_Strength");
+                        var cDex = document.getElementById("Character_Dexterity");
+                        var cCon = document.getElementById("Character_Constitution");
+                        var cInt = document.getElementById("Character_Intelligence");
+                        var cWis = document.getElementById("Character_Wisdom");
+                        var cChr = document.getElementById("Character_Charisma");
+                        var cDesc = document.getElementById("Character_Desc");
+                        var cEquip = document.getElementById("Character_Equip");
+                        var cProf = document.getElementById("Character_Proficiency");
+                        if (!undefinedCheck(obj.errorMsg)) {
+                            console.log("Attempting to populate Character Sheet");
+
+                            document.getElementById("Character_Name").value = obj.Character_Name;
+
+                            document.getElementById("Character_Age").value = obj.Age;
+
+                            document.getElementById("Character_Race").value = obj.race_type;
+
+                            document.getElementById("Character_Class").value = obj.class_name;
+
+                            document.getElementById("Character_Level").value = obj.character_level;
+
+                            document.getElementById("Character_Alignment").value = obj.Alignment;
+
+                            document.getElementById("Character_Player").value = obj.Username;
+
+                            document.getElementById("Character_Strength").value = obj.Strength;
+
+                            document.getElementById("Character_Dexterity").value = obj.Dexterity;
+
+                            document.getElementById("Character_Constitution").value = obj.Constitution;
+
+                            document.getElementById("Character_Intelligence").value = obj.Intelligence;
+
+                            document.getElementById("Character_Wisdom").value = obj.Wisdom;
+
+                            document.getElementById("Character_Charisma").value = obj.Intelligence;
+
+                            document.getElementById("Character_Desc").value = obj.character_description;
+
+                            document.getElementById("Character_Equip").value = obj.character_equipment;
+
+                            document.getElementById("Character_Proficiency").value = obj.character_prof;
+                        } else {
+                            console.log("Failed to populate due to error: " + obj.errorMsg);
+                            document.getElementById("errorMsg").innerHTML = obj.errorMsg;
+                        }
+                    }
+
+                    function undefinedCheck(param) {
+                        console.log("Checking to see if it is undefined.");
+                        if (typeof param === typeof Undefined) {
+                            console.log("runs");
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            };
+        
+        What this code does is that it associates the Character_ID that is associated with 
+        the row that button you push is on to the function call characterCRUD.view.
+        This was accomplished by repurposing Professor Kyvernitis delete example for
+        generating buttons on the table. 
+            
+            for (var i = 0; i < obj.webUserList.length; i++) {
+
+                // add a property to each object in webUserList - a span tag that when clicked 
+                // invokes a JS function call that passes in the web user id that should be deleted
+                // from the database and a reference to itself (the span tag that was clicked)
+                var id = obj.webUserList[i].Character_id;
+                obj.webUserList[i].View = "&lt;img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view(&quot; + id + &quot;, this)';/&gt;";
+
+                // remove a property from each object in webUserList 
+                delete obj.webUserList[i].userPassword2;
+            }
+
+        This code adds a new item to the obj.webUserList[i] object called view with the buttons HTML code as it's value.
+        From there makeTable.js does the rest.
+            
+</pre>
+</div>
+</html>

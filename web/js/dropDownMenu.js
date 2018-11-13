@@ -10,22 +10,29 @@ function toggleChild(listElement) {
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function (event) {
-    if ((!event.target.matches('#dataBtn') && event.target.matches('#accountBtn')) && document.getElementById("dataListShow").classList.contains('show')) {
-        document.getElementById("dataListShow").classList.remove('show');
-        document.getElementById("dataListShow").style.display = "none";
-    } else if ((event.target.matches('#dataBtn') && !event.target.matches('#accountBtn')) && document.getElementById("accountListShow").classList.contains('show')) {
-        document.getElementById("accountListShow").classList.remove('show');
-        document.getElementById("accountListShow").style.display = "none";
-    } else if ((!event.target.matches('#dataBtn') && !event.target.matches('#accountBtn'))) {
+
+    var tab;
+    if (event.target.matches('#accountBtn')) {
+        tab = 'account';
+    } else if (event.target.matches('#dataBtn')) {
+        tab = 'data';
+    } else if (event.target.matches('#insertBtn')) {
+        tab = 'insert';
+    } else if (event.target.matches('#tutorialBtn')) {
+        tab = 'tutorial';
+    } else if ((!event.target.matches('#dataBtn') && !event.target.matches('#accountBtn') && !event.target.matches('#insertBtn') && !event.target.matches('#tutorialBtn'))) {
+        tab = 'none';
+    }
+    try {
         var dropdowns = document.getElementsByClassName("dataListContent");
-         var i;
-         for (i = 0; i < dropdowns.length; i++) {
-         var openDropdown = dropdowns[i];
-         if (openDropdown.classList.contains('show')) {
-         openDropdown.classList.remove('show');
-         document.getElementById("accountListShow").style.display = "none";
-         document.getElementById("dataListShow").style.display ="none";
-         }
-         }
+        for (var i = 0; i < dropdowns.length; i++) {
+            console.log(dropdowns[i]);
+            if (!dropdowns[i].classList.contains(tab)) {
+                dropdowns[i].classList.remove('show');
+                dropdowns[i].style.display = "none";
+            }
+        }
+    } catch (error) {
+        console.error(error);
     }
 }

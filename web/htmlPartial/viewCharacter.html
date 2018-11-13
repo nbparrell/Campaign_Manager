@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+    <div id="Character_Sheet">
+        <div class="character_sheet csLeft csTopPadding" style="float: left">
+            <table class = "character_sheet_info">
+                <tr>
+                    <td>Name: </td>
+                    <td><input type="text" id="Character_Name" class ="readonly" readonly="readonly" /></td>
+                    <td>Age: </td>
+                    <td><input type="text" id="Character_Age" class ="editable" readonly="readonly" /></td>
+                    <td>Race: </td>
+                    <td><input type="text" id="Character_Race" class ="readonly" readonly="readonly" /></td>
+                </tr>
+                <tr>
+                    <td id="CharacterNameError" class="error"></td>
+                    <td id="CharacterAgeError" class="error"></td>
+                    <td id="CharacterRaceError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Class: </td>
+                    <td><input type="text" id="Character_Class" class ="readonly" readonly="readonly" /></td>
+                    <td>Level: </td>
+                    <td><input type="text" id="Character_Level" class ="editable" readonly="readonly" /></td>
+                </tr>
+                <tr>
+                    <td id="CharacterClassError" class="error"></td>
+                    <td id="CharacterLevelError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Alignment: </td>
+                    <td><input type="text" id="Character_Alignment" class ="editable" readonly="readonly" /></td>
+                    <td>Player: </td>
+                    <td><input type="text" id="Character_Player" class ="readonly" readonly="readonly" /></td>
+                </tr>
+                <tr>
+                    <td id="CharacterAlignmentError" class="error"></td>
+                    <td id="CharacterPlayerError" class="error"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class ="character_sheet csRight csTopPadding">
+            <table class = "character_sheet_stats">
+                <tr>
+                    <th>
+                        Stats:
+                    </th>
+                </tr>
+                <tr>
+                    <td>Strength: </td>
+                    <td><input type="text" id="Character_Strength" class ="editable" readonly="readonly" /></td>
+                    <td id="CharacterStrError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Dexterity: </td>
+                    <td><input type="text" id="Character_Dexterity" class ="editable" readonly="readonly" /></td>
+                    <td id="CharacterDexError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Constitution: </td>
+                    <td><input type="text" id="Character_Constitution" class ="editable" readonly="readonly" /></td>
+                    <td id="CharacterConError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Intelligence: </td>
+                    <td><input type="text" id="Character_Intelligence" class ="editable" readonly="readonly" /></td>
+                    <td id="CharacterIntError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Wisdom: </td>
+                    <td><input type="text" id="Character_Wisdom" class ="editable" readonly="readonly" /></td>
+                    <td id="CharacterWisError" class="error"></td>
+                </tr>
+                <tr>
+                    <td>Charisma: </td>
+                    <td><input type="text" id="Character_Charisma" class ="editable" readonly="readonly" /></td>
+                    <td id="CharacterChrError" class="error"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="character_sheet_textBlocks csLeft">
+            <table>
+                <tr>
+                    <td>Character Description: <p><textarea rows="30" cols="50" id="Character_Desc" class ="editable" readonly="readonly" style="resize: none"></textarea></p></td>
+                    <td>Equipment: <p><textarea rows="30" cols="50" id="Character_Equip" class ="editable" readonly="readonly" style="resize: none"></textarea></p></td>
+                </tr>
+                <tr>
+                    <td id="CharacterDescError" class="error"></td>
+                    <td id="CharacterEquipmentError" class="error"></td>
+                </tr>
+            </table>
+            <table>
+                 <tr>
+                    <td>Proficiency: <p><textarea rows="15" cols="100" id="Character_Proficiency" class ="editable" readonly="readonly" style="resize: none"></textarea></p></td>
+                </tr>
+            </table>
+        </div>
+        <p id="errorMsg"></p>
+    </div>
+</html>

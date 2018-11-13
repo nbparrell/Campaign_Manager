@@ -21,7 +21,9 @@ var campaignSessionCRUD = {}; // globally available object
     campaignSessionCRUD.insertSave = function () {
 
         console.log("campaignSessionCRUD.insertSave was called");
-
+        
+        console.log(document.getElementById("sessionDate").value);
+        
 
         // create a session object from the values that the user has typed into the page.
         var sessionInputObj = {

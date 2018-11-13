@@ -1,4 +1,5 @@
 package dbUtils;
+import java.util.StringTokenizer;
 
 public class ValidationUtils {
 
@@ -31,9 +32,16 @@ public class ValidationUtils {
             return null;
         }
         try {
+            StringTokenizer tkn = new StringTokenizer(val,"-");
+            String year = tkn.nextToken();
+            String month = tkn.nextToken();
+            String day = tkn.nextToken();
+            String date = month + "/" + day + "/" + year;
             java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat("MM/dd/yyyy"); //please notice the capital M
             dateformat.setLenient(false);
-            java.util.Date myDate = dateformat.parse(val);
+            java.util.Date myDate = dateformat.parse(date);
+            System.out.print("Formatted Date: ");
+            System.out.print(new java.sql.Date(myDate.getTime()));
             return new java.sql.Date(myDate.getTime());
             //return d.toString(); // debugging...
         } catch (Exception e) {

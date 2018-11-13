@@ -4,6 +4,7 @@ function loginFn(username, password) {
 
     function displayLoginSuccess(httpRequest) {
         var obj = JSON.parse(httpRequest.responseText);
+        console.log(obj);
         if (obj.webUserList.length === 0) {
             target.innerHTML = "There is no user with that username or password";
         } else if (!obj.webUserList[0].errorMsg === null) {

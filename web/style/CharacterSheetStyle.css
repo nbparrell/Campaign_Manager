@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 8, 2018, 3:37:44 PM
+    Author     : t410
+*/
+#Character_Sheet{
+    background-color: #3C4621;
+    padding: 1%;
+    height: 1000px;
+    width: 1150px;
+    box-sizing: border-box;
+    border-radius: 25px;
+}
+
+.csTopPadding{
+    padding-top: 10px;
+}
+.csLeft{
+    float: left;
+}
+
+.csRight{
+    float: right;
+}
+
+.character_sheet_stats td{
+    padding-bottom: 20px;
+}

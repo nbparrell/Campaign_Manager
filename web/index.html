@@ -4,9 +4,11 @@
         <title>Campaign Manager</title>
 
         <!-- Use this type of comment within HTML -->
+        <link rel="shortcut icon" href="icons/campaignmanagertwo_fzV_1.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="style/listStyle.css">
         <link rel="stylesheet" type="text/css" href="style/myStyle.css">
         <link rel="stylesheet" type="text/css" href="style/dropDownStyle.css">
+        <link rel="stylesheet" type="text/css" href="style/CharacterSheetStyle.css">
         <script src="js/ajaxUtilities.js"></script>
         <script src="js/buildTable.js"></script>
         <script src="js/dropDownMenu.js"></script>
@@ -16,6 +18,7 @@
         <script src="js/userCRUD.js"></script>
         <script src="js/campaignSessionCRUD.js"></script>
         <script src="js/campaignSessionPostingCRUD.js"></script>
+        <script src="js/characterCRUD.js"></script>
         <script src="js/ajax.js"></script>
     </head>
 
@@ -33,7 +36,7 @@
                 <div class="navPadding tab"><a class="btn" onclick = " ajaxCall('htmlPartial/homeContent.html', setContent, setError)">Home</a></div>
                 <div class="dataList">
                     <div id="dataBtn" class="dataListButton btn" onclick="toggleChild('dataListShow')">Data</div>
-                    <div id="dataListShow" class="dataListContent">
+                    <div id="dataListShow" class="dataListContent data">
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListUsers, setError)">Users</a>
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaigns, setError)">Campaign Listing</a>
                         <a onclick = " ajaxCall('htmlPartial/listUsers.html', setListCampaignPosting, setError)">Campaign Signup</a>
@@ -41,13 +44,25 @@
                 </div>
                 <div class="dataList">
                     <div  id="accountBtn" class="dataListButton btn" onclick="toggleChild('accountListShow')">Account</div>
-                    <div id="accountListShow" class="dataListContent">
-                      <a onclick = " ajaxCall('htmlPartial/logonContent.html', setLogonContent, setError)">Log On</a>
+                    <div id="accountListShow" class="dataListContent account">
+                        <a onclick = " ajaxCall('htmlPartial/logonContent.html', setLogonContent, setError)">Log On</a>
                         <a onclick = " ajaxCall('htmlPartial/logOffContent.html', setLogOffContent, setError)">Log Off</a>
                         <a onclick = " ajaxCall('htmlPartial/profileContent.html', setProfileContent, setError)">Profile</a>
+                    </div>
+                </div>
+                <div class="dataList">
+                    <div  id="insertBtn" class="dataListButton btn" onclick="toggleChild('insertListShow')">Insert</div>
+                    <div id="insertListShow" class="dataListContent insert">
                         <a onclick = "userCRUD.list()">Users</a>
                         <a onclick = "campaignSessionCRUD.list()">Campaign Sessions</a>
                         <a onclick = "campaignSessionPostingCRUD.list()">Attendance</a>
+                    </div>
+                </div>
+                <div class="dataList">
+                    <div  id="tutorialBtn" class="dataListButton btn" onclick="toggleChild('tutorialListShow')">Tutorial</div>
+                    <div id="tutorialListShow" class="dataListContent tutorial">
+                        <a onclick = "characterCRUD.list()">Characters</a>
+                        <a onclick ="ajaxCall('htmlPartial/tutorialContent.html', setContent, setError)">Tutorial</a>
                     </div>
                 </div>
                 <div class="navPadding tab"><a class="btn" onclick = " ajaxCall('htmlPartial/blogContent.html', setContent, setError)">Blog</a></div>
@@ -74,39 +89,39 @@
         <script>
             // Place the contents of the file url into the 
             // innerHTML property of the HTML element with id "content".
-            
+
             function setLogOffContent(httpRequest) {
                 console.log("Ajax setLogOff call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 ajaxCall("webAPIs/logoffAPI.jsp", setUserContent, setUserError);
             }
-            
+
             function setProfileContent(httpRequest) {
                 console.log("Ajax setProfileContent call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 //ajaxCall("webAPIs/getProfileAPI.jsp", setUserContent, setUserError);
                 profileFn();
             }
-            
+
             function setListUsers(httpRequest) {
                 console.log("Ajax setListUsers call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 ajaxCall("webAPIs/listUsersAPI.jsp", setUserContent, setUserError);
             }
-            
+
             function setListCampaigns(httpRequest) {
                 console.log("Ajax setListCampaigns call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 ajaxCall("webAPIs/listOtherAPI.jsp", setUserContent, setUserError);
             }
-            
+
             function setListCampaignPosting(httpRequest) {
                 console.log("Ajax setListCampaigns call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 ajaxCall("webAPIs/listAssocAPI.jsp", setUserContent, setUserError);
             }
-            
-            function setLogonContent(httpRequest){
+
+            function setLogonContent(httpRequest) {
                 console.log("Ajax setLogonContent call was successful.");
                 document.getElementById("content").innerHTML = httpRequest.responseText;
                 ajaxCall("webAPIs/logonAPI.jsp", setUserContent, setUserError);

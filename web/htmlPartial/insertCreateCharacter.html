@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<div class="insertArea">
+    <div class="insertAreaInput" style="height: 700px">
+        <table style="float: left; padding-top: 10px; margin-left: 15%">
+            <tr>
+                <td>Race <select id="ucRacePickList"></select></td>  
+            </tr>
+            <tr>
+                <td id="ucRaceError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Class <select id="ucClassPickList"></select></td>
+            </tr>
+            <tr>
+                <td id="ucClassError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Name <input type="text" id="ucName" /></td>
+            </tr>
+            <tr>
+                <td id="ucNameError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Age <input type="text" id="ucAge" /></td>
+            </tr>
+            <tr>
+                <td id="ucAgeError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Character Description</td>
+                <td id="ucDescError" class="error"></td> 
+            </tr>
+            <tr>
+                <td><textarea rows="30" cols="50" id="ucDesc"></textarea></td>
+            </tr>
+            <!-- see js/insertUser.js to see the insertUser function (make sure index.html referencesinvokes the js file) -->
+            <td><button onclick="characterCRUD.insertSave()">Save</button></td>
+            <td id="responseText" class="error"></td>
+            <td></td>
+            </tr>
+        </table>
+        <table style="float: right; padding-top: 10px; margin-right: 15%">
+            <tr>
+                <td>Alignment</td>  
+                <td>
+                    <select id="ucAlignmentPickList">
+                        <option value="Lawful Good">Lawful Good</option>
+                        <option value="Neutral Good">Neutral Good</option>
+                        <option value="Chaotic Good">Chaotic Good</option>
+                        <option value="Lawful Neutral">Lawful Neutral</option>
+                        <option value="Neutral">Neutral</option>
+                        <option value="Chaotic Neutral">Chaotic Neutral</option>
+                        <option value="Lawful Evil">Lawful Evil</option>
+                        <option value="Neutral Evil">Neutral Evil</option>
+                        <option value="Chaotic Evil">Chaotic Evil</option>
+                        
+                    </select>
+                </td>
+
+                <td id="ucAlignmentError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Strength</td>
+                <td><input type="text" id="ucStrength" /></td>
+                <td id="ucStrengthError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Dexterity</td>
+                <td><input type="text" id="ucDexterity" /></td>
+                <td id="ucDexterityError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Constitution</td>
+                <td><input type="text" id="ucConstitution" /></td>
+                <td id="ucConstitutionError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Wisdom</td>
+                <td><input type="text" id="ucWisdom" /></td>
+                <td id="ucWisdomError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Intelligence</td>
+                <td><input type="text" id="ucIntelligence" /></td>
+                <td id="ucIntelligenceError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Charisma</td>
+                <td><input type="text" id="ucCharisma" /></td>
+                <td id="ucCharismaError" class="error"></td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -27,14 +27,14 @@
         System.out.println("jsonInsertData is " + jsonInsertData);
         errorMsgs.errorMsg = dbc.getErr();
         if (errorMsgs.errorMsg.length() == 0) { // means db connection is ok
-            System.out.println("insertUserAPI.jsp ready to insert");
+            System.out.println("insertCharacterAPI.jsp ready to insert");
             
             // Must use gson to convert JSON (that the user provided as part of the url, the jsonInsertData. 
             // Convert from JSON (JS object notation) to POJO (plain old java object).
             StringDataUser insertData = gson.fromJson(jsonInsertData, StringDataUser.class);
             
             // this method takes the user's input data as input and outputs an error message object (with same field names).
-            errorMsgs = WebUserView.insertUsersAPI(dbc, insertData); // this is the form level message
+            errorMsgs = WebUserView.insertCharactersAPI(dbc, insertData); // this is the form level message
         }
     }
 
