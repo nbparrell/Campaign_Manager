@@ -295,7 +295,7 @@ var characterCRUD = {}; // globally available object
                    
                     document.getElementById("Character_Wisdom").value = obj.Wisdom;
                     
-                    document.getElementById("Character_Charisma").value = obj.Intelligence;
+                    document.getElementById("Character_Charisma").value = obj.Charisma;
                     
                     document.getElementById("Character_Desc").value = obj.character_description;
                     
