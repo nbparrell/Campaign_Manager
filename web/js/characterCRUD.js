@@ -77,34 +77,57 @@ var characterCRUD = {}; // globally available object
             var ddRacesList = document.getElementById("ucRacePickList");
             var ddAlignmentList = document.getElementById("ucAlignmentPickList");
 
+            var ucName = document.getElementById("ucName").value;
+            var ucAge = document.getElementById("ucAge").value;
+            var ucDesc = document.getElementById("ucDesc").value;
+            var ucStr = document.getElementById("ucStrength").value;
+            var ucDex = document.getElementById("ucDexterity").value;
+            var ucCon = document.getElementById("ucConstitution").value;
+            var ucWis = document.getElementById("ucWisdom").value;
+            var ucInt = document.getElementById("ucIntelligence").value;
+            var ucCha = document.getElementById("ucCharisma").value;
+            var array = [ucName, ucAge, ucDesc, ucStr, ucDex, ucCon, ucWis, ucInt, ucCha];
+            var passedRequired = true;
+            for (var elem in array) {
+                if (elem === "") {
+                    passedRequired = false;
+                    break;
+                }
+            }
+
             // create a user object from the values that the user has typed into the page.
-            var userInputObj = {
-                "Character_Name": document.getElementById("ucName").value,
-                "Age": document.getElementById("ucAge").value,
-                "character_description": document.getElementById("ucDesc").value,
-                "Strength": document.getElementById("ucStrength").value,
-                "Dexterity": document.getElementById("ucDexterity").value,
-                "Constitution": document.getElementById("ucConstitution").value,
-                "Intelligence": document.getElementById("ucWisdom").value,
-                "Wisdom": document.getElementById("ucIntelligence").value,
-                "Charisma": document.getElementById("ucCharisma").value,
-                "Alignment": ddAlignmentList.options[ddAlignmentList.selectedIndex].value,
+            if (passedRequired) {
+                var userInputObj = {
+                    "Character_Name": document.getElementById("ucName").value,
+                    "Age": document.getElementById("ucAge").value,
+                    "character_description": document.getElementById("ucDesc").value,
+                    "Strength": document.getElementById("ucStrength").value,
+                    "Dexterity": document.getElementById("ucDexterity").value,
+                    "Constitution": document.getElementById("ucConstitution").value,
+                    "Intelligence": document.getElementById("ucWisdom").value,
+                    "Wisdom": document.getElementById("ucIntelligence").value,
+                    "Charisma": document.getElementById("ucCharisma").value,
+                    "Alignment": ddAlignmentList.options[ddAlignmentList.selectedIndex].value,
 
-                // Modification here for role pick list
-                "race_id": ddRacesList.options[ddRacesList.selectedIndex].value,
-                "class_id": ddClassesList.options[ddClassesList.selectedIndex].value,
-                "webUserId": obj.webUserList[0].webUserId,
-                "errorMsg": ""
-            };
-            console.log(userInputObj);
+                    // Modification here for role pick list
+                    "race_id": ddRacesList.options[ddRacesList.selectedIndex].value,
+                    "class_id": ddClassesList.options[ddClassesList.selectedIndex].value,
+                    "webUserId": obj.webUserList[0].webUserId,
+                    "errorMsg": ""
+                };
 
-            // build the url for the ajax call. Remember to escape the user input object or else 
-            // you'll get a security error from the server. JSON.stringify converts the javaScript
-            // object into JSON format (the reverse operation of what gson does on the server side).
-            var myData = escape(JSON.stringify(userInputObj));
-            var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
-            ajax(url, processInsert, "recordError");
+                console.log(userInputObj);
 
+                // build the url for the ajax call. Remember to escape the user input object or else 
+                // you'll get a security error from the server. JSON.stringify converts the javaScript
+                // object into JSON format (the reverse operation of what gson does on the server side).
+                var myData = escape(JSON.stringify(userInputObj));
+                var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
+                ajax(url, processInsert, "recordError");
+            }else{
+                
+            }
+            
             function processInsert(httpRequest) {
                 console.log("processInsert was called here is httpRequest.");
                 console.log(httpRequest);
@@ -270,37 +293,37 @@ var characterCRUD = {}; // globally available object
                 var cProf = document.getElementById("Character_Proficiency");
                 if (!undefinedCheck(obj.errorMsg)) {
                     console.log("Attempting to populate Character Sheet");
-     
+
                     document.getElementById("Character_Name").value = obj.Character_Name;
-                     
+
                     document.getElementById("Character_Age").value = obj.Age;
-                    
+
                     document.getElementById("Character_Race").value = obj.race_type;
-                  
+
                     document.getElementById("Character_Class").value = obj.class_name;
-                 
+
                     document.getElementById("Character_Level").value = obj.character_level;
-                    
+
                     document.getElementById("Character_Alignment").value = obj.Alignment;
-                    
+
                     document.getElementById("Character_Player").value = obj.Username;
-                    
+
                     document.getElementById("Character_Strength").value = obj.Strength;
-                    
+
                     document.getElementById("Character_Dexterity").value = obj.Dexterity;
-                    
+
                     document.getElementById("Character_Constitution").value = obj.Constitution;
-                    
+
                     document.getElementById("Character_Intelligence").value = obj.Intelligence;
-                   
+
                     document.getElementById("Character_Wisdom").value = obj.Wisdom;
-                    
+
                     document.getElementById("Character_Charisma").value = obj.Charisma;
-                    
+
                     document.getElementById("Character_Desc").value = obj.character_description;
-                    
+
                     document.getElementById("Character_Equip").value = obj.character_equipment;
-                    
+
                     document.getElementById("Character_Proficiency").value = obj.character_prof;
                 } else {
                     console.log("Failed to populate due to error: " + obj.errorMsg);
