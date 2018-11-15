@@ -5,6 +5,16 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
+    <style>
+        .code{
+            border: 2px #111409 solid;
+            background-color: lightyellow;
+            color: darkslategrey;
+            border-radius: 10px 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    </style>
     <div class="infoSection" style='width: 100%'>
         <h1>Supporting User Characters in Campaign Manager</h1>
         <h2>Quality of Life enhancement</h2>
@@ -17,7 +27,7 @@ and open the template in the editor.
         </p>
 
         <h4>HTML:</h4>
-        <pre>
+        <pre class = "code">
         &lt;div id=&quot;title&quot;&gt;
                 Campaign Manager
             &lt;/div&gt;
@@ -62,7 +72,7 @@ and open the template in the editor.
 
         <h4>CSS:</h4>
         <p>
-        <pre>
+        <pre class = "code">
             .stopFloat { /* We float divs left in desktop layout to create multiple columns. Put
                 a "clear:both" rule where you want to stop the floating (like page eject). */
                 clear:both;
@@ -297,7 +307,7 @@ and open the template in the editor.
 
     <h4>JavaScript:</h4>
     <p>
-    <pre>
+    <pre class = "code">
             function toggleChild(listElement) {
                 if (document.getElementById(listElement).classList.contains("show")) {
                     document.getElementById(listElement).classList.remove('show');
@@ -346,7 +356,8 @@ and open the template in the editor.
         How this code works is that it takes advantage of the fact that you are able to manipulate the class attribute on html tags
         For the drop down menus I create 3 div tags one as the container that hold the button and drop down menu, one that holds the button, 
         and the other which is the drop down menu but it has a display property of none as shown in our styling:
- 
+</pre>
+<pre class = "code">
         .dataListContent {
                 margin-top: 45px;
                 background-color:#3C4621;
@@ -360,14 +371,16 @@ and open the template in the editor.
                 position: absolute;
                 box-shadow: 5px 8px 5px #111409;
             }
-
+</pre>
+<pre>
         In order to show our dropdown menu we create a function that will update the the class attribute in our div that is holding the
         drop down information by passing its ID to the function all and then adding show to it's class attribute and then changing
         the style so that display: none is now display: block.
         We do the same thing in reverse to have it disappear when we click on the button again. So find the div with the dropdown menu information
         by passing its ID when the button is clicked and then removing show from the class attribute and changing the styling back to display: none
         from display: block.
-
+</pre>
+<pre class = "code">
         function toggleChild(listElement) {
                 if (document.getElementById(listElement).classList.contains("show")) {
                     document.getElementById(listElement).classList.remove('show');
@@ -377,11 +390,14 @@ and open the template in the editor.
                     document.getElementById(listElement).style.display = "block";
                 }
             }
-
+</pre>
+<pre>
         I continued on with this implementation and wanted to make it so that I could click anywhere in the web page in order to close the
         dropdown menu, excluding of course the menu it self.
         
         So I developed this code based of the W3schools example
+</pre>
+<pre class = "code">
 
         window.onclick = function (event) {
 
@@ -410,17 +426,18 @@ and open the template in the editor.
                 } catch (error) {
                     console.error(error);
                 }
+</pre>
+<pre>
+        What this code does is check every onclick event that happens in the window then checks what object was clicked.
+        If it was one of the pre defined buttons in the else if (#accountBtn,  #dataBtn or one of the other buttons)
+        it will then check all other datalists but the div that has a class attribute that holds the corresponding
+        class to the button. So for #accountBtn, the dataListContent or div that holds the drop down menu has a class attribute of
+        account on it so the for loop will disregard that div and look at all other divs that have a class attribute of 
+        dataListContent. It will then proceed to remove the show class attribute from them if they exist and also change their
+        style display to none.
 
-            What this code does is check every onclick event that happens in the window then checks what object was clicked.
-            If it was one of the pre defined buttons in the else if (#accountBtn,  #dataBtn or one of the other buttons)
-            it will then check all other datalists but the div that has a class attribute that holds the corresponding
-            class to the button. So for #accountBtn, the dataListContent or div that holds the drop down menu has a class attribute of
-            account on it so the for loop will disregard that div and look at all other divs that have a class attribute of 
-            dataListContent. It will then proceed to remove the show class attribute from them if they exist and also change their
-            style display to none.
-
-            Now lastly if no button is clicked the tag the is passed will be none which is not a class attribute on any of the
-            dataListContent objects so each will be closed in turn.
+        Now lastly if no button is clicked the tag the is passed will be none which is not a class attribute on any of the
+        dataListContent objects so each will be closed in turn.
 </pre>
 
 </p>
@@ -433,18 +450,20 @@ and open the template in the editor.
 
 <h2>Database Changes</h2>
 <pre>
-    In order to support the new characters I had to create the appropriate tables in the database to support what I have implemented.
-    I first created the user_characters, character_races, and character_classes tables with foreign keys in the user_characters
-    table that connected it to the web_user, character_races and character_classes tables respectively.
-    This was done so that we could include pre determined values in our character creation with out having to have the user account for them
-    One such example is that races often times give stat bonuses for taking that race. With this implementation the user would only have to pick
-    the race and the backend would automatically add in the bonus to the stat when it goes to insert the new character into the table.
+        In order to support the new characters I had to create the appropriate tables in the database to support what I have implemented.
+        I first created the user_characters, character_races, and character_classes tables with foreign keys in the user_characters
+        table that connected it to the web_user, character_races and character_classes tables respectively.
+        This was done so that we could include pre determined values in our character creation with out having to have the user account for them
+        One such example is that races often times give stat bonuses for taking that race. With this implementation the user would only have to pick
+        the race and the backend would automatically add in the bonus to the stat when it goes to insert the new character into the table.
 
 </pre>
 
 <h2>Creating a New Character</h2>
 <pre>
     This html page is used to collect all necessary information fro creating a character:
+</pre>
+<pre class = "code">
 
     &lt;div class=&quot;insertArea&quot;&gt;
         &lt;div class=&quot;insertAreaInput&quot; style=&quot;height: 700px&quot;&gt;
@@ -539,13 +558,17 @@ and open the template in the editor.
             &lt;/table&gt;
         &lt;/div&gt;
     &lt;/div&gt;
+</pre>
 
+<pre>
 
     <b>characterCRUD.insertSave()</b> Is the function call that is used to actually insert the information
     provided by this html page.
     
     The characterCRUD.js file is the file used by every function that involves reaching out to the server
     and making a request of the database whether that is an insert, query, update, or delete.
+</pre>
+<pre class = "code">
 
     characterCRUD.js:
         var characterCRUD = {}; // globally available object
@@ -868,9 +891,12 @@ and open the template in the editor.
 
 
         }());  // the end of the IIFE
+</pre>
+<pre>
     
         For this feature we will be looking at the insert function
-
+</pre>
+<pre class = "code">
         characterCRUD.insertSave = function () {
                 ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
                 function getInsertInfo(httpRequest) {
@@ -977,6 +1003,8 @@ and open the template in the editor.
 
                 }
             };
+</pre>
+<pre>
 
         In this function we collect all the information from the user and send it over
         to the server to create the character. If it is successful it will call the
@@ -992,6 +1020,8 @@ and open the template in the editor.
 
         
         <b>insertCharacterAPI.jsp:</b>
+</pre>
+<pre class = "code">
         
         <%@page contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%> 
 
@@ -1036,6 +1066,8 @@ and open the template in the editor.
             out.print(gson.toJson(errorMsgs).trim());
             dbc.close();
         %>
+</pre>
+<pre>
 
         This jsp page is only responsible for creating a new StringDataUser Object called errorMsg
         that will be sent back to the website as a json Object. How this works is that in the
@@ -1043,7 +1075,8 @@ and open the template in the editor.
         and passing the new json object back.
 
         errorMsgs is populated by calling the <b>WebUserView.insertCharactersAPI(dbc, insertData);</b>
-
+</pre>
+<pre class = "code">
         public static StringDataUser insertCharactersAPI(DbConn dbc, StringDataUser insertData) {
             int type = 0;
             //StringDataList sdl = new StringDataList();
@@ -1145,11 +1178,14 @@ and open the template in the editor.
 
             return sd;
         }
-
+</pre>
+<pre>
         What this does is it takes the values given to us by the insertData object passed from
         the insertCharacterAPI.jsp and modifies the data while also performing another function 
         call to <b>populateRaceClassInfo(insertData, raceClassInfo);</b> which creates another 
         StringDataUser raceClassInfo
+</pre>
+<pre class = "code">
 
         public static void populateRaceClassInfo(StringDataUser insertData, StringDataUser raceClassInfo) {
             System.out.print("Attempting to query database for character race info");
@@ -1181,7 +1217,8 @@ and open the template in the editor.
                 insertData.errorMsg = "Exception thrown in WebUserView.populateRaceClassInfo: " + e.getMessage();
             }
         }
-        
+</pre>
+<pre>
         This function will then query the database to get back all the other information that we plan
         on inserting along with the passed information from the website. This is possible because part
         of the information that is being sent over is the race_id and class_id from the website which
@@ -1197,6 +1234,8 @@ and open the template in the editor.
         using the raceClassInfo.setRaceClassInfo(results);
 
         <b>StringDataUser.setRaceClassInfo(results):</b>
+</pre>
+<pre class = "code">
             public void setRaceClassInfo(ResultSet results) {
                 try {
                     System.out.print(results.getMetaData());
@@ -1223,8 +1262,12 @@ and open the template in the editor.
                         + e.getMessage();
                 }
             }
+</pre>
+<pre>
 
-            The StringDataUser class is a general class that holds all the values need to create a JSON object.
+        The StringDataUser class is a general class that holds all the values need to create a JSON object.
+</pre>
+<pre class = "code">
                 //Indentifying information
                 public String campaign_session_posting_name;
                 public String Name;
@@ -1290,6 +1333,8 @@ and open the template in the editor.
                 //Message Passing Objects
                 public String successMsg;
                 public String errorMsg;
+</pre>
+<pre>
                 
         Since these values are null they are not included in any JSON object created out of the object.
         This allows for the use of setter methods to populate the object with the information that we
@@ -1328,8 +1373,12 @@ and open the template in the editor.
         the character page. If you ware logged in that means that there is a session variable on the
         server that is holding the user information namely the webUserId. This is retrieved with this code
         in the characterCRUD.insertsver() function:
+</pre>
+<pre class = "code">
             characterCRUD.insertSave = function () {
             ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
+</pre>
+<pre>
 
         The ajaxCall will get back the session variable that was stored at login which has the webUserId.
         You then just add it to your json object like so "webUserId": obj.webUserList[0].webUserId,
@@ -1339,6 +1388,8 @@ and open the template in the editor.
 <h2>Viewing a specific Character based on Character_ID</h2>
 <pre>
         To view a specific character based on Character_ID I leveraged this code from charactersCRUD.js:
+</pre>
+<pre class = "code">
         
             characterCRUD.list = function () {
                 ajaxCall("webAPIs/getProfileAPI.jsp", checkLoginStatus, displayCheckLoginStatusError);
@@ -1484,12 +1535,14 @@ and open the template in the editor.
                     }
                 }
             };
-        
+</pre>
+<pre>
         What this code does is that it associates the Character_ID that is associated with 
         the row that button you push is on to the function call characterCRUD.view.
         This was accomplished by repurposing Professor Kyvernitis delete example for
         generating buttons on the table. 
-            
+</pre>
+<pre class = "code">
             for (var i = 0; i < obj.webUserList.length; i++) {
 
                 // add a property to each object in webUserList - a span tag that when clicked 
@@ -1501,6 +1554,8 @@ and open the template in the editor.
                 // remove a property from each object in webUserList 
                 delete obj.webUserList[i].userPassword2;
             }
+</pre>
+<pre>
 
         This code adds a new item to the obj.webUserList[i] object called view with the buttons HTML code as it's value.
         From there makeTable.js does the rest.
