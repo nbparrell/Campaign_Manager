@@ -21,9 +21,9 @@ var campaignSessionCRUD = {}; // globally available object
     campaignSessionCRUD.insertSave = function () {
 
         console.log("campaignSessionCRUD.insertSave was called");
-        
+
         console.log(document.getElementById("sessionDate").value);
-        
+
 
         // create a session object from the values that the user has typed into the page.
         var sessionInputObj = {
@@ -55,48 +55,47 @@ var campaignSessionCRUD = {}; // globally available object
             var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
             console.log("here is JSON object (holds error messages.");
             if (undefinedCheck(jsonObj.errorMsg)) {
-                if (undefinedCheck(jsonObj.userEmail)) {
-                    document.getElementById("sessionNameError").innerHTML = jsonObj.sessionName;
+                if (undefinedCheck(jsonObj.Name)) {
+                    document.getElementById("sessionNameError").innerHTML = jsonObj.Name;
+                } else {
+                    document.getElementById("sessionNameError").innerHTML = "";
                 }
-                if (undefinedCheck(jsonObj.userPassword)) {
-                    document.getElementById("sessionLocationError").innerHTML = jsonObj.sessionLocation;
+                if (undefinedCheck(jsonObj.Session_Location)) {
+                    document.getElementById("sessionLocationError").innerHTML = jsonObj.Session_Location;
+                } else {
+                    document.getElementById("sessionLocationError").innerHTML = "";
                 }
-                if (undefinedCheck(jsonObj.userPassword2)) {
-                    document.getElementById("sessionCampaignError").innerHTML = jsonObj.sessionCampaign;
+                if (undefinedCheck(jsonObj.Session_Date)) {
+                    document.getElementById("sessionDateError").innerHTML = jsonObj.Session_Date;
+                } else {
+                    document.getElementById("sessionDateError").innerHTML = "";
                 }
-                if (undefinedCheck(jsonObj.birthday)) {
-                    document.getElementById("sessionDateError").innerHTML = jsonObj.sessionDate;
+                if (undefinedCheck(jsonObj.Campaign)) {
+                    document.getElementById("sessionCampaignError").innerHTML = jsonObj.Campaign;
+                } else {
+                    document.getElementById("sessionCampaignError").innerHTML = "";
                 }
-                if (undefinedCheck(jsonObj.membershipFee)) {
-                    document.getElementById("sessionDescError").innerHTML = jsonObj.sessionDesc;
+                if (undefinedCheck(jsonObj.Description)) {
+                    document.getElementById("sessionDescError").innerHTML = jsonObj.Description;
+                } else {
+                    document.getElementById("sessionDescError").innerHTML = "";
                 }
                 document.getElementById("responseText").innerHTML = jsonObj.errorMsg;
             } else
             {
-                document.getElementById("sessionNameError").innerHTML = "";
-                document.getElementById("sessionLocationError").innerHTML = "";
-                document.getElementById("sessionCampaignError").innerHTML = "";
-                document.getElementById("sessionDateError").innerHTML = "";
-                document.getElementById("sessionDescError").innerHTML = "";
-                document.getElementById("responseText").innerHTML = jsonObj.successMsg;
-                document.getElementById("sessionName").value = "";
-                document.getElementById("sessionLocation").value = "";
-                document.getElementById("sessionCampaign").value = "";
-                document.getElementById("sessionDate").value = "";
-                document.getElementById("sessionDesc").value = "";
                 campaignSessionCRUD.list();
             }
 
             /*            
-                if (jsonObj.errorMsg.length === 0) { // success
-                    jsonObj.errorMsg = "Record successfully inserted !!!";
-                }
-                document.getElementById("responseText").innerHTML = jsonObj.errorMsg;
-            */
+             if (jsonObj.errorMsg.length === 0) { // success
+             jsonObj.errorMsg = "Record successfully inserted !!!";
+             }
+             document.getElementById("responseText").innerHTML = jsonObj.errorMsg;
+             */
         }
-        
-        function undefinedCheck(param){ 
-            if(typeof param === typeof Undefined){
+
+        function undefinedCheck(param) {
+            if (typeof param === typeof Undefined) {
                 console.log("runs");
                 return false;
             }

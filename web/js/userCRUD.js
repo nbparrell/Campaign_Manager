@@ -52,15 +52,6 @@ var userCRUD = {}; // globally available object
         console.log("userCRUD.insertSave was called");
 
         var ddList = document.getElementById("rolePickList");
-        
-        var userName = document.getElementById("userUsername").value;
-        var email = document.getElementById("userEmail").value;
-        var fName = document.getElementById("userFName").value;
-        var lName = document.getElementById("userLName").value;
-        var userPass = document.getElementById("userPassword").value;
-        var userPassTwo = document.getElementById("userPassword2").value;
-        var userBday = document.getElementById("birthday").value;
-        var memFee = document.getElementById("membershipFee").value;
 
         // create a user object from the values that the user has typed into the page.
         var userInputObj = {

@@ -2,6 +2,7 @@ package dbUtils;
 
 import model.webUser.*;
 import java.util.StringTokenizer;
+import java.util.Date;
 
 public class ValidationUtils {
 
@@ -14,14 +15,14 @@ public class ValidationUtils {
             return "ValidationUtils.dateValidationMsg(): Programmer error - should not be trying to validate null.";
         }
         if ((val.length() == 0) && !required) {
-            return "";  // Since this field is not required, empty string is valid user entry.
+            return null;  // Since this field is not required, empty string is valid user entry.
         }
         try {
             java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat("MM/dd/yyyy"); //please notice the capital M
             dateformat.setLenient(false);
             java.util.Date myDate = dateformat.parse(val);
             java.sql.Date convertedDate = new java.sql.Date(myDate.getTime()); // // not using (on purpose).
-            return ""; // means date is good
+            return null; // means date is good
         } catch (Exception e) {
             return "Please enter a valid date (format: MM/DD/YYYY)";  // can also add (to debug) + e.getMessage();
         }
@@ -41,7 +42,7 @@ public class ValidationUtils {
             String date = month + "/" + day + "/" + year;
             java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat("MM/dd/yyyy"); //please notice the capital M
             dateformat.setLenient(false);
-            java.util.Date myDate = dateformat.parse(date);
+            Date myDate = dateformat.parse(date);
             System.out.print("Formatted Date: ");
             System.out.print(new java.sql.Date(myDate.getTime()));
             return new java.sql.Date(myDate.getTime());
@@ -92,13 +93,13 @@ public class ValidationUtils {
             return "ValidationUtils.integerValidationMsg(): Programmer error - should not be trying to validate null.";
         }
         if ((val.length() == 0) && !required) {
-            return "";  // Since this field is not required, empty string is a valid user entry.
+            return null;  // Since this field is not required, empty string is a valid user entry.
         }
         try {
             Integer convertedInteger = new Integer(val); // not using (on purpose).
-            return "";
+            return null;
         } catch (Exception e) {
-            return "Please enter an integer";
+            return "Please enter a valid number";
         }
     } // integerValidationMsg()
 
@@ -128,41 +129,214 @@ public class ValidationUtils {
             if (required) {
                 return "Input is required";
             } else {
-                return ""; // Empty string OK if fld not req'd.
+                return null; // Empty string OK if fld not req'd.
             }
         }
 
         if (val.length() > maxlen) {
             return "Please shorten to [" + val.substring(0, maxlen) + "]";
         } else {
-            return ""; // input is good
+            return null; // input is good
         }
     }
 
-    public static boolean insertUserValidation(StringDataUser inputData, StringDataUser responseData) {
-        if (inputData.userPassword.equals(inputData.userPassword2) && !inputData.userPassword.equals("") && !inputData.Username.equals("") && !inputData.userEmail.equals("")
-                && !inputData.firstName.equals("") && !inputData.lastName.equals("")) {
+    public static String stringEmailValidationMsg(String val, int maxlen, boolean required) {
+        String pattern = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b"; //Regex to confirm that email is in the correct format.
+        if (val == null) {
+            return "ValidationUtils.stringValidationMsg(): Programmer error - should not be trying to validate null.";
+        }
+        if (val.length() == 0) {
+            if (required) {
+                return "Input is required";
+            }
+        }
+
+        if (val.length() > maxlen) {
+            return "Please shorten to [" + val.substring(0, maxlen) + "]";
+        }
+
+        if (val.matches(pattern)) {
+            return null;
+        } else {
+            return "Please enter the email in the acceptable format of xxx@xxx.xxx";
+        }
+    }
+
+    public static String stringValidationDateMsg(String val, boolean birthday, boolean meeting, boolean required) {
+
+        String today = java.time.LocalDate.now().toString();
+        java.sql.Date sqlToday = dateConversion(today);
+        java.sql.Date proposedDate = dateConversion(val);
+        if (val == null) {
+            return "ValidationUtils.stringValidationMsg(): Programmer error - should not be trying to validate null.";
+        }
+        if (val.length() == 0) {
+            if (required) {
+                return "Input is required";
+            } else {
+                return null; // Empty string OK if fld not req'd.
+            }
+        }
+
+        if (sqlToday.compareTo(proposedDate) < 0 && birthday) {
+            return "Enter in a date before " + sqlToday;
+        } else if (sqlToday.compareTo(proposedDate) > 0 && meeting) {
+            return "Enter a date after " + sqlToday;
+        } else {
+            return null; // input is good
+        }
+    }
+    
+    public static String stringStatValidationMsg(String val, int maxVal, boolean required) {
+
+        if (val == null) {
+            return "ValidationUtils.stringValidationMsg(): Programmer error - should not be trying to validate null.";
+        }
+        if (val.length() == 0) {
+            if (required) {
+                return "Enter Valid number";
+            } else {
+                return null; // Empty string OK if fld not req'd.
+            }
+        }
+        String canConvertInt = integerValidationMsg(val, true);
+        if(canConvertInt != null){
+            return canConvertInt;
+        }
+        int realVal = integerConversion(val);
+        if (realVal > maxVal) {
+            return "Value must be less then " + maxVal;
+        } else {
+            return null; // input is good
+        }
+    }
+
+    public static boolean passwordMatch(StringDataUser inputData, StringDataUser responseData) {
+        if (inputData.userPassword.equals(inputData.userPassword2)) {
             return true;
         } else {
-            if(inputData.userPassword.equals("")){
-                responseData.userPassword = "Input is required";
-            }else{
-                responseData.userPassword = "Passwords need to match";
-            }
-            if(inputData.Username.equals("")){
-                responseData.Username = "Input is required";
-            }
-            if(inputData.userEmail.equals("")){
-                responseData.userEmail = "Input is required";
-            }
-            if(inputData.firstName.equals("")){
-                responseData.firstName = "Input is required";
-            }
-            if(inputData.lastName.equals("")){
-                responseData.lastName = "Input is required";
-            }
-            responseData.errorMsg = "Try again";
+            responseData.userPassword2 = "Passwords need to Match";
             return false;
         }
+    }
+
+    public static String membershipFeeCheck(String fee) {
+        if (fee.equals("")) {
+            fee = "0";
+        }
+        return fee;
+    }
+
+    public static boolean insertUserValidation(StringDataUser inputData, StringDataUser responseData) {
+        boolean validationPassed = true;
+        responseData.userPassword = stringValidationMsg(inputData.userPassword, 45, true);
+        responseData.Username = stringValidationMsg(inputData.Username, 45, true);
+        responseData.userEmail = stringEmailValidationMsg(inputData.userEmail, 45, true);
+        responseData.firstName = stringValidationMsg(inputData.firstName, 45, true);
+        responseData.lastName = stringValidationMsg(inputData.lastName, 45, true);
+        responseData.birthday = stringValidationDateMsg(inputData.birthday, true, false, false);
+        inputData.membershipFee = membershipFeeCheck(inputData.membershipFee);
+
+        if (responseData.Username != null) {
+            validationPassed = false;
+        } else if (responseData.userPassword != null) {
+            validationPassed = false;
+        } else if (responseData.userEmail != null) {
+            validationPassed = false;
+        } else if (responseData.firstName != null) {
+            validationPassed = false;
+        } else if (responseData.lastName != null) {
+            validationPassed = false;
+        } else if (responseData.birthday != null) {
+            validationPassed = false;
+        }
+
+        if (passwordMatch(inputData, responseData) && validationPassed) {
+            return true;
+        }
+        responseData.errorMsg = "Try again";
+        return false;
+    }
+
+    public static boolean insertSessionValidation(StringDataUser inputData, StringDataUser responseData) {
+        boolean validationPassed = true;
+        responseData.Name = stringValidationMsg(inputData.Name, 45, true);
+        responseData.Session_Location = stringValidationMsg(inputData.Session_Location, 45, true);
+        responseData.Session_Date = stringValidationDateMsg(inputData.Session_Date, false, true, true);
+        responseData.Campaign = stringValidationMsg(inputData.Campaign, 45, true);
+        responseData.Description = stringValidationMsg(inputData.Description, 967295, true);
+
+        if (responseData.Name != null) {
+            validationPassed = false;
+        } else if (responseData.Session_Location != null) {
+            validationPassed = false;
+        } else if (responseData.Session_Date != null) {
+            validationPassed = false;
+        } else if (responseData.Campaign != null) {
+            validationPassed = false;
+        } else if (responseData.Description != null) {
+            validationPassed = false;
+        }
+
+        if (validationPassed) {
+            return true;
+        }
+        responseData.errorMsg = "Try again";
+        return false;
+    }
+
+    public static boolean insertSessionPostingValidation(StringDataUser inputData, StringDataUser responseData) {
+        boolean validationPassed = true;
+        responseData.campaign_session_posting_name = stringValidationMsg(inputData.campaign_session_posting_name, 45, true);
+        responseData.Notes = stringValidationMsg(inputData.Notes, 967295, true);
+
+        if (responseData.campaign_session_posting_name != null) {
+            validationPassed = false;
+        } else if (responseData.Notes != null) {
+            validationPassed = false;
+        }
+
+        if (validationPassed) {
+            return true;
+        }
+        responseData.errorMsg = "Try again";
+        return false;
+    }
+
+    public static boolean insertCharacterValidation(StringDataUser inputData, StringDataUser responseData) {
+        boolean validationPassed = true;
+        responseData.Character_Name = stringValidationMsg(inputData.Character_Name, 45, true);
+//        responseData.character_description = stringValidationMsg(inputData.character_description, 967295, true); May Implement later
+        responseData.Age = stringStatValidationMsg(inputData.Age, 4000, true);
+        responseData.Strength = stringStatValidationMsg(inputData.Strength, 18, true);
+        responseData.Dexterity = stringStatValidationMsg(inputData.Dexterity, 18, true);
+        responseData.Constitution = stringStatValidationMsg(inputData.Constitution, 18, true);
+        responseData.Intelligence = stringStatValidationMsg(inputData.Intelligence, 18, true);
+        responseData.Wisdom = stringStatValidationMsg(inputData.Wisdom, 18, true);
+        responseData.Charisma = stringStatValidationMsg(inputData.Charisma, 18, true);
+
+        if (responseData.Character_Name != null) {
+            validationPassed = false;
+        } else if (responseData.Age != null) {
+            validationPassed = false;
+        } else if (responseData.Strength != null) {
+            validationPassed = false;
+        } else if (responseData.Dexterity != null) {
+            validationPassed = false;
+        } else if (responseData.Constitution != null) {
+            validationPassed = false;
+        } else if (responseData.Intelligence != null) {
+            validationPassed = false;
+        } else if (responseData.Wisdom != null) {
+            validationPassed = false;
+        } else if (responseData.Charisma != null) {
+            validationPassed = false;
+        }
+
+        if (validationPassed) {
+            return true;
+        }
+        responseData.errorMsg = "Try again";
+        return false;
     }
 }

@@ -34,7 +34,7 @@
             StringDataUser insertData = gson.fromJson(jsonInsertData, StringDataUser.class);
             
             // this method takes the user's input data as input and outputs an error message object (with same field names).
-            errorMsgs = view.WebUserView.updateCampaignSessionAPI(dbc, insertData); // this is the form level message
+            errorMsgs = view.WebUserView.insertCampaignSessionAPI(dbc, insertData); // this is the form level message
         }
     }
 

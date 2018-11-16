@@ -44,7 +44,7 @@ var campaignSessionPostingCRUD = {}; // globally available object
                 // function makePickList(list, keyProp, valueProp, selectListId) {
                 makePickList(jsonObj.webUserList, "webUserId", "Username", "cspUserPickList");
             }
-            
+
             function setSessionPickList(httpRequest) {
 
                 console.log("setPickList was called, see next line for object holding list of roles");
@@ -123,20 +123,14 @@ var campaignSessionPostingCRUD = {}; // globally available object
                 if (undefinedCheck(jsonObj.Notes)) {
                     document.getElementById("cspDescError").innerHTML = jsonObj.Notes;
                 }
-            } else
-            {
-                document.getElementById("cspUserError").innerHTML = "";
-                document.getElementById("cspSessionError").innerHTML = "";
-                document.getElementById("cspNameError").innerHTML = "";
-                document.getElementById("cspDescError").innerHTML = "";
-                document.getElementById("responseText").innerHTML = jsonObj.successMsg;
+            } else {
                 campaignSessionPostingCRUD.list();
-                
+
             }
         }
-        
-        function undefinedCheck(param){ 
-            if(typeof param === typeof Undefined){
+
+        function undefinedCheck(param) {
+            if (typeof param === typeof Undefined) {
                 console.log("runs");
                 return false;
             }

@@ -181,3 +181,7 @@ is smaller than the specified value */
    vertical-align: middle;
    display: table-cell;
 }
+
+textarea{
+    resize: none;
+}
