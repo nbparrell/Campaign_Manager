@@ -9,6 +9,7 @@
 
 .dataListButton{
     height:49px;
+    cursor: pointer;
 }
 
 .show{
@@ -38,6 +39,7 @@
     color:gray;
     font-size: 10pt;
     padding: 12% .2%;
+    cursor: pointer;
 }
 
 a:hover{
