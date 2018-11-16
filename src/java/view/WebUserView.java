@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class WebUserView {
+
     //Uses StringDataList.addUserListInfo
     public static StringDataList allUsersAPI(DbConn dbc) {
         int type = 0;
@@ -37,6 +38,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addClassesList
     public static StringDataList allClassesAPI(DbConn dbc) {
         int type = 0;
@@ -62,6 +64,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addRacesList
     public static StringDataList allRacesAPI(DbConn dbc) {
         int type = 0;
@@ -87,6 +90,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addCampaignListingList
     public static StringDataList allSessionsAPI(DbConn dbc) {
         int type = 0;
@@ -116,6 +120,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addCampaignSignUp
     public static StringDataList listAssocAPI(DbConn dbc) {
         int type = 1;
@@ -157,6 +162,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addCampaignListing
     public static StringDataList listOtherAPI(DbConn dbc) {
         int type = 2;
@@ -187,6 +193,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addUserInfoWithId
     public static StringDataList loginAPI(DbConn dbc, String username, String password) {
         int type = 0;
@@ -223,6 +230,7 @@ public class WebUserView {
 
         return sdl;
     }
+
     //Sets StringDataUser.errorMsg on error or StringDataUser.successMsg on success
     public static StringDataUser updateCampaignSessionAPI(DbConn dbc, StringDataUser insertData) {
         StringDataUser sd = new StringDataUser();
@@ -263,6 +271,7 @@ public class WebUserView {
 
         return sd;
     }
+
     //Sets StringDataUser.errorMsg on error or StringDataUser.successMsg on success
     public static StringDataUser updateCampaignSessionPostingAPI(DbConn dbc, StringDataUser insertData) {
         StringDataUser sd = new StringDataUser();
@@ -294,6 +303,7 @@ public class WebUserView {
 
         return sd;
     }
+
     //Sets StringDataUser.errorMsg on error or StringDataUser.successMsg on success
     public static StringDataUser getCharacterAPI(DbConn dbc, String Character_ID) {
         int type = 0;
@@ -336,6 +346,7 @@ public class WebUserView {
         }
         return sd;
     }
+
     //Sets StringDataUser.errorMsg on error or StringDataUser.successMsg on success
     public static void populateRaceClassInfo(StringDataUser insertData, StringDataUser raceClassInfo) {
         System.out.print("Attempting to query database for character race info");
@@ -367,61 +378,79 @@ public class WebUserView {
             insertData.errorMsg = "Exception thrown in WebUserView.populateRaceClassInfo: " + e.getMessage();
         }
     }
+
     //Sets StringDataUser.errorMsg on error or StringDataUser.successMsg on success.
     public static StringDataUser insertUsersAPI(DbConn dbc, StringDataUser insertData) {
         int type = 0;
         //StringDataList sdl = new StringDataList();
         StringDataUser sd = new StringDataUser();
-        try {
-            String sql = "INSERT INTO web_user "
-                    + "(user_username, "
-                    + "user_email, "
-                    + "user_password, "
-                    + "user_first_name, "
-                    + "user_last_name, "
-                    + "membership_fee, "
-                    + "birthday, "
-                    + "user_role_id) "
-                    + "values (?,?,?,?,?,?,?,?)";
+        if (ValidationUtils.insertUserValidation(insertData, sd)) {
+            try {
+                String sql = "INSERT INTO web_user "
+                        + "(user_username, "
+                        + "user_email, "
+                        + "user_password, "
+                        + "user_first_name, "
+                        + "user_last_name, "
+                        + "membership_fee, "
+                        + "birthday, "
+                        + "user_role_id) "
+                        + "values (?,?,?,?,?,?,?,?)";
 
-            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
-            stmt.setString(1, insertData.Username);
-            stmt.setString(2, insertData.userEmail); // string type is simple
-            stmt.setString(3, insertData.userPassword);
-            stmt.setString(4, insertData.firstName);
-            stmt.setString(5, insertData.lastName);
-            stmt.setBigDecimal(6, ValidationUtils.decimalConversion(insertData.membershipFee));
-            stmt.setDate(7, ValidationUtils.dateConversion(insertData.birthday));
-            stmt.setInt(8, ValidationUtils.integerConversion(insertData.userRoleId));
+                PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+                stmt.setString(1, insertData.Username);
+                stmt.setString(2, insertData.userEmail); // string type is simple
+                stmt.setString(3, insertData.userPassword);
+                stmt.setString(4, insertData.firstName);
+                stmt.setString(5, insertData.lastName);
+                stmt.setBigDecimal(6, ValidationUtils.decimalConversion(insertData.membershipFee));
+                stmt.setDate(7, ValidationUtils.dateConversion(insertData.birthday));
+                stmt.setInt(8, ValidationUtils.integerConversion(insertData.userRoleId));
 
-            int results = stmt.executeUpdate();
-            if (results > 1) {
-                System.out.print("Added more then one campaign: " + results);
-                sd.errorMsg = ("added more then one campaign: " + results);
-                //sdl.add(sd);
-            } else {
-                System.out.print("Added one campaign");
-                sd.successMsg = ("Successfully added one campaign");
-                //sdl.add(sd);
-            }
-            stmt.close();
-        } catch (SQLException e) {
-            //System.out.print(e.toString());
-            System.out.print("Error message: " + e.getMessage());
-            if (e.getMessage().contains("username")) {
-                sd.Username = "This username already exists please choose another one";
-                sd.errorMsg = "Try again";
-            } else if (e.getMessage().contains("email")) {
-                sd.userEmail = "This email already exists please choose another one";
-                sd.errorMsg = "Try again";
-            } else {
-                sd.errorMsg = "Exception thrown in WebUserView.insertUsersAPI(): " + e.getMessage();
+                int results = stmt.executeUpdate();
+                if (results > 1) {
+                    System.out.print("Added more then one campaign: " + results);
+                    sd.errorMsg = ("added more then one campaign: " + results);
+                    //sdl.add(sd);
+                } else {
+                    System.out.print("Added one campaign");
+                    sd.successMsg = ("Successfully added one campaign");
+                    //sdl.add(sd);
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                //System.out.print(e.toString());
+                int friendlyMessageExists = 1;
+                System.out.print("Error message: " + e.getMessage());
+                String eMessage = e.getMessage();
+                while(eMessage != null){
+                    if(eMessage.contains("username")){
+                       sd.Username = "This username already exists please choose another one"; 
+                    }else if(eMessage.contains("email")){
+                        sd.userEmail = "This email already exists please choose another one";
+                    }
+                    else{
+                        friendlyMessageExists = 0;
+                    }
+                    try{
+                        eMessage = e.getNextException().getMessage();
+                    }catch(Exception ex){
+                        eMessage = null;
+                        System.out.print(ex.getMessage());
+                    }
+                }
+                if (friendlyMessageExists == 1) {
+                    sd.errorMsg = "Try again";
+                } else {
+                    sd.errorMsg = "Exception thrown in WebUserView.insertUsersAPI(): " + e.getMessage();
+                }
             }
             //sdl.add(sd);
         }
 
         return sd;
     }
+
     //Sets StringDataUser.errorMsg on error or StringDataUser.successMsg on success
     public static StringDataUser insertCharactersAPI(DbConn dbc, StringDataUser insertData) {
         int type = 0;
@@ -465,34 +494,34 @@ public class WebUserView {
             //Calc Str
             stat = ValidationUtils.integerConversion(insertData.Strength);
             statBonus = ValidationUtils.integerConversion(raceClassInfo.strBonus);
-            totalStat = stat+statBonus;
+            totalStat = stat + statBonus;
             stmt.setInt(9, totalStat);
             //Calc Dex
             stat = ValidationUtils.integerConversion(insertData.Dexterity);
             statBonus = ValidationUtils.integerConversion(raceClassInfo.dexBonus);
-            totalStat = stat+statBonus;
+            totalStat = stat + statBonus;
             stmt.setInt(10, totalStat);
             //Calc Con
             stat = ValidationUtils.integerConversion(insertData.Constitution);
             statBonus = ValidationUtils.integerConversion(raceClassInfo.conBonus);
-            totalStat = stat+statBonus;
+            totalStat = stat + statBonus;
             stmt.setInt(11, totalStat);
             //Calc Int
             stat = ValidationUtils.integerConversion(insertData.Intelligence);
             statBonus = ValidationUtils.integerConversion(raceClassInfo.intBonus);
-            totalStat = stat+statBonus;
+            totalStat = stat + statBonus;
             stmt.setInt(12, totalStat);
             //Calc Wis
             stat = ValidationUtils.integerConversion(insertData.Wisdom);
             statBonus = ValidationUtils.integerConversion(raceClassInfo.wisBonus);
-            totalStat = stat+statBonus;
+            totalStat = stat + statBonus;
             stmt.setInt(13, totalStat);
             //Calc Chr
             stat = ValidationUtils.integerConversion(insertData.Charisma);
             statBonus = ValidationUtils.integerConversion(raceClassInfo.chrBonus);
-            totalStat = stat+statBonus;
+            totalStat = stat + statBonus;
             stmt.setInt(14, totalStat);
-            
+
             stmt.setString(15, raceClassInfo.character_prof);
             stmt.setInt(16, ValidationUtils.integerConversion(insertData.webUserId));
 
@@ -524,6 +553,7 @@ public class WebUserView {
 
         return sd;
     }
+
     //Uses StringDataList.addUserInfo
     public static StringDataList listUsersAPI(DbConn dbc) {
         int type = 0;
@@ -555,6 +585,7 @@ public class WebUserView {
         }
         return sdl;
     }
+
     //Uses StringDataList.addCharacterInfo
     public static StringDataList listCharactersAPI(DbConn dbc) {
         int type = 0;
