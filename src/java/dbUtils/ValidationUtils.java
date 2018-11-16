@@ -1,4 +1,6 @@
 package dbUtils;
+
+import model.webUser.*;
 import java.util.StringTokenizer;
 
 public class ValidationUtils {
@@ -32,7 +34,7 @@ public class ValidationUtils {
             return null;
         }
         try {
-            StringTokenizer tkn = new StringTokenizer(val,"-");
+            StringTokenizer tkn = new StringTokenizer(val, "-");
             String year = tkn.nextToken();
             String month = tkn.nextToken();
             String day = tkn.nextToken();
@@ -134,6 +136,33 @@ public class ValidationUtils {
             return "Please shorten to [" + val.substring(0, maxlen) + "]";
         } else {
             return ""; // input is good
+        }
+    }
+
+    public static boolean insertUserValidation(StringDataUser inputData, StringDataUser responseData) {
+        if (inputData.userPassword.equals(inputData.userPassword2) && !inputData.userPassword.equals("") && !inputData.Username.equals("") && !inputData.userEmail.equals("")
+                && !inputData.firstName.equals("") && !inputData.lastName.equals("")) {
+            return true;
+        } else {
+            if(inputData.userPassword.equals("")){
+                responseData.userPassword = "Input is required";
+            }else{
+                responseData.userPassword = "Passwords need to match";
+            }
+            if(inputData.Username.equals("")){
+                responseData.Username = "Input is required";
+            }
+            if(inputData.userEmail.equals("")){
+                responseData.userEmail = "Input is required";
+            }
+            if(inputData.firstName.equals("")){
+                responseData.firstName = "Input is required";
+            }
+            if(inputData.lastName.equals("")){
+                responseData.lastName = "Input is required";
+            }
+            responseData.errorMsg = "Try again";
+            return false;
         }
     }
 }

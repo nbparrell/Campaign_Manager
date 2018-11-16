@@ -99,32 +99,50 @@ var userCRUD = {}; // globally available object
             var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
             console.log("here is JSON object (holds error messages.");
             if (undefinedCheck(jsonObj.errorMsg)) {
-                if (undefinedCheck(jsonObj.username)) {
-                    document.getElementById("userUsernameError").innerHTML = jsonObj.username;
+                if (undefinedCheck(jsonObj.Username)) {
+                    document.getElementById("userUsernameError").innerHTML = jsonObj.Username;
+                }else{
+                    document.getElementById("userUsernameError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userEmail)) {
                     document.getElementById("userEmailError").innerHTML = jsonObj.userEmail;
+                }else{
+                    document.getElementById("userEmailError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.firstName)) {
-                    document.getElementById("userFNameError").innerHTML = jsonObj.username;
+                    document.getElementById("userFNameError").innerHTML = jsonObj.firstName;
+                }else{
+                    document.getElementById("userFNameError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.lastName)) {
-                    document.getElementById("userLNameError").innerHTML = jsonObj.userEmail;
+                    document.getElementById("userLNameError").innerHTML = jsonObj.lastName;
+                }else{
+                    document.getElementById("userLNameError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userPassword)) {
                     document.getElementById("userPasswordError").innerHTML = jsonObj.userPassword;
+                }else{
+                    document.getElementById("userPasswordError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userPassword2)) {
                     document.getElementById("userPassword2Error").innerHTML = jsonObj.userPassword2;
+                }else{
+                    document.getElementById("userPassword2Error").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.birthday)) {
                     document.getElementById("birthdayError").innerHTML = jsonObj.birthday;
+                }else{
+                    document.getElementById("birthdayError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.membershipFee)) {
                     document.getElementById("membershipFeeError").innerHTML = jsonObj.membershipFee;
+                }else{
+                    document.getElementById("membershipFeeError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userRoleId)) {
                     document.getElementById("userRoleIdError").innerHTML = jsonObj.userRoleId;
+                }else{
+                    document.getElementById("userRoleIdError").innerHTML = "";
                 }
             } else
             {
