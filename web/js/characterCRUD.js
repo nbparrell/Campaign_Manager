@@ -124,10 +124,10 @@ var characterCRUD = {}; // globally available object
                 var myData = escape(JSON.stringify(userInputObj));
                 var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
                 ajax(url, processInsert, "recordError");
-            }else{
-                
+            } else {
+
             }
-            
+
             function processInsert(httpRequest) {
                 console.log("processInsert was called here is httpRequest.");
                 console.log(httpRequest);
@@ -245,7 +245,7 @@ var characterCRUD = {}; // globally available object
                     obj.webUserList[i].View = "<img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view(" + id + ",this)';/>";
 
                     // remove a property from each object in webUserList 
-                    delete obj.webUserList[i].userPassword2;
+                    delete obj.webUserList[i].Character_id;
                 }
                 // buildTable Parameters: 
                 // First:  array of objects that are to be built into an HTML table.
@@ -341,6 +341,35 @@ var characterCRUD = {}; // globally available object
             }
         }
     };
+    characterCRUD.Delete = function (id, icon) {
+        if (confirm("Do you really want to delete user " + id + "? ")) {
+            console.log("icon that was passed into JS function is printed on next line");
+            console.log(icon);
+            // HERE YOU HAVE TO CALL THE DELETE API and the success function should run the 
+            // following (delete the row that was clicked from the User Interface).
+            alert('webAPIs/deleteUserAPI.jsp?deleteId=' + id);
+            ajaxCall('webAPIs/deleteUserAPI.jsp?deleteId=' + id, updateTable, setDeleteError);
+            function updateTable(httpRequest) {
+                var msg = JSON.parse(httpRequest.responseText);
+                console.log(msg.errorMsg)
+                if (msg.errMsg === null) {
+                    alert("runs");
+                    // icon's parent is cell whose parent is row 
+                    var dataRow = icon.parentNode.parentNode;
+                    var rowIndex = dataRow.rowIndex - 1; // adjust for oolumn header row?
+                    var dataTable = dataRow.parentNode;
+                    dataTable.deleteRow(rowIndex);
+                } else {
+                    alert("error mesasge is not ''");
+                    alert(msg.errorMsg);
+                }
+            }
 
+            function setDeleteError(httpRequest) {
+                var msg = JSON.parse(httpRequest.responseText);
+                alert(msg.errorMsg);
+            }
+        }
+    };
 
 }());  // the end of the IIFE

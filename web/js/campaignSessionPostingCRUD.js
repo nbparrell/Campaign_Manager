@@ -162,9 +162,9 @@ var campaignSessionPostingCRUD = {}; // globally available object
             }
 
             for (var i = 0; i < obj.webUserList.length; i++) {
-
-                // remove a property from each object in webUserList 
-                delete obj.webUserList[i].userPassword2;
+                var id = obj.webUserList[i].campaign_session_posting_id;
+                obj.webUserList[i].delete = "<img class='iconBtn' src='icons/delete.png'  onclick='campaignSessionPostingCRUD.Delete(" + id + ",this)'  />";
+                delete obj.webUserList[i].campaign_session_posting_id;
             }
 
             // buildTable Parameters: 
@@ -172,6 +172,44 @@ var campaignSessionPostingCRUD = {}; // globally available object
             // Second: string that is database error (if any) or empty string if all OK.
             // Third:  reference to DOM object where built table is to be stored. 
             buildTable(obj.webUserList, obj.dbError, dataList);
+        }
+    };
+
+    campaignSessionPostingCRUD.Delete = function (id, icon) {
+        if (confirm("Do you really want to delete campaign posting " + id + "? ")) {
+            console.log("icon that was passed into JS function is printed on next line");
+            console.log(icon);
+            // HERE YOU HAVE TO CALL THE DELETE API and the success function should run the 
+            // following (delete the row that was clicked from the User Interface).
+            alert('webAPIs/deletePostingAPI.jsp?deleteId=' + id);
+            ajaxCall('webAPIs/deletePostingAPI.jsp?deleteId=' + id, updateTable, setDeleteError);
+            function updateTable(httpRequest) {
+                var msg = JSON.parse(httpRequest.responseText);
+                console.log(msg.errorMsg)
+                if (undefinedCheck(msg.successMsg)) {
+                    // icon's parent is cell whose parent is row 
+                    var dataRow = icon.parentNode.parentNode;
+                    var rowIndex = dataRow.rowIndex - 1; // adjust for oolumn header row?
+                    var dataTable = dataRow.parentNode;
+                    dataTable.deleteRow(rowIndex);
+                    alert(msg.successMsg);
+                } else {
+                    alert(msg.errorMsg);
+                }
+            }
+
+            function setDeleteError(httpRequest) {
+                var msg = JSON.parse(httpRequest.responseText);
+                alert(msg.errorMsg);
+            }
+
+            function undefinedCheck(param) {
+                if (typeof param === typeof Undefined) {
+                    console.log("runs");
+                    return false;
+                }
+                return true;
+            }
         }
     };
 

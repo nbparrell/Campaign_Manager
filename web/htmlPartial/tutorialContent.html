@@ -14,23 +14,95 @@ and open the template in the editor.
             padding-top: 5px;
             padding-bottom: 5px;
         }
+        b{
+            font-size: 15px;
+        }
+        .listTitle{
+            font-size: 18px;
+        }
+        img{
+            height:700px;
+            width:850px;
+        }
     </style>
     <div class="infoSection" style='width: 100%'>
         <div>
-        <h1>Supporting User Characters in Campaign Manager</h1>
-        <a href="/FA18_3308_tuf44757/tutorial/proposal.pdf" target="_blank" style="color: ivory">Proposal</a>
+            <h1>Supporting User Characters in Campaign Manager</h1>
+            <a href="/FA18_3308_tuf44757/tutorial/proposal.pdf" target="_blank" style="color: ivory">Proposal</a>
         </div>
-        <h2>Quality of Life enhancement</h2>
-        <h3>DropDown Menu</h3>
-        <p>
-            The Drop Down menu had always been causing me problems, so one of the things that I wanted to improve
-            when developing this tutorial is how the Drop Down menu functioned.
+        <div class="functionalSpec">
+            <h2>Functional Specifications:</h2>
+            <pre>
+                <b class="listTitle">1. Making the drop down menu more dynamic.</b>
+                    - Updated the <b>dropDownMenu.js</b> to allow for the user to click anywhere on the web page to close an opened
+                      drop down menu tab.
+                
+                <b class="listTitle">2. User must be logged into access the character features.</b>
+                    - In the tutorial tab the user will be blocked from accessing any information regarding the characters
+                      link unless they are logged in.
 
-            I was able to create it with straight html and css objects, manipulating it with Javascript.
-        </p>
+                <b class="listTitle">3. Will add three new tables to support the implementation for create character.</b>
+                    - The three new tables are <b>user_characters</b>, <b>character_classes</b>, and <b>character_races</b>.
+                        * <b>user_characters</b> will be a three way associative table having three foreign keys connecting it
+                         to the <b>characters_races</b> table, <b>character_classes</b> table, and the <b>web_user</b> table.
 
-        <h4>HTML:</h4>
-        <pre class = "code">
+                <b class="listTitle">4. Insert new character into user_characters table.</b>
+                    - The user will be allowed, if logged in, to create a new user_characters record
+                      through a webpage on the website.
+
+                <b class="listTitle">5. Inserted characters will be automatically associated to the logged in user.</b>
+                    - Since the user has to be logged in I will leverage the fact that we are storing their user id in a
+                      session object and associate it with the create character json information that is sent to the server.
+
+                <b class="listTitle">6. Users will be able to pick which race and class they are from a auto populated drop down list.</b>
+                    - The create character screen will include two auto populated drop down lists that will contain all the 
+                      available classes and races that the user can select from. The value associated to these list items are
+                      the <b>character_races_id</b> for race and the <b>character_classes_id</b> for the class.
+
+                <b class="listTitle">7. Will add three new tables to support the implementation for create character.</b>
+                    - The three new tables are <b>user_characters</b>, <b>character_classes</b>, and <b>character_races</b>.
+                        * <b>user_characters</b> will be a three way associative table having three foreign keys connecting it
+                         to the <b>characters_races</b> table, <b>character_classes</b> table, and the <b>web_user</b> table.
+
+                <b class="listTitle">8. Server will leverage the new database tables to fill in additional data for character creation.</b>
+                    - In dungeons and dragons you have the option to select a race and a class for your character. These races and classes
+                      include additional information that will affect your character. Your choice of race can change the value of your stats
+                      do to the fact that they come with stat bonuses. IE you create your character and roll a 15 for your charisma stat but you
+                      had decided that you will play the race human. Humans have a stat bonus to charisma of +1. So when the character is create
+                      with a race of human my solution will automatically add that bonus to the 15 making it a 16 in the database.
+                        Fields that will be affected by this in the <b>user_characters</b> table are:
+                            * <b>user_characters_str</b> (modified by the <b>character_races_str_bonus</b> in the <b>character_races</b> table)
+                            * <b>user_characters_dex</b> (modified by the <b>character_races_dex_bonus</b> in the <b>character_races</b> table)
+                            * <b>user_characters_con</b> (modified by the <b>character_races_con_bonus</b> in the <b>character_races</b> table)
+                            * <b>user_characters_int</b> (modified by the <b>character_races_int_bonus</b> in the <b>character_races</b> table)
+                            * <b>user_characters_wis</b> (modified by the <b>character_races_wis_bonus</b> in the <b>character_races</b> table)
+                            * <b>user_characters_cha</b> (modified by the <b>character_races_chr_bonus</b> in the <b>character_races</b> table)
+                            * <b>user_characters_equipment</b> (modified by the <b>character_classes_starting_equipment</b> 
+                                                               in the <b>character_classes</b> table)
+                            * <b>user_characters_prof</b> (modified by concatenating <b>character_races_prof</b> and <b>character_classes_prof</b> 
+                                                          in the <b>character_races</b> and <b>character_classes</b> tables respectively)
+                            
+                <b class="listTitle">9. View characters information based on which character is selected.</b>
+                    - When the user views the table that lists all the characters that have been made, 
+                      there will be a magnifying glass button that they can click on each row in the table.
+                    - When the button is clicked it will replace the contents of the webpage with the viewCharacter.html
+                      page. This page will show all the relevant information pertaining to the character selected.
+                
+            </pre>
+        </div>
+        
+        <div class="DropDownMenu">
+            <h2>Quality of Life enhancement</h2>
+            <h3>DropDown Menu</h3>
+            <p>
+                The Drop Down menu had always been causing me problems, so one of the things that I wanted to improve
+                when developing this tutorial is how the Drop Down menu functioned.
+
+                I was able to create it with straight html and css objects, manipulating it with Javascript.
+            </p>
+
+            <h4>HTML:</h4>
+            <pre class = "code">
         &lt;div id=&quot;title&quot;&gt;
                 Campaign Manager
             &lt;/div&gt;
@@ -71,11 +143,11 @@ and open the template in the editor.
                 &lt;/div&gt;
                 &lt;div class=&quot;navPadding tab&quot;&gt;&lt;a class=&quot;btn&quot; onclick = &quot; ajaxCall('htmlPartial/blogContent.html', setContent, setError)&quot;&gt;Blog&lt;/a&gt;&lt;/div&gt;
             &lt;/div&gt;
-        </pre>
+            </pre>
 
-        <h4>CSS:</h4>
-        <p>
-        <pre class = "code">
+            <h4>CSS:</h4>
+            <p>
+            <pre class = "code">
             .stopFloat { /* We float divs left in desktop layout to create multiple columns. Put
                 a "clear:both" rule where you want to stop the floating (like page eject). */
                 clear:both;
@@ -305,12 +377,12 @@ and open the template in the editor.
             a:hover{
                 background-color:gray;
             }
-        </pre>
-    </p>
+            </pre>
 
-    <h4>JavaScript:</h4>
-    <p>
-    <pre class = "code">
+
+            <h4>JavaScript:</h4>
+            <p>
+            <pre class = "code">
             function toggleChild(listElement) {
                 if (document.getElementById(listElement).classList.contains("show")) {
                     document.getElementById(listElement).classList.remove('show');
@@ -350,17 +422,17 @@ and open the template in the editor.
                     console.error(error);
                 }
             }
-    </pre>
-</p>
+            </pre>
+            <p>
 
-<h4>Why this works</h4>
-<p>
-<pre>
+            <h4>Why this works</h4>
+            <p>
+            <pre>
         How this code works is that it takes advantage of the fact that you are able to manipulate the class attribute on html tags
         For the drop down menus I create 3 div tags one as the container that hold the button and drop down menu, one that holds the button, 
         and the other which is the drop down menu but it has a display property of none as shown in our styling:
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
         .dataListContent {
                 margin-top: 45px;
                 background-color:#3C4621;
@@ -374,16 +446,16 @@ and open the template in the editor.
                 position: absolute;
                 box-shadow: 5px 8px 5px #111409;
             }
-</pre>
-<pre>
+            </pre>
+            <pre>
         In order to show our dropdown menu we create a function that will update the the class attribute in our div that is holding the
         drop down information by passing its ID to the function all and then adding show to it's class attribute and then changing
         the style so that display: none is now display: block.
         We do the same thing in reverse to have it disappear when we click on the button again. So find the div with the dropdown menu information
         by passing its ID when the button is clicked and then removing show from the class attribute and changing the styling back to display: none
         from display: block.
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
         function toggleChild(listElement) {
                 if (document.getElementById(listElement).classList.contains("show")) {
                     document.getElementById(listElement).classList.remove('show');
@@ -393,15 +465,14 @@ and open the template in the editor.
                     document.getElementById(listElement).style.display = "block";
                 }
             }
-</pre>
-<pre>
+            </pre>
+            <pre>
         I continued on with this implementation and wanted to make it so that I could click anywhere in the web page in order to close the
         dropdown menu, excluding of course the menu it self.
         
         So I developed this code based of the W3schools example
-</pre>
-<pre class = "code">
-
+            </pre>
+            <pre class = "code">
         window.onclick = function (event) {
 
                 var tab;
@@ -429,8 +500,8 @@ and open the template in the editor.
                 } catch (error) {
                     console.error(error);
                 }
-</pre>
-<pre>
+            </pre>
+            <pre>
         What this code does is check every onclick event that happens in the window then checks what object was clicked.
         If it was one of the pre defined buttons in the else if (#accountBtn,  #dataBtn or one of the other buttons)
         it will then check all other datalists but the div that has a class attribute that holds the corresponding
@@ -441,18 +512,19 @@ and open the template in the editor.
 
         Now lastly if no button is clicked the tag the is passed will be none which is not a class attribute on any of the
         dataListContent objects so each will be closed in turn.
-</pre>
+            </pre>
 
-</p>
 
-<h4>Try It Yourself</h4>
-<p>
-    Here is a link the the W3schools editor and it has this code pre populated:
-    <br><a class="WhiteLink" href="https://www.w3schools.com/code/tryit.asp?filename=FX384UEH4VJ3" target="_blank" style="font-size:20px" >Try It</a></br>
-</p>
 
-<h2>Database Changes</h2>
-<pre>
+            <h4>Try It Yourself</h4>
+            <p>
+                Here is a link the the W3schools editor and it has this code pre populated:
+                <br><a class="WhiteLink" href="https://www.w3schools.com/code/tryit.asp?filename=FX384UEH4VJ3" target="_blank" style="font-size:20px" >Try It</a></br>
+            </p>
+        </div>
+        <div class="DataBaseChanges">
+            <h2>Database Changes</h2>
+            <pre>
         In order to support the new characters I had to create the appropriate tables in the database to support what I have implemented.
         I first created the user_characters, character_races, and character_classes tables with foreign keys in the user_characters
         table that connected it to the web_user, character_races and character_classes tables respectively.
@@ -460,13 +532,16 @@ and open the template in the editor.
         One such example is that races often times give stat bonuses for taking that race. With this implementation the user would only have to pick
         the race and the backend would automatically add in the bonus to the stat when it goes to insert the new character into the table.
 
-</pre>
+            </pre>
 
-<h2>Creating a New Character</h2>
-<pre>
+            <img src="/FA18_3308_tuf44757/pics/CampaignManagerDBModel.png"/>
+        </div>
+        <div class="CreatingNewCharacter">
+            <h2>Creating a New Character</h2>
+            <pre>
     This html page is used to collect all necessary information fro creating a character:
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
 
     &lt;div class=&quot;insertArea&quot;&gt;
         &lt;div class=&quot;insertAreaInput&quot; style=&quot;height: 700px&quot;&gt;
@@ -561,17 +636,16 @@ and open the template in the editor.
             &lt;/table&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-</pre>
+            </pre>
 
-<pre>
-
+            <pre>
     <b>characterCRUD.insertSave()</b> Is the function call that is used to actually insert the information
     provided by this html page.
     
-    The characterCRUD.js file is the file used by every function that involves reaching out to the server
+    The <b>characterCRUD.js</b> file is the file used by every function that involves reaching out to the server
     and making a request of the database whether that is an insert, query, update, or delete.
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
 
     characterCRUD.js:
         var characterCRUD = {}; // globally available object
@@ -763,12 +837,12 @@ and open the template in the editor.
                         var dataList = document.createElement("div");
                         navibar.id = "navibar";
                         dataList.id = "dataList"; // set the id so it matches CSS styling rule.
-                        navibar.innerHTML = "<h2>Characters <img class='iconBtn' src='icons/insert.png' onclick='characterCRUD.startInsert();'/> <img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/></h2>";
+                        navibar.innerHTML = "&lt;h2&gt;Characters &lt;img class='iconBtn' src='icons/insert.png' onclick='characterCRUD.startInsert();'/&gt; &lt;img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/&gt;&lt;/h2&gt;";
                         document.getElementById("content").appendChild(navibar)
                         document.getElementById("navibar").appendChild(dataList);
                         ajax('webAPIs/listCharactersAPI.jsp', setListUI, 'dataList');
                     } catch (err) {
-                        target.innerHTML = "<h4>You are not logged in</h4>";
+                        target.innerHTML = "&lt;h4&gt;You are not logged in&lt;/h4&gt;";
                         console.log(httpRequest);
                     }
 
@@ -784,7 +858,7 @@ and open the template in the editor.
                             dataList.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
                             return;
                         }
-                        var editButton = "<img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/>";
+                        var editButton = "&lt;img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view();'/&gt;";
 
                         for (var i = 0; i < obj.webUserList.length; i++) {
 
@@ -792,7 +866,7 @@ and open the template in the editor.
                             // invokes a JS function call that passes in the web user id that should be deleted
                             // from the database and a reference to itself (the span tag that was clicked)
                             var id = obj.webUserList[i].Character_id;
-                            obj.webUserList[i].View = "<img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view(" + id + ", this)';/>";
+                            obj.webUserList[i].View = "&lt;img class='iconBtn' src='icons/view.png' onclick='characterCRUD.view(&quot; + id + &quot;, this)';/&gt;";
 
                             // remove a property from each object in webUserList 
                             delete obj.webUserList[i].userPassword2;
@@ -894,12 +968,11 @@ and open the template in the editor.
 
 
         }());  // the end of the IIFE
-</pre>
-<pre>
-    
+            </pre>
+            <pre>
         For this feature we will be looking at the insert function
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
         characterCRUD.insertSave = function () {
                 ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
                 function getInsertInfo(httpRequest) {
@@ -1006,26 +1079,27 @@ and open the template in the editor.
 
                 }
             };
-</pre>
-<pre>
-
+            </pre>
+            <pre>
         In this function we collect all the information from the user and send it over
         to the server to create the character. If it is successful it will call the
-        characterCRUD.list() function listing out all characters in the database
+        <b>characterCRUD.list()</b> function listing out all characters in the database
         including the one just added.
 
-        After the function collects the information from the html page is packages it
+        After the function collects the information from the html page it packages it
         into a json object and sends it via an ajax call to 
+            </pre>
+            <pre class="code">
         var url = "webAPIs/insertCharacterAPI.jsp?jsonData=" + myData;
-
-        The insertCharacterAPI.jsp will then take that information and perform an insert 
+            </pre>
+            <pre>
+        The <b>insertCharacterAPI.jsp</b> will then take that information and perform an insert 
         using the given information.
 
         
         <b>insertCharacterAPI.jsp:</b>
-</pre>
-<pre class = "code">
-        
+            </pre>
+            <pre class = "code">
         <%@page contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%> 
 
         <%@page language="java" import="view.WebUserView" %>
@@ -1069,17 +1143,16 @@ and open the template in the editor.
             out.print(gson.toJson(errorMsgs).trim());
             dbc.close();
         %>
-</pre>
-<pre>
-
-        This jsp page is only responsible for creating a new StringDataUser Object called errorMsg
+            </pre>
+            <pre>
+        This jsp page is only responsible for creating a new <b>StringDataUser</b> Object called <b>errorMsg</b>
         that will be sent back to the website as a json Object. How this works is that in the
         out.print(gson.toJson(errorMsgs).trim()); line the out stream is pointing to the website
         and passing the new json object back.
 
-        errorMsgs is populated by calling the <b>WebUserView.insertCharactersAPI(dbc, insertData);</b>
-</pre>
-<pre class = "code">
+        <b>errorMsgs</b> is populated by calling the <b>WebUserView.insertCharactersAPI(dbc, insertData);</b>
+            </pre>
+            <pre class = "code">
         public static StringDataUser insertCharactersAPI(DbConn dbc, StringDataUser insertData) {
             int type = 0;
             //StringDataList sdl = new StringDataList();
@@ -1181,15 +1254,14 @@ and open the template in the editor.
 
             return sd;
         }
-</pre>
-<pre>
-        What this does is it takes the values given to us by the insertData object passed from
-        the insertCharacterAPI.jsp and modifies the data while also performing another function 
+            </pre>
+            <pre>
+        What this does is it takes the values given to us by the <b>insertData</b> object passed from
+        the <b>insertCharacterAPI.jsp</b> and modifies the data while also performing another function 
         call to <b>populateRaceClassInfo(insertData, raceClassInfo);</b> which creates another 
-        StringDataUser raceClassInfo
-</pre>
-<pre class = "code">
-
+        <b>StringDataUser raceClassInfo</b>
+            </pre>
+            <pre class = "code">
         public static void populateRaceClassInfo(StringDataUser insertData, StringDataUser raceClassInfo) {
             System.out.print("Attempting to query database for character race info");
             DbConn dbc = new DbConn();
@@ -1219,9 +1291,10 @@ and open the template in the editor.
                 System.out.print("Failed to Query database " + e.getMessage());
                 insertData.errorMsg = "Exception thrown in WebUserView.populateRaceClassInfo: " + e.getMessage();
             }
+            dbc.close();
         }
-</pre>
-<pre>
+            </pre>
+            <pre>
         This function will then query the database to get back all the other information that we plan
         on inserting along with the passed information from the website. This is possible because part
         of the information that is being sent over is the race_id and class_id from the website which
@@ -1232,13 +1305,13 @@ and open the template in the editor.
                 you will run into a cursor error where it is saying that the cursor is before the
                 result set.
 
-        This new information is then packaged into the new StringDataUser object raceClassInfo
-        that was created in the insertCharactersAPI() function. It does that by
-        using the raceClassInfo.setRaceClassInfo(results);
+        This new information is then packaged into the new StringDataUser object <b>raceClassInfo</b>
+        that was created in the <b>insertCharactersAPI()</b> function. It does that by
+        using the <b>raceClassInfo.setRaceClassInfo(results)</b>;
 
         <b>StringDataUser.setRaceClassInfo(results):</b>
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
             public void setRaceClassInfo(ResultSet results) {
                 try {
                     System.out.print(results.getMetaData());
@@ -1265,12 +1338,11 @@ and open the template in the editor.
                         + e.getMessage();
                 }
             }
-</pre>
-<pre>
-
-        The StringDataUser class is a general class that holds all the values need to create a JSON object.
-</pre>
-<pre class = "code">
+            </pre>
+            <pre>
+        The <b>StringDataUser</b> class is a general class that holds all the values need to create a JSON object.
+            </pre>
+            <pre class = "code">
                 //Indentifying information
                 public String campaign_session_posting_name;
                 public String Name;
@@ -1336,63 +1408,102 @@ and open the template in the editor.
                 //Message Passing Objects
                 public String successMsg;
                 public String errorMsg;
-</pre>
-<pre>
-                
+            </pre>
+            <pre>    
         Since these values are null they are not included in any JSON object created out of the object.
         This allows for the use of setter methods to populate the object with the information that we
         want when called allowing for dynamic creation of JSON objects.
 
-        This being said it is being leveraged in the setRaceClassInfo function to assign all the
+        This being said, it is being leveraged in the <b>setRaceClassInfo</b> function to assign all the
         values that are in the character_races and character_classes tables that are needed to be
-        inserted into the user_characters table. Is is also cancatinating the character_races_prof
+        inserted into the user_characters table. It is also concatenating the character_races_prof
         and the character_classes_prof to the character_prof using this code.
+            </pre>
+            <pre class = "code">
         this.character_prof = FormatUtils.formatString(results.getObject("character_races_prof"));
         this.character_prof = this.character_prof + " " + FormatUtils.formatString(results.getObject("character_classes_prof"));
+            </pre>
+            <pre>
         The reason for doing that is in genaral a characters proficiencies in the game DND are
         obtained from their race and their class so we want that to be represented with out
         needing the user to enter them.
 
-        After this has finished it will pass the newly setup StringDataUser object raceClassInfo
-        back to the insertCharactersAPI.
+        After this has finished it will pass the newly setup <b>StringDataUser</b> object <b>raceClassInfo</b>
+        back to the <b>insertCharactersAPI</b>.
 
-        It is here that the program will calculate the starting stats of the character
-        by adding together the statBonus retrieved from the raceClassInfo object and
-        the initial stat value given by user on the website by the insertData object.
-
+        It is here that the program will calculate the starting <b>stats</b> of the character
+        by adding together the <b>statBonus</b> retrieved from the <b>raceClassInfo</b> object and
+        the initial <b>stat</b> value given by user on the website by the <b>insertData</b> object.
+        Seen by this code from the <b>WebUserView.insertCharactersAPI</b> function:
+            </pre>
+            <pre class="code">
+                //Calc Str
+                stat = ValidationUtils.integerConversion(insertData.Strength);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.strBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(9, totalStat);
+                //Calc Dex
+                stat = ValidationUtils.integerConversion(insertData.Dexterity);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.dexBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(10, totalStat);
+                //Calc Con
+                stat = ValidationUtils.integerConversion(insertData.Constitution);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.conBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(11, totalStat);
+                //Calc Int
+                stat = ValidationUtils.integerConversion(insertData.Intelligence);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.intBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(12, totalStat);
+                //Calc Wis
+                stat = ValidationUtils.integerConversion(insertData.Wisdom);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.wisBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(13, totalStat);
+                //Calc Chr
+                stat = ValidationUtils.integerConversion(insertData.Charisma);
+                statBonus = ValidationUtils.integerConversion(raceClassInfo.chrBonus);
+                totalStat = stat+statBonus;
+                stmt.setInt(14, totalStat);
+            </pre>
+            <pre>
         After all the information has been calculated and added to the prepared statement,
-        the cursor will perform a executeUpdate() function and pass back a resultset.
-        This resultset will be checked to see if there are any errors. If not it sends back a success message.
-        If there is an error is populates the errorMsgs value and sends that back to the client.
+        the cursor will perform a <b>executeUpdate()</b> function and pass back a <b>resultset</b>.
+        This <b>resultset</b> will be checked to see if there are any errors. If not it sends back a success message.
+        If there is an error is populates the <b>errorMsgs</b> value and sends that back to the client.
 
-        The characterCRUD.insertSave() function will then check to see if there were any errors coming
+        The <b>characterCRUD.insertSave()</b> function will then check to see if there were any errors coming
         from the server. If there are it will display them and wait for the user to fix them.
-        If there are no errors it will launch the characterCRUD.list() function to populate the page
+        If there are no errors it will launch the <b>characterCRUD.list()</b> function to populate the page
         with all the characters.
 
         Something you may notice is that when the characters are listed out there is a field
         that holds the username of the person who owns that character. This was not one of the 
         user entered fields. This is achieved by the fact that you have to be logged in to access
         the character page. If you ware logged in that means that there is a session variable on the
-        server that is holding the user information namely the webUserId. This is retrieved with this code
-        in the characterCRUD.insertsver() function:
-</pre>
-<pre class = "code">
+        server that is holding the user information namely the <b>webUserId</b>. This is retrieved with this code
+        in the <b>characterCRUD.insertsver()</b> function:
+            </pre>
+            <pre class = "code">
             characterCRUD.insertSave = function () {
             ajaxCall("webAPIs/getProfileAPI.jsp", getInsertInfo, displaygetInsertInfoError);
-</pre>
-<pre>
-
-        The ajaxCall will get back the session variable that was stored at login which has the webUserId.
-        You then just add it to your json object like so "webUserId": obj.webUserList[0].webUserId,
-                        
-</pre>
-
-<h2>Viewing a specific Character based on Character_ID</h2>
-<pre>
+            </pre>
+            <pre>
+        The ajaxCall will get back the session variable that was stored at login which has the <b>webUserId</b>.
+        You then just add it to your json object like so
+            </pre>
+            <pre class ="code">
+             "webUserId": obj.webUserList[0].webUserId,           
+            </pre>
+        </div>
+        <div class="ViewCharacter">
+            <h2>Viewing a specific Character based on Character_ID</h2>
+            <pre>
         To view a specific character based on Character_ID I leveraged this code from charactersCRUD.js:
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
         
             characterCRUD.list = function () {
                 ajaxCall("webAPIs/getProfileAPI.jsp", checkLoginStatus, displayCheckLoginStatusError);
@@ -1538,14 +1649,14 @@ and open the template in the editor.
                     }
                 }
             };
-</pre>
-<pre>
+            </pre>
+            <pre>
         What this code does is that it associates the Character_ID that is associated with 
         the row that button you push is on to the function call characterCRUD.view.
         This was accomplished by repurposing Professor Kyvernitis delete example for
         generating buttons on the table. 
-</pre>
-<pre class = "code">
+            </pre>
+            <pre class = "code">
             for (var i = 0; i < obj.webUserList.length; i++) {
 
                 // add a property to each object in webUserList - a span tag that when clicked 
@@ -1557,12 +1668,13 @@ and open the template in the editor.
                 // remove a property from each object in webUserList 
                 delete obj.webUserList[i].userPassword2;
             }
-</pre>
-<pre>
+            </pre>
+            <pre>
 
         This code adds a new item to the obj.webUserList[i] object called view with the buttons HTML code as it's value.
         From there makeTable.js does the rest.
             
-</pre>
-</div>
+            </pre>
+        </div>
+    </div>
 </html>

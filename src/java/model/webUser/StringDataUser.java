@@ -144,10 +144,8 @@ public class StringDataUser {
     
     public void setCampaignSignUp(ResultSet results) {        //this.errorMsg = "setCampaignSignUp was called";
         try {
+            this.campaign_session_posting_id = FormatUtils.formatInteger(results.getObject("campaign_session_posting_id"));
             this.userEmail = FormatUtils.formatString(results.getObject("user_email"));
-            //this.userPassword = FormatUtils.formatString(results.getObject("user_password"));
-            //this.birthday = FormatUtils.formatDate(results.getObject("birthday"));
-            //this.membershipFee = FormatUtils.formatDollar(results.getObject("membership_fee"));
             this.campaign_session_posting_name = FormatUtils.formatString(results.getObject("campaign_session_posting_name"));
             this.Signed_Up = FormatUtils.formatDate(results.getObject("campaign_session_posting_created_date"));
             this.Notes = FormatUtils.formatString(results.getObject("campaign_session_posting_desc"));
@@ -163,6 +161,7 @@ public class StringDataUser {
     
     public void setCampaignListing(ResultSet results) {
         try {
+            this.campaign_session_id = FormatUtils.formatInteger(results.getObject("campaign_session_id"));
             this.Session_Location = FormatUtils.formatString(results.getObject("campaign_session_location"));
             this.Session_Date = FormatUtils.formatDate(results.getObject("campaign_session_date"));
             this.Campaign = FormatUtils.formatString(results.getObject("campaign_session_campaign"));

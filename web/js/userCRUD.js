@@ -3,26 +3,22 @@ var userCRUD = {}; // globally available object
 
 
 (function () {  // This is an IIFE, an Immediately Invoked Function Expression
-    //alert("I am an IIFE!");
+//alert("I am an IIFE!");
 
     userCRUD.startInsert = function () {
 
         ajax('htmlPartial/insertUpdateUser.html', setInsertUI, 'content');
-
         function setInsertUI(httpRequest) {
 
             // Place the inserttUser html snippet into the content area.
             console.log("Ajax call was successful.");
             document.getElementById("content").innerHTML = httpRequest.responseText;
-
             ajax("webAPIs/getRolesAPI.jsp", setRolePickList, "userRoleIdError");
-
             function setRolePickList(httpRequest) {
 
                 console.log("setRolePickList was called, see next line for object holding list of roles");
                 var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
                 console.log(jsonObj);
-
                 if (jsonObj.dbError.length > 0) {
                     document.getElementById("userRoleIdError").innerHTML = jsonObj.dbError;
                     return;
@@ -45,14 +41,10 @@ var userCRUD = {}; // globally available object
             }
         }
     };
-
-
     userCRUD.insertSave = function () {
 
         console.log("userCRUD.insertSave was called");
-
         var ddList = document.getElementById("rolePickList");
-
         // create a user object from the values that the user has typed into the page.
         var userInputObj = {
             "webUserId": "",
@@ -64,26 +56,21 @@ var userCRUD = {}; // globally available object
             "userPassword2": document.getElementById("userPassword2").value,
             "birthday": document.getElementById("birthday").value,
             "membershipFee": document.getElementById("membershipFee").value,
-
             // Modification here for role pick list
             "userRoleId": ddList.options[ddList.selectedIndex].value,
-
             "userRoleType": "",
             "errorMsg": ""
         };
         console.log(userInputObj);
-
         // build the url for the ajax call. Remember to escape the user input object or else 
         // you'll get a security error from the server. JSON.stringify converts the javaScript
         // object into JSON format (the reverse operation of what gson does on the server side).
         var myData = escape(JSON.stringify(userInputObj));
         var url = "webAPIs/insertUserAPI.jsp?jsonData=" + myData;
         ajax(url, processInsert, "recordError");
-
         function processInsert(httpRequest) {
             console.log("processInsert was called here is httpRequest.");
             console.log(httpRequest);
-
             // the server prints out a JSON string of an object that holds field level error 
             // messages. The error message object (conveniently) has its fiels named exactly 
             // the same as the input data was named. 
@@ -92,47 +79,47 @@ var userCRUD = {}; // globally available object
             if (undefinedCheck(jsonObj.errorMsg)) {
                 if (undefinedCheck(jsonObj.Username)) {
                     document.getElementById("userUsernameError").innerHTML = jsonObj.Username;
-                }else{
+                } else {
                     document.getElementById("userUsernameError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userEmail)) {
                     document.getElementById("userEmailError").innerHTML = jsonObj.userEmail;
-                }else{
+                } else {
                     document.getElementById("userEmailError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.firstName)) {
                     document.getElementById("userFNameError").innerHTML = jsonObj.firstName;
-                }else{
+                } else {
                     document.getElementById("userFNameError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.lastName)) {
                     document.getElementById("userLNameError").innerHTML = jsonObj.lastName;
-                }else{
+                } else {
                     document.getElementById("userLNameError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userPassword)) {
                     document.getElementById("userPasswordError").innerHTML = jsonObj.userPassword;
-                }else{
+                } else {
                     document.getElementById("userPasswordError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userPassword2)) {
                     document.getElementById("userPassword2Error").innerHTML = jsonObj.userPassword2;
-                }else{
+                } else {
                     document.getElementById("userPassword2Error").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.birthday)) {
                     document.getElementById("birthdayError").innerHTML = jsonObj.birthday;
-                }else{
+                } else {
                     document.getElementById("birthdayError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.membershipFee)) {
                     document.getElementById("membershipFeeError").innerHTML = jsonObj.membershipFee;
-                }else{
+                } else {
                     document.getElementById("membershipFeeError").innerHTML = "";
                 }
                 if (undefinedCheck(jsonObj.userRoleId)) {
                     document.getElementById("userRoleIdError").innerHTML = jsonObj.userRoleId;
-                }else{
+                } else {
                     document.getElementById("userRoleIdError").innerHTML = "";
                 }
             } else
@@ -145,17 +132,15 @@ var userCRUD = {}; // globally available object
             }
             document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
         }
-        
-        function undefinedCheck(param){ 
-            if(typeof param === typeof Undefined){
+
+        function undefinedCheck(param) {
+            if (typeof param === typeof Undefined) {
                 console.log("runs");
                 return false;
             }
             return true;
         }
     };
-
-
     userCRUD.list = function () {
 
         document.getElementById("content").innerHTML = "";
@@ -163,25 +148,23 @@ var userCRUD = {}; // globally available object
         dataList.id = "dataList"; // set the id so it matches CSS styling rule.
         dataList.innerHTML = "<h2>Web Users <img class='iconBtn' src='icons/insert.png' onclick='userCRUD.startInsert();'/></h2>";
         document.getElementById("content").appendChild(dataList);
-
         ajax('webAPIs/listUsersAPI.jsp', setListUI, 'dataList');
-
         function setListUI(httpRequest) {
 
             console.log("starting userCRUD.list (setListUI) with this httpRequest object (next line)");
             console.log(httpRequest);
-
             var obj = JSON.parse(httpRequest.responseText);
-
             if (obj === null) {
                 dataList.innerHTML = "listUsersResponse Error: JSON string evaluated to null.";
                 return;
             }
 
             for (var i = 0; i < obj.webUserList.length; i++) {
-
+                var id = obj.webUserList[i].webUserId;
+                obj.webUserList[i].delete = "<img class='iconBtn' src='icons/delete.png'  onclick='userCRUD.Delete(" + id + ",this)'  />";
                 // remove a property from each object in webUserList 
                 delete obj.webUserList[i].userPassword2;
+                delete obj.webUserList[i].webUserId;
             }
 
             // buildTable Parameters: 
@@ -192,4 +175,41 @@ var userCRUD = {}; // globally available object
         }
     };
 
+    userCRUD.Delete = function (id, icon) {
+        if (confirm("Do you really want to delete user " + id + "? ")) {
+            console.log("icon that was passed into JS function is printed on next line");
+            console.log(icon);
+            // HERE YOU HAVE TO CALL THE DELETE API and the success function should run the 
+            // following (delete the row that was clicked from the User Interface).
+            alert('webAPIs/deleteUserAPI.jsp?deleteId=' + id);
+            ajaxCall('webAPIs/deleteUserAPI.jsp?deleteId=' + id, updateTable, setDeleteError);
+            function updateTable(httpRequest) {
+                var msg = JSON.parse(httpRequest.responseText);
+                console.log(msg.errorMsg)
+                if (undefinedCheck(msg.successMsg)) {
+                    // icon's parent is cell whose parent is row 
+                    var dataRow = icon.parentNode.parentNode;
+                    var rowIndex = dataRow.rowIndex - 1; // adjust for oolumn header row?
+                    var dataTable = dataRow.parentNode;
+                    dataTable.deleteRow(rowIndex);
+                    alert(msg.successMsg);
+                } else {
+                    alert(msg.errorMsg);
+                }
+            }
+
+            function setDeleteError(httpRequest) {
+                var msg = JSON.parse(httpRequest.responseText);
+                alert(msg.errorMsg);
+            }
+        }
+
+        function undefinedCheck(param) {
+            if (typeof param === typeof Undefined) {
+                console.log("runs");
+                return false;
+            }
+            return true;
+        }
+    };
 }());  // the end of the IIFE

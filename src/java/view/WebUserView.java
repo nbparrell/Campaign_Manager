@@ -128,7 +128,8 @@ public class WebUserView {
         //ResultSet results = null;
         StringDataList sdl = new StringDataList();
         try {
-            String sql = "SELECT campaign_session_posting_name, "
+            String sql = "SELECT campaign_session_posting_id, "
+                    + "campaign_session_posting_name, "
                     + "campaign_session_posting_created_date, "
                     + "campaign_session_posting_desc, "
                     + "campaign_session_posting_id, "
@@ -170,7 +171,7 @@ public class WebUserView {
         //ResultSet results = null;
         StringDataList sdl = new StringDataList();
         try {
-            String sql = "SELECT "
+            String sql = "SELECT campaign_session_id, "
                     + "campaign_session_location, "
                     + "campaign_session_campaign, "
                     + "campaign_session_date, "
@@ -584,7 +585,7 @@ public class WebUserView {
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {
-                sdl.addUserInfo(results, type);
+                sdl.addUserInfoWithId(results, type);
             }
             results.close();
             stmt.close();
@@ -627,6 +628,126 @@ public class WebUserView {
             sdl.add(sd);
         }
         return sdl;
+    }
+
+    public static StringDataUser deleteCharactersAPI(DbConn dbc, String id) {
+        StringDataUser sd = new StringDataUser();
+        try {
+            String sql = "DELETE "
+                    + "FROM user_characters "
+                    + "WHERE user_characters_id = ?";
+            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+            stmt.setString(1, id);
+            int results = stmt.executeUpdate();
+            if (results > 1) {
+                System.out.print("Deleted more then one character: " + results);
+                sd.errorMsg = ("Deleted more then one character: " + results);
+                //sdl.add(sd);
+            } else {
+                System.out.print("Deleted one character");
+                sd.successMsg = ("Successfully deleted one character");
+                //sdl.add(sd);
+            }
+            stmt.close();
+        } catch (Exception e) {
+            if (e.getMessage().contains("key")) {
+                 sd.errorMsg = "Unable to delete character.";
+            } else {
+                sd.errorMsg = "Exception thrown in WebUserView.deleteSessionAPI(): " + e.getMessage();
+            }
+        }
+
+        return sd;
+    }
+
+    public static StringDataUser deleteUserAPI(DbConn dbc, String id) {
+        StringDataUser sd = new StringDataUser();
+        try {
+            String sql = "DELETE "
+                    + "FROM web_user "
+                    + "WHERE web_user_id = ?";
+            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+            stmt.setString(1, id);
+            int results = stmt.executeUpdate();
+            if (results > 1) {
+                System.out.print("Deleted more then one User: " + results);
+                sd.errorMsg = ("Deleted more then one User: " + results);
+                //sdl.add(sd);
+            } else {
+                System.out.print("Deleted one User");
+                sd.successMsg = ("Successfully deleted one User");
+                //sdl.add(sd);
+            }
+            stmt.close();
+        } catch (Exception e) {
+            if (e.getMessage().contains("key")) {
+                 sd.errorMsg = "Unable to delete user because they are going to a session.";
+            } else {
+                sd.errorMsg = "Exception thrown in WebUserView.deleteUserAPI(): " + e.getMessage();
+            }
+        }
+
+        return sd;
+    }
+
+    public static StringDataUser deleteSessionAPI(DbConn dbc, String id) {
+        StringDataUser sd = new StringDataUser();
+        try {
+            String sql = "DELETE "
+                    + "FROM campaign_sessions "
+                    + "WHERE campaign_session_id = ?";
+            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+            stmt.setString(1, id);
+            int results = stmt.executeUpdate();
+            if (results > 1) {
+                System.out.print("Deleted more then one Session: " + results);
+                sd.errorMsg = ("Deleted more then one Session: " + results);
+                //sdl.add(sd);
+            } else {
+                System.out.print("Deleted one Session");
+                sd.successMsg = ("Successfully deleted one Session");
+                //sdl.add(sd);
+            }
+            stmt.close();
+        } catch (Exception e) {
+            if (e.getMessage().contains("key")) {
+                 sd.errorMsg = "Unable to delete session because people have signed up for it.";
+            } else {
+                sd.errorMsg = "Exception thrown in WebUserView.deleteSessionAPI(): " + e.getMessage();
+            }
+        }
+
+        return sd;
+    }
+
+    public static StringDataUser deletePostingAPI(DbConn dbc, String id) {
+        StringDataUser sd = new StringDataUser();
+        try {
+            String sql = "DELETE "
+                    + "FROM campaign_session_posting "
+                    + "WHERE campaign_session_posting_id = ?";
+            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+            stmt.setString(1, id);
+            int results = stmt.executeUpdate();
+            if (results > 1) {
+                System.out.print("Deleted more then one Posting: " + results);
+                sd.errorMsg = ("Deleted more then one Posting: " + results);
+                //sdl.add(sd);
+            } else {
+                System.out.print("Deleted one Posting");
+                sd.successMsg = ("Successfully deleted one Posting");
+                //sdl.add(sd);
+            }
+            stmt.close();
+        } catch (Exception e) {
+            if (e.getMessage().contains("key")) {
+                 sd.errorMsg = "Unable to delete Posting.";
+            } else {
+                sd.errorMsg = "Exception thrown in WebUserView.deletePostingAPI(): " + e.getMessage();
+            }
+        }
+
+        return sd;
     }
 
 }
