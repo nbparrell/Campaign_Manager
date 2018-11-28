@@ -145,7 +145,7 @@ is smaller than the specified value */
 
 /* When the user hovers over a div that's inside of an element with 
    id="nav", the text of links inside the div will change color. */
-#nav div:hover a {
+#nav div a:hover {
     color: black;
 }
 
