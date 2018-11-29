@@ -118,6 +118,8 @@ public class StringDataUser {
     public void setUserInfoWithID(ResultSet results) {        //this.errorMsg = "setUserInfo was called";
         try {
             this.webUserId = FormatUtils.formatInteger(results.getObject("web_user_id"));
+            this.firstName = FormatUtils.formatString(results.getObject("user_first_name"));
+            this.lastName = FormatUtils.formatString(results.getObject("user_last_name"));
             this.Username = FormatUtils.formatString(results.getObject("user_username"));
             this.userEmail = FormatUtils.formatString(results.getObject("user_email"));
             this.userPassword = FormatUtils.formatString(results.getObject("user_password"));
@@ -145,6 +147,7 @@ public class StringDataUser {
     public void setCampaignSignUp(ResultSet results) {        //this.errorMsg = "setCampaignSignUp was called";
         try {
             this.campaign_session_posting_id = FormatUtils.formatInteger(results.getObject("campaign_session_posting_id"));
+            this.Username = FormatUtils.formatString(results.getObject("user_username"));
             this.userEmail = FormatUtils.formatString(results.getObject("user_email"));
             this.campaign_session_posting_name = FormatUtils.formatString(results.getObject("campaign_session_posting_name"));
             this.Signed_Up = FormatUtils.formatDate(results.getObject("campaign_session_posting_created_date"));

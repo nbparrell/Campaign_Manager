@@ -129,6 +129,7 @@ var campaignSessionCRUD = {}; // globally available object
             for (var i = 0; i < obj.webUserList.length; i++) {
                 var id = obj.webUserList[i].campaign_session_id;
                 obj.webUserList[i].delete = "<img class='iconBtn' src='icons/delete.png'  onclick='campaignSessionCRUD.Delete(" + id + ",this)'  />";
+                obj.webUserList[i].Update = "<img class='iconBtn' src='icons/update.png'  onclick='campaignSessionCRUD.startUpdate(" + id + ",this)'  />";
                 delete obj.webUserList[i].campaign_session_id;
             }
 
@@ -175,6 +176,119 @@ var campaignSessionCRUD = {}; // globally available object
                 }
                 return true;
             }
+        }
+    };
+    
+    campaignSessionCRUD.startUpdate = function (id, icon) {
+
+        ajax('htmlPartial/insertCampaignSession.html', setInsertUI, 'content');
+
+        function setInsertUI(httpRequest) {
+
+            // Place the inserttUser html snippet into the content area.
+            console.log("Ajax call was successful.");
+            document.getElementById("content").innerHTML = httpRequest.responseText;
+            var dataRow = icon.parentNode.parentNode;
+            var rowData = dataRow.childNodes;
+            console.log(dataRow);
+            console.log(rowData[0].innerHTML);
+            document.getElementById("sessionName").value = rowData[0].innerHTML;
+            document.getElementById("sessionLocation").value = rowData[3].innerHTML;
+            document.getElementById("sessionCampaign").value = rowData[4].innerHTML;
+            var d = rowData[1].innerHTML;
+            var date = d.split("/");
+            var formattedDate = date[2] + "-" + date[0] + "-" + date[1];
+            document.getElementById("sessionDate").value = formattedDate;
+            document.getElementById("sessionDesc").value = rowData[2].innerHTML;
+            
+            
+            document.getElementById("SaveButton").onclick = function(){campaignSessionCRUD.updateSave(id)};
+        }
+    };
+
+
+    campaignSessionCRUD.updateSave = function (id) {
+
+        console.log("campaignSessionCRUD.updateSave was called");
+
+        console.log(document.getElementById("sessionDate").value);
+
+
+        // create a session object from the values that the user has typed into the page.
+        var sessionInputObj = {
+            "campaign_session_id": id,
+            "Name": document.getElementById("sessionName").value,
+            "Session_Location": document.getElementById("sessionLocation").value,
+            "Campaign": document.getElementById("sessionCampaign").value,
+            "Session_Date": document.getElementById("sessionDate").value,
+            "Description": document.getElementById("sessionDesc").value,
+            "sucessMsg": "",
+            "errorMsg": ""
+        };
+        console.log(sessionInputObj);
+
+        // build the url for the ajax call. Remember to escape the user input object or else 
+        // you'll get a security error from the server. JSON.stringify converts the javaScript
+        // object into JSON format (the reverse operation of what gson does on the server side).
+        var myData = escape(JSON.stringify(sessionInputObj));
+        var url = "webAPIs/updateSessionAPI.jsp?jsonData=" + myData;
+        ajax(url, processUpdate, "recordError");
+
+        function processUpdate(httpRequest) {
+            console.log("processInsert was called here is httpRequest.");
+            console.log(httpRequest);
+
+            // the server prints out a JSON string of an object that holds field level error 
+            // messages. The error message object (conveniently) has its fiels named exactly 
+            // the same as the input data was named. 
+            var jsonObj = JSON.parse(httpRequest.responseText); // convert from JSON to JS Object.
+            console.log("here is JSON object (holds error messages.");
+            if (undefinedCheck(jsonObj.errorMsg)) {
+                if (undefinedCheck(jsonObj.Name)) {
+                    document.getElementById("sessionNameError").innerHTML = jsonObj.Name;
+                } else {
+                    document.getElementById("sessionNameError").innerHTML = "";
+                }
+                if (undefinedCheck(jsonObj.Session_Location)) {
+                    document.getElementById("sessionLocationError").innerHTML = jsonObj.Session_Location;
+                } else {
+                    document.getElementById("sessionLocationError").innerHTML = "";
+                }
+                if (undefinedCheck(jsonObj.Session_Date)) {
+                    document.getElementById("sessionDateError").innerHTML = jsonObj.Session_Date;
+                } else {
+                    document.getElementById("sessionDateError").innerHTML = "";
+                }
+                if (undefinedCheck(jsonObj.Campaign)) {
+                    document.getElementById("sessionCampaignError").innerHTML = jsonObj.Campaign;
+                } else {
+                    document.getElementById("sessionCampaignError").innerHTML = "";
+                }
+                if (undefinedCheck(jsonObj.Description)) {
+                    document.getElementById("sessionDescError").innerHTML = jsonObj.Description;
+                } else {
+                    document.getElementById("sessionDescError").innerHTML = "";
+                }
+                document.getElementById("responseText").innerHTML = jsonObj.errorMsg;
+            } else
+            {
+                campaignSessionCRUD.list();
+            }
+
+            /*            
+             if (jsonObj.errorMsg.length === 0) { // success
+             jsonObj.errorMsg = "Record successfully inserted !!!";
+             }
+             document.getElementById("responseText").innerHTML = jsonObj.errorMsg;
+             */
+        }
+
+        function undefinedCheck(param) {
+            if (typeof param === typeof Undefined) {
+                console.log("runs");
+                return false;
+            }
+            return true;
         }
     };
 

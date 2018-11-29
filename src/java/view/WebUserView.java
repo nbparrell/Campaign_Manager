@@ -138,6 +138,7 @@ public class WebUserView {
                     + "campaign_session_date, "
                     + "campaign_sessions.campaign_session_id, "
                     + "web_user.web_user_id, "
+                    + "user_username, "
                     + "user_email, "
                     + "user_password, "
                     + "membership_fee, "
@@ -574,6 +575,8 @@ public class WebUserView {
         try {
             String sql = "SELECT web_user_id, "
                     + "user_username, "
+                    + "user_first_name, "
+                    + "user_last_name, "
                     + "user_email, "
                     + "user_password, "
                     + "membership_fee, "
@@ -745,6 +748,163 @@ public class WebUserView {
             } else {
                 sd.errorMsg = "Exception thrown in WebUserView.deletePostingAPI(): " + e.getMessage();
             }
+        }
+
+        return sd;
+    }
+    
+    public static StringDataUser updateCampaignSessionAPI(DbConn dbc, StringDataUser insertData) {
+        StringDataUser sd = new StringDataUser();
+        if (ValidationUtils.insertSessionValidation(insertData, sd)) {
+            try {
+                String sql = "UPDATE campaign_sessions "
+                        + "SET "
+                        + "campaign_session_name = ?, "
+                        + "campaign_session_location = ?, "
+                        + "campaign_session_date = ?, "
+                        + "campaign_session_campaign = ?, "
+                        + "campaign_session_desc = ? "
+                        + "WHERE campaign_session_id = ?";
+
+                PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+                stmt.setString(1, insertData.Name); // string type is simple
+                stmt.setString(2, insertData.Session_Location);
+                stmt.setDate(3, ValidationUtils.dateConversion(insertData.Session_Date));
+                stmt.setString(4, insertData.Campaign);
+                stmt.setString(5, insertData.Description);
+                stmt.setInt(6, ValidationUtils.integerConversion(insertData.campaign_session_id));
+                int results = stmt.executeUpdate();
+                if (results > 1) {
+                    System.out.print("Added more then one campaign: " + results);
+                    sd.errorMsg = ("added more then one campaign: " + results);
+                } else {
+                    System.out.print("Added one campaign");
+                    sd.successMsg = ("Successfully added one campaign");
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                if (e.getMessage().contains("Duplicate")) {
+                    sd.errorMsg = "Session already exist with that name for the date selected please use a Different Name for session.";
+                } else if (e.getMessage().contains("null")) {
+                    sd.errorMsg = "Please enter a valid date.";
+                } else {
+                    sd.errorMsg = "Exception thrown in WebUserView.allUsersAPI(): " + e.getMessage();
+                }
+                //sd.errorMsg = "Exception thrown in WebUserView.updateCampaignSessionAPI(): " + e.getMessage();
+            }
+        }
+
+        return sd;
+    }
+    
+    public static StringDataUser updateCampaignSessionPostingAPI(DbConn dbc, StringDataUser insertData) {
+        StringDataUser sd = new StringDataUser();
+        if (ValidationUtils.insertSessionPostingValidation(insertData, sd)) {
+            try {
+                String sql = "UPDATE campaign_session_posting "
+                        + "SET "
+                        + "web_user_id = ?, "
+                        + "campaign_session_id = ?, "
+                        + "campaign_session_posting_name = ?, "
+                        + "campaign_session_posting_desc = ? "
+                        + "WHERE campaign_session_posting_id = ?";
+
+                PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+                stmt.setString(1, insertData.webUserId); // string type is simple
+                stmt.setInt(2, ValidationUtils.integerConversion(insertData.campaign_session_id));
+                stmt.setString(3, insertData.campaign_session_posting_name);
+                stmt.setString(4, insertData.Notes);
+                stmt.setInt(5, ValidationUtils.integerConversion(insertData.campaign_session_posting_id));
+                int results = stmt.executeUpdate();
+                if (results > 1) {
+                    System.out.print("Added more then one campaign: " + results);
+                    sd.errorMsg = ("signed up for more then one campaign: " + results);
+                } else {
+                    System.out.print("Added one campaign");
+                    sd.successMsg = ("Successfully added signed up for campaign");
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                if (e.getMessage().contains("Duplicate")) {
+                    sd.webUserId = "This user has already signed up for this campaign session<br>"
+                            + "please select a different session to sign up for.";
+                    sd.errorMsg = "Try again";
+                } else {
+                    sd.errorMsg = "Exception thrown in WebUserView.updateCampaignSessionPostingAPI(): " + e.getMessage();
+                }
+            }
+        }
+
+        return sd;
+    }
+    
+    public static StringDataUser updateUsersAPI(DbConn dbc, StringDataUser insertData) {
+        int type = 0;
+        //StringDataList sdl = new StringDataList();
+        StringDataUser sd = new StringDataUser();
+        if (ValidationUtils.insertUserValidation(insertData, sd)) {
+            try {
+                String sql = "UPDATE web_user "
+                        + "SET "
+                        + "user_username = ?, "
+                        + "user_email = ?, "
+                        + "user_password = ?, "
+                        + "user_first_name = ?, "
+                        + "user_last_name = ?, "
+                        + "membership_fee = ?, "
+                        + "birthday = ?, "
+                        + "user_role_id = ? "
+                        + "WHERE web_user_id = ?";
+
+                PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
+                stmt.setString(1, insertData.Username);
+                stmt.setString(2, insertData.userEmail); // string type is simple
+                stmt.setString(3, insertData.userPassword);
+                stmt.setString(4, insertData.firstName);
+                stmt.setString(5, insertData.lastName);
+                stmt.setBigDecimal(6, ValidationUtils.decimalConversion(insertData.membershipFee));
+                stmt.setDate(7, ValidationUtils.dateConversion(insertData.birthday));
+                stmt.setInt(8, ValidationUtils.integerConversion(insertData.userRoleId));
+                stmt.setInt(9, ValidationUtils.integerConversion(insertData.webUserId));
+
+                int results = stmt.executeUpdate();
+                if (results > 1) {
+                    System.out.print("Added more then one campaign: " + results);
+                    sd.errorMsg = ("added more then one campaign: " + results);
+                    //sdl.add(sd);
+                } else {
+                    System.out.print("Added one campaign");
+                    sd.successMsg = ("Successfully added one campaign");
+                    //sdl.add(sd);
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                //System.out.print(e.toString());
+                int friendlyMessageExists = 1;
+                System.out.print("Error message: " + e.getMessage());
+                String eMessage = e.getMessage();
+                while (eMessage != null) {
+                    if (eMessage.contains("username")) {
+                        sd.Username = "This username already exists please choose another one";
+                    } else if (eMessage.contains("email")) {
+                        sd.userEmail = "This email already exists please choose another one";
+                    } else {
+                        friendlyMessageExists = 0;
+                    }
+                    try {
+                        eMessage = e.getNextException().getMessage();
+                    } catch (Exception ex) {
+                        eMessage = null;
+                        System.out.print(ex.getMessage());
+                    }
+                }
+                if (friendlyMessageExists == 1) {
+                    sd.errorMsg = "Try again";
+                } else {
+                    sd.errorMsg = "Exception thrown in WebUserView.insertUsersAPI(): " + e.getMessage();
+                }
+            }
+            //sdl.add(sd);
         }
 
         return sd;
