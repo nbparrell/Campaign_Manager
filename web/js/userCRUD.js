@@ -127,12 +127,10 @@ var userCRUD = {}; // globally available object
                 userCRUD.list();
             }
 
-            if (jsonObj.errorMsg.length === 0) { // success
-                jsonObj.errorMsg = "Record successfully inserted !!!";
-            }
             document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
         }
-
+        
+        //This is used to check to see if an object in the JSON exists or not.
         function undefinedCheck(param) {
             if (typeof param === typeof Undefined) {
                 console.log("runs");
@@ -204,7 +202,7 @@ var userCRUD = {}; // globally available object
                 alert(msg.errorMsg);
             }
         }
-
+        //This is used to check to see if an object in the JSON exists or not.
         function undefinedCheck(param) {
             if (typeof param === typeof Undefined) {
                 console.log("runs");
@@ -366,6 +364,7 @@ var userCRUD = {}; // globally available object
             document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
         }
 
+        //This is used to check to see if an object in the JSON exists or not.
         function undefinedCheck(param) {
             if (typeof param === typeof Undefined) {
                 console.log("runs");

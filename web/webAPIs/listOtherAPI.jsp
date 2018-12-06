@@ -1,8 +1,8 @@
 <%@page contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%> 
 
 <%@page language="java" import="dbUtils.*" %>
-<%@page language="java" import="model.webUser.*" %> 
-<%@page language="java" import="view.WebUserView" %> 
+<%@page language="java" import="model.sessionListing.*" %>
+<%@page language="java" import="view.SessionListView" %>
 <%@page language="java" import="com.google.gson.*" %>
 
 <%
@@ -15,7 +15,7 @@
     if (list.dbError.length() == 0) { // if got good DB connection,
 
         System.out.println("*** Ready to call allUsersAPI");
-        list = WebUserView.listOtherAPI(dbc);
+        list = SessionListView.listOtherAPI(dbc);
     }
 
       dbc.close(); // EVERY code path that opens a db connection, must also close it - no DB Conn leaks.

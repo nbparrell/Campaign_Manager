@@ -1,6 +1,9 @@
 package dbUtils;
 
 import model.webUser.*;
+import model.sessionListing.*;
+import model.sessionPosting.*;
+import model.userCharacter.*;
 import java.util.StringTokenizer;
 import java.util.Date;
 
@@ -211,7 +214,7 @@ public class ValidationUtils {
         }
     }
 
-    public static boolean passwordMatch(StringDataUser inputData, StringDataUser responseData) {
+    public static boolean passwordMatch(model.webUser.StringData inputData, model.webUser.StringData responseData) {
         if (inputData.userPassword.equals(inputData.userPassword2)) {
             return true;
         } else {
@@ -227,7 +230,7 @@ public class ValidationUtils {
         return fee;
     }
 
-    public static boolean insertUserValidation(StringDataUser inputData, StringDataUser responseData) {
+    public static boolean insertUserValidation(model.webUser.StringData inputData, model.webUser.StringData responseData) {
         boolean validationPassed = true;
         responseData.userPassword = stringValidationMsg(inputData.userPassword, 45, true);
         responseData.Username = stringValidationMsg(inputData.Username, 45, true);
@@ -258,7 +261,7 @@ public class ValidationUtils {
         return false;
     }
 
-    public static boolean insertSessionValidation(StringDataUser inputData, StringDataUser responseData) {
+    public static boolean insertSessionValidation(model.sessionListing.StringData inputData, model.sessionListing.StringData responseData) {
         boolean validationPassed = true;
         responseData.Name = stringValidationMsg(inputData.Name, 45, true);
         responseData.Session_Location = stringValidationMsg(inputData.Session_Location, 45, true);
@@ -285,7 +288,7 @@ public class ValidationUtils {
         return false;
     }
 
-    public static boolean insertSessionPostingValidation(StringDataUser inputData, StringDataUser responseData) {
+    public static boolean insertSessionPostingValidation(model.sessionPosting.StringData inputData, model.sessionPosting.StringData responseData) {
         boolean validationPassed = true;
         responseData.campaign_session_posting_name = stringValidationMsg(inputData.campaign_session_posting_name, 45, true);
         responseData.Notes = stringValidationMsg(inputData.Notes, 967295, true);
@@ -303,7 +306,7 @@ public class ValidationUtils {
         return false;
     }
 
-    public static boolean insertCharacterValidation(StringDataUser inputData, StringDataUser responseData) {
+    public static boolean insertCharacterValidation(model.userCharacter.StringData inputData, model.userCharacter.StringData responseData) {
         boolean validationPassed = true;
         responseData.Character_Name = stringValidationMsg(inputData.Character_Name, 45, true);
 //        responseData.character_description = stringValidationMsg(inputData.character_description, 967295, true); May Implement later

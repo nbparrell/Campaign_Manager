@@ -17,7 +17,7 @@
     Gson gson = new Gson();
 
     DbConn dbc = new DbConn();
-    StringDataUser errorMsgs = new StringDataUser();
+    StringData errorMsgs = new StringData();
 
     String jsonInsertData = request.getParameter("jsonData");
     if (jsonInsertData == null) {
@@ -31,10 +31,10 @@
             
             // Must use gson to convert JSON (that the user provided as part of the url, the jsonInsertData. 
             // Convert from JSON (JS object notation) to POJO (plain old java object).
-            StringDataUser updateData = gson.fromJson(jsonInsertData, StringDataUser.class);
+            StringData updateData = gson.fromJson(jsonInsertData, StringData.class);
             
             // this method takes the user's input data as input and outputs an error message object (with same field names).
-            errorMsgs = view.WebUserView.updateUsersAPI(dbc, updateData); // this is the form level message
+            errorMsgs = WebUserView.updateUsersAPI(dbc, updateData); // this is the form level message
         }
     }
 

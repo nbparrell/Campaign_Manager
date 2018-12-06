@@ -17,7 +17,7 @@
     Gson gson = new Gson();
 
     DbConn dbc = new DbConn();
-    StringDataUser errorMsgs = new StringDataUser();
+    StringData errorMsgs = new StringData();
 
     String id = request.getParameter("deleteId");
     if (id == null) {

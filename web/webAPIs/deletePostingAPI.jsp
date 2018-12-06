@@ -1,8 +1,8 @@
 <%@page contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%> 
 
 <%@page language="java" import="dbUtils.DbConn" %>
-<%@page language="java" import="model.webUser.*" %>
-<%@page language="java" import="view.WebUserView" %>
+<%@page language="java" import="model.sessionPosting.*" %>
+<%@page language="java" import="view.SessionPostingView" %>
 
 <%@page language="java" import="com.google.gson.*" %>
 
@@ -17,7 +17,7 @@
     Gson gson = new Gson();
 
     DbConn dbc = new DbConn();
-    StringDataUser errorMsgs = new StringDataUser();
+    StringData errorMsgs = new StringData();
 
     String id = request.getParameter("deleteId");
     if (id == null) {
@@ -29,7 +29,7 @@
         if (errorMsgs.errorMsg.length() == 0) { // means db connection is ok
             System.out.println("deletePostingAPI.jsp ready to delete");
             // this method takes the user's input data as input and outputs an error message object (with a successMsg or erroMsg depending on result).
-            errorMsgs = WebUserView.deletePostingAPI(dbc, id); // this is the form level message
+            errorMsgs = SessionPostingView.deletePostingAPI(dbc, id); // this is the form level message
         }
     }
 

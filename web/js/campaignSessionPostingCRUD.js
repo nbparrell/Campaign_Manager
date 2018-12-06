@@ -128,7 +128,7 @@ var campaignSessionPostingCRUD = {}; // globally available object
 
             }
         }
-
+        //This is used to check to see if an object in the JSON exists or not.
         function undefinedCheck(param) {
             if (typeof param === typeof Undefined) {
                 console.log("runs");
@@ -203,7 +203,7 @@ var campaignSessionPostingCRUD = {}; // globally available object
                 var msg = JSON.parse(httpRequest.responseText);
                 alert(msg.errorMsg);
             }
-
+            //This is used to check to see if an object in the JSON exists or not.
             function undefinedCheck(param) {
                 if (typeof param === typeof Undefined) {
                     console.log("runs");
@@ -362,7 +362,7 @@ var campaignSessionPostingCRUD = {}; // globally available object
 
             }
         }
-
+        //This is used to check to see if an object in the JSON exists or not.
         function undefinedCheck(param) {
             if (typeof param === typeof Undefined) {
                 console.log("runs");

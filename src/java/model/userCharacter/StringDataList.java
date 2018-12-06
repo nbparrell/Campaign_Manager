@@ -1,4 +1,4 @@
-package model.webUser;
+package model.userCharacter;
 
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -23,48 +23,11 @@ public class StringDataList {
 
     // Adds creates a StringData element from a ResultSet (from SQL select statement), 
     // then adds that new element to the array list of StringData elements.
-    public void addUserInfo(ResultSet results, int type) {
-        //StringDataUser sd = new StringDataUser(results, type); Depricated
-        StringData sd = new StringData();
-        sd.setUserInfo(results);
-        this.webUserList.add(sd);
-    }
     
     public void addCharacterListInfo(ResultSet results, int type) {
         //StringDataUser sd = new StringDataUser(results, type); Depricated
         StringData sd = new StringData();
         sd.setCharacterListInfo(results);
-        this.webUserList.add(sd);
-    }
-    
-    public void addUserInfoWithId(ResultSet results, int type) {
-        //StringDataUser sd = new StringDataUser(results, type); Depricated
-        StringData sd = new StringData();
-        sd.setUserInfoWithID(results);
-        this.webUserList.add(sd);
-    }
-
-    public void addCampaignListing(ResultSet results, int type) {
-        StringData sd = new StringData();
-        sd.setCampaignListing(results);
-        this.webUserList.add(sd);
-    }
-
-    public void addCampaignSignUp(ResultSet results, int type) {
-        StringData sd = new StringData();
-        sd.setCampaignSignUp(results);
-        this.webUserList.add(sd);
-    }
-
-    public void addUserListInfo(ResultSet results, int type) {
-        StringData sd = new StringData();
-        sd.setUserListInfo(results);
-        this.webUserList.add(sd);
-    }
-
-    public void addCampaignListingList(ResultSet results, int type) {
-        StringData sd = new StringData();
-        sd.setCampaignSessionList(results);
         this.webUserList.add(sd);
     }
 
